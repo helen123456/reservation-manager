@@ -1,41 +1,89 @@
 // Fallback for using MaterialIcons on Android and web.
 
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { SymbolWeight, SymbolViewProps } from 'expo-symbols';
-import { ComponentProps } from 'react';
+import { 
+  Ionicons, 
+  MaterialIcons, 
+  FontAwesome, 
+  FontAwesome5, 
+  AntDesign, 
+  Entypo, 
+  EvilIcons, 
+  Feather, 
+  Foundation, 
+  MaterialCommunityIcons, 
+  Octicons, 
+  SimpleLineIcons, 
+  Zocial 
+} from '@expo/vector-icons';
+import { SymbolWeight } from 'expo-symbols';
 import { OpaqueColorValue, type StyleProp, type TextStyle } from 'react-native';
+import { ComponentProps } from 'react';
 
-type IconMapping = Record<SymbolViewProps['name'], ComponentProps<typeof MaterialIcons>['name']>;
-type IconSymbolName = keyof typeof MAPPING;
+// 定义支持的图标库类型
+type IconLibrary = 
+  | 'Ionicons'
+  | 'MaterialIcons'
+  | 'FontAwesome'
+  | 'FontAwesome5'
+  | 'AntDesign'
+  | 'Entypo'
+  | 'EvilIcons'
+  | 'Feather'
+  | 'Foundation'
+  | 'MaterialCommunityIcons'
+  | 'Octicons'
+  | 'SimpleLineIcons'
+  | 'Zocial';
 
-/**
- * Add your SF Symbols to Material Icons mappings here.
- * - see Material Icons in the [Icons Directory](https://icons.expo.fyi).
- * - see SF Symbols in the [SF Symbols](https://developer.apple.com/sf-symbols/) app.
- */
-const MAPPING = {
-  'house.fill': 'home',
-  'paperplane.fill': 'send',
-  'chevron.left.forwardslash.chevron.right': 'code',
-  'chevron.right': 'chevron-right',
-} as IconMapping;
+// 定义各个图标库的名称类型
+type IconNames = {
+  Ionicons: ComponentProps<typeof Ionicons>['name'];
+  MaterialIcons: ComponentProps<typeof MaterialIcons>['name'];
+  FontAwesome: ComponentProps<typeof FontAwesome>['name'];
+  FontAwesome5: ComponentProps<typeof FontAwesome5>['name'];
+  AntDesign: ComponentProps<typeof AntDesign>['name'];
+  Entypo: ComponentProps<typeof Entypo>['name'];
+  EvilIcons: ComponentProps<typeof EvilIcons>['name'];
+  Feather: ComponentProps<typeof Feather>['name'];
+  Foundation: ComponentProps<typeof Foundation>['name'];
+  MaterialCommunityIcons: ComponentProps<typeof MaterialCommunityIcons>['name'];
+  Octicons: ComponentProps<typeof Octicons>['name'];
+  SimpleLineIcons: ComponentProps<typeof SimpleLineIcons>['name'];
+  Zocial: ComponentProps<typeof Zocial>['name'];
+};
 
-/**
- * An icon component that uses native SF Symbols on iOS, and Material Icons on Android and web.
- * This ensures a consistent look across platforms, and optimal resource usage.
- * Icon `name`s are based on SF Symbols and require manual mapping to Material Icons.
- */
-export function IconSymbol({
+// 图标库组件映射
+const IconComponents = {
+  Ionicons,
+  MaterialIcons,
+  FontAwesome,
+  FontAwesome5,
+  AntDesign,
+  Entypo,
+  EvilIcons,
+  Feather,
+  Foundation,
+  MaterialCommunityIcons,
+  Octicons,
+  SimpleLineIcons,
+  Zocial,
+};
+
+export function IconSymbol<T extends IconLibrary>({
+  library = 'Ionicons' as T,
   name,
   size = 24,
   color,
   style,
 }: {
-  name: IconSymbolName;
+  library?: T;
+  name: IconNames[T];
   size?: number;
   color: string | OpaqueColorValue;
   style?: StyleProp<TextStyle>;
   weight?: SymbolWeight;
 }) {
-  return <MaterialIcons color={color} size={size} name={MAPPING[name]} style={style} />;
+  const IconComponent = IconComponents[library] as any;
+  
+  return <IconComponent color={color} size={size} name={name} style={style} />;
 }
