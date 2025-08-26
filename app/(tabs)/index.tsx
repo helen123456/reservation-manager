@@ -2,7 +2,6 @@
 import Header from "@/components/Header";
 import HelpSupport from "@/components/HelpSupport";
 import NotificationsPage from "@/components/NotificationsPage";
-import ParallaxScrollView from "@/components/ParallaxScrollView";
 import ProfileDetail from "@/components/ProfileDetail";
 import ReservationModule from "@/components/ReservationModule";
 import SettingsModule from "@/components/SettingsModule";
@@ -205,11 +204,11 @@ export default function App() {
 
       {/* Main Content */}
     
-        <ParallaxScrollView
+        {/* <ParallaxScrollView
           headerBackgroundColor={{ light: "#D0D0D0", dark: "#353636" }}
-        >
+        > */}
           {renderContent()}
-        </ParallaxScrollView>
+        {/* </ParallaxScrollView> */}
       
     </View>
   );
