@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Alert, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useTranslation } from '../hooks/useTranslation';
 import { languages } from '../utils/i18n';
+import { NavBack } from './NavBack';
 import { ThemedText } from './ThemedText';
 import { ThemedView } from './ThemedView';
 
@@ -44,27 +45,21 @@ export default function ProfileDetail({ onBack }: ProfileDetailProps) {
     return language ? language.nativeName : 'English';
   };
 
-  
+  const saveButton = (
+    <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
+      <Feather name="save" size={14} color="#fff" />
+      <Text style={styles.saveButtonText}>{t('save')}</Text>
+    </TouchableOpacity>
+  );
 
   return (
     <ThemedView style={styles.container}>
       <ScrollView style={styles.scrollContent}>
-        {/* Header */}
-        <View style={styles.header}>
-          <View style={styles.headerLeft}>
-            <TouchableOpacity 
-              onPress={onBack}
-              style={styles.backButton}
-            >
-              <Feather name="arrow-left" size={20} color="#111827" />
-            </TouchableOpacity>
-            <ThemedText style={styles.title}>{t('profileTitle')}</ThemedText>
-          </View>
-          <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-            <Feather name="save" size={14} color="#fff" />
-            <Text style={styles.saveButtonText}>{t('save')}</Text>
-          </TouchableOpacity>
-        </View>
+        <NavBack
+          title={t('profileTitle')}
+          onBack={onBack}
+          rightComponent={saveButton}
+        />
 
         {/* Personal Information */}
         <View style={styles.card}>

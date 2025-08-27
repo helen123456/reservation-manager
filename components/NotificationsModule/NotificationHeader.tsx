@@ -2,6 +2,7 @@ import { Feather } from "@expo/vector-icons";
 import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { useTranslation } from "../../hooks/useTranslation";
+import { NavBack } from "../NavBack";
 import { styles } from "./styles";
 import { Notification } from "./types";
 
@@ -22,30 +23,22 @@ export function NotificationHeader({
 }: NotificationHeaderProps) {
   const { t } = useTranslation();
 
+  const badgeComponent = unreadCount > 0 ? (
+    <View style={styles.badge}>
+      <Text style={styles.badgeText}>{unreadCount}</Text>
+    </View>
+  ) : null;
+
   return (
     <>
-      <View style={styles.header}>
-        <View style={styles.headerLeft}>
-          <TouchableOpacity style={styles.backButton} onPress={onBack}>
-            <Feather name="arrow-left" size={20} color="#666" />
-          </TouchableOpacity>
-          <View style={styles.titleContainer}>
-            <View style={styles.titleRow}>
-              <Text style={styles.title}>{t("notificationsTitle")}</Text>
-              {unreadCount > 0 && (
-                <View style={styles.badge}>
-                  <Text style={styles.badgeText}>{unreadCount}</Text>
-                </View>
-              )}
-            </View>
-            <Text style={styles.subtitle}>
-              {notifications.length > 0
-                ? `${notifications.length} notifications`
-                : t("noNotificationsDescription")}
-            </Text>
-          </View>
-        </View>
-      </View>
+      <NavBack
+        title={t("notificationsTitle")}
+        subtitle={notifications.length > 0
+          ? `${notifications.length} notifications`
+          : t("noNotificationsDescription")}
+        onBack={onBack}
+        rightComponent={badgeComponent}
+      />
       
       {notifications.length > 0 && (
         <View style={styles.headerActions}>

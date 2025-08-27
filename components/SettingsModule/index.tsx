@@ -2,6 +2,7 @@ import { Feather } from "@expo/vector-icons";
 import React, { useState } from "react";
 import { ScrollView, TouchableOpacity, View } from "react-native";
 import { useTranslation } from "../../hooks/useTranslation";
+import { NavBack } from "../NavBack";
 import { ThemedText } from "../ThemedText";
 import { ThemedView } from "../ThemedView";
 import QuickSettings from "./QuickSettings";
@@ -35,17 +36,11 @@ export default function SettingsModule({
 
   return (
     <ThemedView style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <View style={styles.headerLeft}>
-          {onBack && (
-            <TouchableOpacity onPress={onBack} style={styles.backButton}>
-              <Feather name="arrow-left" size={20} color="#111827" />
-            </TouchableOpacity>
-          )}
-          <ThemedText style={styles.title}>{t("settings")}</ThemedText>
-        </View>
-      </View>
+      <NavBack
+        title={t("settings")}
+        onBack={onBack || (() => {})}
+        showBackButton={!!onBack}
+      />
       <ScrollView style={styles.scrollContent}>
         {/* Quick Settings */}
         <QuickSettings

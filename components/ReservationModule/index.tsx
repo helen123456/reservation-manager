@@ -1,6 +1,8 @@
 import React, { useCallback, useMemo, useState } from "react";
 import { ActivityIndicator, Alert, FlatList } from "react-native";
 import { useTranslation } from "../../hooks/useTranslation";
+import { useThemeColor } from "../../hooks/useThemeColor";
+import { NavBack } from "../NavBack";
 import { ThemedText } from "../ThemedText";
 import { ThemedView } from "../ThemedView";
 import { FilterBar } from "./FilterBar";
@@ -8,7 +10,7 @@ import { ReservationDetail } from "./ReservationDetail";
 import { ReservationItem } from "./ReservationItem";
 import { SearchBar } from "./SearchBar";
 import { StatsCard } from "./StatsCard";
-import { styles } from "./styles";
+import { createStyles } from "./styles";
 import { FlatDataItem, Reservation } from "./types";
 import {
   calculateStats,
@@ -19,6 +21,7 @@ import {
 
 export default function ReservationModule() {
   const { t } = useTranslation();
+  const styles = createStyles();
   const [selectedReservation, setSelectedReservation] =
     useState<Reservation | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -221,14 +224,14 @@ export default function ReservationModule() {
   }
 
   return (
-    <ThemedView style={styles.container}>
+    <ThemedView style={[styles.container, { backgroundColor: useThemeColor({}, 'pageBackground') }]}>
       <ThemedView>
-      <ThemedView style={styles.header}>
-        <ThemedText style={styles.title}>{t("reservations")}</ThemedText>
-        <ThemedText style={styles.subtitle}>
-          Manage your restaurant reservations
-        </ThemedText>
-      </ThemedView>
+      <NavBack
+         title={t("reservations")}
+         subtitle="Manage your restaurant reservations"
+         showBackButton={false}
+         onBack={() => {}}
+       />
 
       <StatsCard
         todayReservations={stats.todayReservations}
