@@ -24,10 +24,12 @@ export default function TabLayout() {
             position: 'absolute',
             justifyContent: 'center',
             alignItems: 'center',
+            display: 'none', // 隐藏tab导航，因为只有一个tab
           },
           default: {
             justifyContent: 'center',
             alignItems: 'center',
+            display: 'none', // 隐藏tab导航，因为只有一个tab
           },
         }),
       }}>
