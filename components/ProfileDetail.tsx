@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, TextInput, Alert } from 'react-native';
 import { Feather } from '@expo/vector-icons';
-import { ThemedText } from './ThemedText';
-import { ThemedView } from './ThemedView';
+import React, { useState } from 'react';
+import { Alert, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useTranslation } from '../hooks/useTranslation';
 import { languages } from '../utils/i18n';
+import { ThemedText } from './ThemedText';
+import { ThemedView } from './ThemedView';
 
 interface ProfileDetailProps {
   onBack: () => void;
@@ -44,7 +44,148 @@ export default function ProfileDetail({ onBack }: ProfileDetailProps) {
     return language ? language.nativeName : 'English';
   };
 
-  const styles = {
+  
+
+  return (
+    <ThemedView style={styles.container}>
+      <ScrollView style={styles.scrollContent}>
+        {/* Header */}
+        <View style={styles.header}>
+          <View style={styles.headerLeft}>
+            <TouchableOpacity 
+              onPress={onBack}
+              style={styles.backButton}
+            >
+              <Feather name="arrow-left" size={20} color="#111827" />
+            </TouchableOpacity>
+            <ThemedText style={styles.title}>{t('profileTitle')}</ThemedText>
+          </View>
+          <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
+            <Feather name="save" size={14} color="#fff" />
+            <Text style={styles.saveButtonText}>{t('save')}</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Personal Information */}
+        <View style={styles.card}>
+          <View style={styles.cardHeader}>
+            <Feather name="user" size={18} color="#111827" />
+            <ThemedText style={styles.cardTitle}>{t('personalInformation')}</ThemedText>
+          </View>
+          
+          <View style={styles.inputGroup}>
+            <ThemedText style={styles.label}>{t('restaurantName')}</ThemedText>
+            <TextInput 
+              value={profile.restaurantName}
+              onChangeText={(value) => handleInputChange('restaurantName', value)}
+              style={styles.input}
+              placeholder={t('restaurantName')}
+              placeholderTextColor="#9ca3af"
+            />
+          </View>
+          
+          <View style={styles.inputGroup}>
+            <ThemedText style={styles.label}>{t('ownerName')}</ThemedText>
+            <TextInput 
+              value={profile.ownerName}
+              onChangeText={(value) => handleInputChange('ownerName', value)}
+              style={styles.input}
+              placeholder={t('ownerName')}
+              placeholderTextColor="#9ca3af"
+            />
+          </View>
+          
+          <View style={styles.inputGroup}>
+            <ThemedText style={styles.label}>{t('email')}</ThemedText>
+            <TextInput 
+              value={profile.email}
+              onChangeText={(value) => handleInputChange('email', value)}
+              style={styles.input}
+              placeholder={t('email')}
+              placeholderTextColor="#9ca3af"
+              keyboardType="email-address"
+              autoCapitalize="none"
+            />
+          </View>
+          
+          <View style={styles.inputGroup}>
+            <ThemedText style={styles.label}>{t('phone')}</ThemedText>
+            <TextInput 
+              value={profile.phone}
+              onChangeText={(value) => handleInputChange('phone', value)}
+              style={styles.input}
+              placeholder={t('phone')}
+              placeholderTextColor="#9ca3af"
+              keyboardType="phone-pad"
+            />
+          </View>
+          
+          <View style={styles.inputGroup}>
+            <ThemedText style={styles.label}>{t('address')}</ThemedText>
+            <TextInput 
+              value={profile.address}
+              onChangeText={(value) => handleInputChange('address', value)}
+              style={styles.input}
+              placeholder={t('address')}
+              placeholderTextColor="#9ca3af"
+              multiline
+            />
+          </View>
+        </View>
+
+        {/* Language Preferences */}
+        <View style={styles.card}>
+          <View style={styles.cardHeader}>
+            <Feather name="globe" size={18} color="#111827" />
+            <ThemedText style={styles.cardTitle}>{t('preferences')}</ThemedText>
+          </View>
+          
+          <View style={styles.inputGroup}>
+            <ThemedText style={styles.label}>{t('language')}</ThemedText>
+            <TouchableOpacity 
+              style={styles.selectButton}
+              onPress={() => setShowLanguageSelector(true)}
+            >
+              <Text style={styles.selectButtonText}>{getCurrentLanguageName()}</Text>
+              <Feather name="chevron-down" size={16} color="#6b7280" />
+            </TouchableOpacity>
+          </View>
+        </View>
+      </ScrollView>
+
+      {/* Language Selector Modal */}
+      {showLanguageSelector && (
+        <View style={styles.languageModal}>
+          <View style={styles.languageModalContent}>
+            <Text style={styles.languageModalTitle}>{t('language')}</Text>
+            <ScrollView>
+              {languages.map((language) => (
+                <TouchableOpacity
+                  key={language.code}
+                  style={[
+                    styles.languageOption,
+                    currentLanguage === language.code && styles.languageOptionSelected
+                  ]}
+                  onPress={() => handleLanguageChange(language.code)}
+                >
+                  <Text style={styles.languageOptionText}>{language.nativeName}</Text>
+                  <Text style={styles.languageOptionSubtext}>({language.name})</Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+            <TouchableOpacity 
+              style={styles.closeButton}
+              onPress={() => setShowLanguageSelector(false)}
+            >
+              <Text style={styles.closeButtonText}>关闭</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      )}
+    </ThemedView>
+  );
+}
+const styles = {
     container: {
       flex: 1,
       backgroundColor: '#f8f9fa',
@@ -196,143 +337,3 @@ export default function ProfileDetail({ onBack }: ProfileDetailProps) {
       fontWeight: '500' as const,
     },
   };
-
-  return (
-    <ThemedView style={styles.container}>
-      <ScrollView style={styles.scrollContent}>
-        {/* Header */}
-        <View style={styles.header}>
-          <View style={styles.headerLeft}>
-            <TouchableOpacity 
-              onPress={onBack}
-              style={styles.backButton}
-            >
-              <Feather name="arrow-left" size={20} color="#111827" />
-            </TouchableOpacity>
-            <ThemedText style={styles.title}>{t('profileTitle')}</ThemedText>
-          </View>
-          <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-            <Feather name="save" size={14} color="#fff" />
-            <Text style={styles.saveButtonText}>{t('save')}</Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* Personal Information */}
-        <View style={styles.card}>
-          <View style={styles.cardHeader}>
-            <Feather name="user" size={18} color="#111827" />
-            <ThemedText style={styles.cardTitle}>{t('personalInformation')}</ThemedText>
-          </View>
-          
-          <View style={styles.inputGroup}>
-            <ThemedText style={styles.label}>{t('restaurantName')}</ThemedText>
-            <TextInput 
-              value={profile.restaurantName}
-              onChangeText={(value) => handleInputChange('restaurantName', value)}
-              style={styles.input}
-              placeholder={t('restaurantName')}
-              placeholderTextColor="#9ca3af"
-            />
-          </View>
-          
-          <View style={styles.inputGroup}>
-            <ThemedText style={styles.label}>{t('ownerName')}</ThemedText>
-            <TextInput 
-              value={profile.ownerName}
-              onChangeText={(value) => handleInputChange('ownerName', value)}
-              style={styles.input}
-              placeholder={t('ownerName')}
-              placeholderTextColor="#9ca3af"
-            />
-          </View>
-          
-          <View style={styles.inputGroup}>
-            <ThemedText style={styles.label}>{t('email')}</ThemedText>
-            <TextInput 
-              value={profile.email}
-              onChangeText={(value) => handleInputChange('email', value)}
-              style={styles.input}
-              placeholder={t('email')}
-              placeholderTextColor="#9ca3af"
-              keyboardType="email-address"
-              autoCapitalize="none"
-            />
-          </View>
-          
-          <View style={styles.inputGroup}>
-            <ThemedText style={styles.label}>{t('phone')}</ThemedText>
-            <TextInput 
-              value={profile.phone}
-              onChangeText={(value) => handleInputChange('phone', value)}
-              style={styles.input}
-              placeholder={t('phone')}
-              placeholderTextColor="#9ca3af"
-              keyboardType="phone-pad"
-            />
-          </View>
-          
-          <View style={styles.inputGroup}>
-            <ThemedText style={styles.label}>{t('address')}</ThemedText>
-            <TextInput 
-              value={profile.address}
-              onChangeText={(value) => handleInputChange('address', value)}
-              style={styles.input}
-              placeholder={t('address')}
-              placeholderTextColor="#9ca3af"
-              multiline
-            />
-          </View>
-        </View>
-
-        {/* Language Preferences */}
-        <View style={styles.card}>
-          <View style={styles.cardHeader}>
-            <Feather name="globe" size={18} color="#111827" />
-            <ThemedText style={styles.cardTitle}>{t('preferences')}</ThemedText>
-          </View>
-          
-          <View style={styles.inputGroup}>
-            <ThemedText style={styles.label}>{t('language')}</ThemedText>
-            <TouchableOpacity 
-              style={styles.selectButton}
-              onPress={() => setShowLanguageSelector(true)}
-            >
-              <Text style={styles.selectButtonText}>{getCurrentLanguageName()}</Text>
-              <Feather name="chevron-down" size={16} color="#6b7280" />
-            </TouchableOpacity>
-          </View>
-        </View>
-      </ScrollView>
-
-      {/* Language Selector Modal */}
-      {showLanguageSelector && (
-        <View style={styles.languageModal}>
-          <View style={styles.languageModalContent}>
-            <Text style={styles.languageModalTitle}>{t('language')}</Text>
-            <ScrollView>
-              {languages.map((language) => (
-                <TouchableOpacity
-                  key={language.code}
-                  style={[
-                    styles.languageOption,
-                    currentLanguage === language.code && styles.languageOptionSelected
-                  ]}
-                  onPress={() => handleLanguageChange(language.code)}
-                >
-                  <Text style={styles.languageOptionText}>{language.nativeName}</Text>
-                  <Text style={styles.languageOptionSubtext}>({language.name})</Text>
-                </TouchableOpacity>
-              ))}
-            </ScrollView>
-            <TouchableOpacity 
-              style={styles.closeButton}
-              onPress={() => setShowLanguageSelector(false)}
-            >
-              <Text style={styles.closeButtonText}>关闭</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      )}
-    </ThemedView>
-  );
-}

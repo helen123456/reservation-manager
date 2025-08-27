@@ -188,7 +188,7 @@ export default function ReservationModule() {
                 <ThemedText
                   style={[styles.countBadgeText]}
                 >
-                  {item.pendingCount} pending
+                  {item.pendingCount} {t("pending")}
                 </ThemedText>
               </ThemedView>
             )}

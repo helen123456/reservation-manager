@@ -26,8 +26,8 @@ export function FilterBar({ searchQuery, selectedDate, onClearSearch, onClearDat
         {searchQuery && (
           <ThemedView style={styles.filterBadge}>
             <ThemedText style={styles.filterBadgeText}>
-              Search: "{searchQuery}"
-            </ThemedText>
+                Search: "{searchQuery}"
+              </ThemedText>
             <TouchableOpacity
               onPress={onClearSearch}
               style={styles.filterClearButton}
@@ -40,8 +40,8 @@ export function FilterBar({ searchQuery, selectedDate, onClearSearch, onClearDat
         {selectedDate && (
           <ThemedView style={styles.filterBadge}>
             <ThemedText style={styles.filterBadgeText}>
-              Date: {dayjs(selectedDate).format('MMM DD')}
-            </ThemedText>
+                Date: {dayjs(selectedDate).format('MMM DD')}
+              </ThemedText>
             <TouchableOpacity
               onPress={onClearDate}
               style={styles.filterClearButton}
