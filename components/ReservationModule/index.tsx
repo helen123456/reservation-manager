@@ -10,7 +10,7 @@ import { ReservationDetail } from "./ReservationDetail";
 import { ReservationItem } from "./ReservationItem";
 import { SearchBar } from "./SearchBar";
 import { StatsCard } from "./StatsCard";
-import { createStyles } from "./styles";
+import {styles} from "./styles";
 import { FlatDataItem, Reservation } from "./types";
 import {
   calculateStats,
@@ -21,7 +21,6 @@ import {
 
 export default function ReservationModule() {
   const { t } = useTranslation();
-  const styles = createStyles();
   const [selectedReservation, setSelectedReservation] =
     useState<Reservation | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -224,7 +223,7 @@ export default function ReservationModule() {
   }
 
   return (
-    <ThemedView style={[styles.container, { backgroundColor: useThemeColor({}, 'pageBackground') }]}>
+    <ThemedView style={[styles.container]}>
       <ThemedView>
       <NavBack
          title={t("reservations")}
