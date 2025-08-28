@@ -1,4 +1,4 @@
-import { SettingsCategory, RestaurantStatus } from './types';
+import { RestaurantStatus, SettingsCategory } from './types';
 
 /**
  * 获取设置分类数据
@@ -19,37 +19,30 @@ export const getSettingsCategories = (
         description: 'Set opening and closing times',
         icon: 'clock',
         action: () => onNavigate('business-hours')
-      },
-      {
-        id: 'table-settings',
-        title: 'Table Settings',
-        description: 'Manage capacity and booking rules',
-        icon: 'grid',
-        action: () => onNavigate('table-settings')
       }
     ]
   },
-  {
-    title: 'Future Features',
-    items: [
-      {
-        id: 'delivery',
-        title: 'Delivery Settings',
-        description: 'Coming soon',
-        icon: 'package',
-        disabled: true,
-        action: () => {}
-      },
-      {
-        id: 'takeaway',
-        title: 'Takeaway Settings',
-        description: 'Coming soon',
-        icon: 'shopping-bag',
-        disabled: true,
-        action: () => {}
-      }
-    ]
-  }
+  // {
+  //   title: 'Future Features',
+  //   items: [
+  //     {
+  //       id: 'delivery',
+  //       title: 'Delivery Settings',
+  //       description: 'Coming soon',
+  //       icon: 'package',
+  //       disabled: true,
+  //       action: () => {}
+  //     },
+  //     {
+  //       id: 'takeaway',
+  //       title: 'Takeaway Settings',
+  //       description: 'Coming soon',
+  //       icon: 'shopping-bag',
+  //       disabled: true,
+  //       action: () => {}
+  //     }
+  //   ]
+  // }
 ];
 
 /**

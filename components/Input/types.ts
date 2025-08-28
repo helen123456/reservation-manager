@@ -1,10 +1,11 @@
-import { TextInputProps, ViewStyle, TextStyle } from 'react-native';
-import { Control, FieldValues, Path, RegisterOptions } from 'react-hook-form';
-import { z } from 'zod';
+import { Control, FieldValues, Path, RegisterOptions } from "react-hook-form";
+import { TextInputProps, TextStyle, ViewStyle } from "react-native";
+import { z } from "zod";
 
-// 基础 Input 属性接口
-export interface BaseInputProps extends Omit<TextInputProps, 'style'> {
+// 基础 Input 组件属性接口
+export interface BaseInputProps extends Omit<TextInputProps, "style"> {
   label?: string;
+  error?: string;
   placeholder?: string;
   helperText?: string;
   leftIcon?: string;
@@ -21,6 +22,7 @@ export interface BaseInputProps extends Omit<TextInputProps, 'style'> {
   helperStyle?: TextStyle;
   onClear?: () => void;
   onIconPress?: () => void;
+  onBlur?: () => void;
 }
 
 // 表单 Input 属性接口（泛型）
@@ -40,7 +42,7 @@ export interface StandaloneInputProps extends BaseInputProps {
 }
 
 // 联合类型
-export type InputProps<T extends FieldValues = any> = 
+export type InputProps<T extends FieldValues = any> =
   | FormInputProps<T>
   | StandaloneInputProps;
 
@@ -53,15 +55,17 @@ export const loginSchema = z.object({
 export type LoginSchemaType = z.infer<typeof loginSchema>;
 
 // 用户注册表单 schema 示例
-export const registerSchema = z.object({
-  username: z.string().min(2, "用户名至少2位").max(20, "用户名最多20位"),
-  email: z.string().email("请输入有效的邮箱地址"),
-  password: z.string().min(6, "密码至少6位"),
-  confirmPassword: z.string(),
-  phone: z.string().regex(/^1[3-9]\d{9}$/, "请输入有效的手机号"),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "密码不匹配",
-  path: ["confirmPassword"],
-});
+export const registerSchema = z
+  .object({
+    username: z.string().min(2, "用户名至少2位").max(20, "用户名最多20位"),
+    email: z.string().email("请输入有效的邮箱地址"),
+    password: z.string().min(6, "密码至少6位"),
+    confirmPassword: z.string(),
+    phone: z.string().regex(/^1[3-9]\d{9}$/, "请输入有效的手机号"),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "密码不匹配",
+    path: ["confirmPassword"],
+  });
 
 export type RegisterSchemaType = z.infer<typeof registerSchema>;

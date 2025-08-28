@@ -148,7 +148,7 @@ export default function App() {
 
   const renderContent = () => {
     if (currentView === "settings") {
-      if (currentSettingsSection === "table-settings") {
+      if (currentSettingsSection === "business-hours") {
         return <TableSettingsDetail onBack={handleBackToSettings} />;
       }
       return (

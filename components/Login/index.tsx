@@ -24,13 +24,8 @@ export default function Login({ onLogin }: LoginProps) {
 
   const methods = useForm({
     resolver: zodResolver(registerSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-    },
     mode: "onChange", // 实时验证
   });
-
   const {
     handleSubmit,
     formState: { isValid, errors, isSubmitting },
@@ -39,8 +34,6 @@ export default function Login({ onLogin }: LoginProps) {
   //提交
   const onSubmit = async (data: RegisterFormData) => {
     console.log("data", data);
-
-    // Simulate login process
     setTimeout(() => {
       onLogin();
     }, 1000);
