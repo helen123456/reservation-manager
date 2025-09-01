@@ -1,10 +1,10 @@
 import { Colors } from "@/constants/Colors";
-import { StyleSheet, useColorScheme } from "react-native";
+import { StyleSheet, ColorSchemeName } from "react-native";
 
-// 获取当前主题颜色
-const colorScheme = useColorScheme() ?? 'light';
-const colors = Colors[colorScheme];
-export const styles =  StyleSheet.create({
+export const createStyles = (colorScheme: ColorSchemeName) => {
+  const colors = Colors[colorScheme ?? 'light'];
+  
+  return StyleSheet.create({
     container: {
       flex: 1
     },
@@ -250,4 +250,5 @@ export const styles =  StyleSheet.create({
       color: colors.text,
     },
   });
+};
   

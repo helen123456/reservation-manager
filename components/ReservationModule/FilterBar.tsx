@@ -1,10 +1,10 @@
-import React from 'react';
-import { TouchableOpacity } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import dayjs from 'dayjs';
+import React, { useMemo } from 'react';
+import { TouchableOpacity, useColorScheme } from 'react-native';
 import { ThemedText } from '../ThemedText';
 import { ThemedView } from '../ThemedView';
-import { styles } from './styles';
+import { createStyles } from './styles';
 
 interface FilterBarProps {
   searchQuery: string;
@@ -14,6 +14,9 @@ interface FilterBarProps {
 }
 
 export function FilterBar({ searchQuery, selectedDate, onClearSearch, onClearDate }: FilterBarProps) {
+  const colorScheme = useColorScheme();
+  // 使用 useMemo 缓存样式以提高性能
+  const styles = useMemo(() => createStyles(colorScheme), [colorScheme]);
   // 如果没有任何筛选条件，不显示FilterBar
   if (!searchQuery && !selectedDate) {
     return null;

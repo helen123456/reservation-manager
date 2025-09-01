@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from "react";
-import { ActivityIndicator, Alert, FlatList } from "react-native";
+import { ActivityIndicator, Alert, FlatList, useColorScheme } from "react-native";
 import { useTranslation } from "../../hooks/useTranslation";
 import { NavBack } from "../NavBack";
 import { ThemedText } from "../ThemedText";
@@ -9,7 +9,7 @@ import { ReservationDetail } from "./ReservationDetail";
 import { ReservationItem } from "./ReservationItem";
 import { SearchBar } from "./SearchBar";
 import { StatsCard } from "./StatsCard";
-import { styles } from "./styles";
+import { createStyles } from "./styles";
 import { FlatDataItem, Reservation } from "./types";
 import {
   calculateStats,
@@ -20,6 +20,10 @@ import {
 
 export default function ReservationModule() {
   const { t } = useTranslation();
+  const colorScheme = useColorScheme();
+  // 使用 useMemo 缓存样式以提高性能
+  const styles = useMemo(() => createStyles(colorScheme), [colorScheme]);
+
   const [selectedReservation, setSelectedReservation] =
     useState<Reservation | null>(null);
   const [searchQuery, setSearchQuery] = useState("");

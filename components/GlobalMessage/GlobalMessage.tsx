@@ -1,9 +1,9 @@
-import React from 'react';
-import { View, TouchableOpacity, Animated } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+import React, { useMemo } from 'react';
+import { Animated, TouchableOpacity, View, useColorScheme } from 'react-native';
 import { ThemedText } from '../ThemedText';
 import { useMessageContext } from './MessageContext';
-import { styles } from './styles';
+import { createStyles } from './styles';
 import { MessageType } from './types';
 
 const getMessageIcon = (type: MessageType): keyof typeof MaterialIcons.glyphMap => {
@@ -38,6 +38,9 @@ const getMessageColor = (type: MessageType): string => {
 
 export const GlobalMessage: React.FC = () => {
   const { messages, close } = useMessageContext();
+  const colorScheme = useColorScheme();
+    // 使用 useMemo 缓存样式以提高性能
+    const styles = useMemo(() => createStyles(colorScheme), [colorScheme]);
 
   if (messages.length === 0) {
     return null;

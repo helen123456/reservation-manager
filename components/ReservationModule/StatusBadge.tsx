@@ -1,8 +1,9 @@
-import React from 'react';
-import { ThemedView } from '../ThemedView';
-import { ThemedText } from '../ThemedText';
+import React, { useMemo } from 'react';
+import { useColorScheme } from 'react-native';
 import { useTranslation } from '../../hooks/useTranslation';
-import { styles } from './styles';
+import { ThemedText } from '../ThemedText';
+import { ThemedView } from '../ThemedView';
+import { createStyles } from './styles';
 
 interface StatusBadgeProps {
   status: 'pending' | 'confirmed' | 'rejected';
@@ -10,6 +11,9 @@ interface StatusBadgeProps {
 
 export const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
   const { t } = useTranslation();
+  const colorScheme = useColorScheme();
+  // 使用 useMemo 缓存样式以提高性能
+  const styles = useMemo(() => createStyles(colorScheme), [colorScheme]);
 
   const getBadgeStyle = () => {
     switch (status) {

@@ -1,8 +1,9 @@
 import Input from "@/components/Input";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
+import { Colors } from "@/constants/Colors";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
+import React, { useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import {
   ActivityIndicator,
@@ -11,14 +12,19 @@ import {
   Platform,
   ScrollView,
   TouchableOpacity,
+  useColorScheme
 } from "react-native";
 import { z } from "zod";
 import { useTranslation } from "../../hooks/useTranslation";
-import { styles } from "./styles";
+import { createStyles } from "./styles";
 import { LoginProps, registerSchema } from "./types";
 
 export default function Login({ onLogin }: LoginProps) {
   const { t } = useTranslation();
+  const colorScheme = useColorScheme()??'light';
+  const colors = Colors[colorScheme];
+    // 使用 useMemo 缓存样式以提高性能
+    const styles = useMemo(() => createStyles(colorScheme), [colorScheme]);
   type RegisterFormData = z.infer<typeof registerSchema>;
 
   const methods = useForm({
@@ -74,6 +80,7 @@ export default function Login({ onLogin }: LoginProps) {
             <ThemedView style={styles.form}>
               {/* Email Field */}
               <Input
+                labelStyle={{color: colors.primary}}
                 inputMode='email'
                 name="email"
                 label={t("loginEmail")}
@@ -83,6 +90,7 @@ export default function Login({ onLogin }: LoginProps) {
                 helperText="用户名将作为您的登录凭证"
               />
               <Input
+               labelStyle={{color: colors.primary}}
                 keyboardType="email-address"
                 name="password"
                 label={t("password")}

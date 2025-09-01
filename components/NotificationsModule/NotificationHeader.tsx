@@ -1,9 +1,10 @@
+import { Colors } from "@/constants/Colors";
 import { Feather } from "@expo/vector-icons";
-import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import React, { useMemo } from "react";
+import { Text, TouchableOpacity, View, useColorScheme } from "react-native";
 import { useTranslation } from "../../hooks/useTranslation";
 import { NavBack } from "../NavBack";
-import { styles } from "./styles";
+import { createStyles } from "./styles";
 import { Notification } from "./types";
 
 interface NotificationHeaderProps {
@@ -22,6 +23,10 @@ export function NotificationHeader({
   onClearAll,
 }: NotificationHeaderProps) {
   const { t } = useTranslation();
+  const colorScheme = useColorScheme()??'light';
+  const colors = Colors[colorScheme];
+  // 使用 useMemo 缓存样式以提高性能
+  const styles = useMemo(() => createStyles(colorScheme), [colorScheme]);
 
   const badgeComponent = unreadCount > 0 ? (
     <View style={styles.badge}>
@@ -47,7 +52,7 @@ export function NotificationHeader({
               style={styles.actionButton}
               onPress={onMarkAllAsRead}
             >
-              <Feather name="check-circle" size={16} color="#000" />
+              <Feather name="check-circle" size={16} color={colors.primary} />
               <Text style={styles.actionButtonText}>
                 {t("markAllAsRead")}
               </Text>
@@ -57,7 +62,7 @@ export function NotificationHeader({
             style={styles.actionButton}
             onPress={onClearAll}
           >
-            <Feather name="trash-2" size={16} color="#000" />
+            <Feather name="trash-2" size={16} color={colors.primary}/>
             <Text style={styles.actionButtonText}>{t("clearAll")}</Text>
           </TouchableOpacity>
         </View>

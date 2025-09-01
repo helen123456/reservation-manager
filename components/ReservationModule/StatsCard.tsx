@@ -1,9 +1,10 @@
-import React from 'react';
 import { Feather } from '@expo/vector-icons';
-import { ThemedView } from '../ThemedView';
-import { ThemedText } from '../ThemedText';
+import React, { useMemo } from 'react';
+import { useColorScheme } from 'react-native';
 import { useTranslation } from '../../hooks/useTranslation';
-import { styles } from './styles';
+import { ThemedText } from '../ThemedText';
+import { ThemedView } from '../ThemedView';
+import { createStyles } from './styles';
 
 interface StatsCardProps {
   todayReservations: number;
@@ -19,6 +20,9 @@ export const StatsCard: React.FC<StatsCardProps> = ({
   totalGuests
 }) => {
   const { t } = useTranslation();
+  const colorScheme = useColorScheme();
+  // 使用 useMemo 缓存样式以提高性能
+  const styles = useMemo(() => createStyles(colorScheme), [colorScheme]);
 
   return (
     <ThemedView style={styles.statsCard}>

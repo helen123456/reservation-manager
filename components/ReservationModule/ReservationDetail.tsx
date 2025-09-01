@@ -1,13 +1,13 @@
-import React from 'react';
-import { TouchableOpacity, ScrollView } from 'react-native';
 import { Feather } from '@expo/vector-icons';
-import { ThemedView } from '../ThemedView';
+import React, { useMemo } from 'react';
+import { ScrollView, TouchableOpacity, useColorScheme } from 'react-native';
+import { useTranslation } from '../../hooks/useTranslation';
 import { ThemedText } from '../ThemedText';
+import { ThemedView } from '../ThemedView';
 import { StatusBadge } from './StatusBadge';
+import { createStyles } from './styles';
 import { Reservation } from './types';
 import { formatDate } from './utils';
-import { useTranslation } from '../../hooks/useTranslation';
-import { styles } from './styles';
 
 interface ReservationDetailProps {
   reservation: Reservation;
@@ -23,6 +23,9 @@ export const ReservationDetail: React.FC<ReservationDetailProps> = ({
   onReject
 }) => {
   const { t } = useTranslation();
+  const colorScheme = useColorScheme();
+  // 使用 useMemo 缓存样式以提高性能
+  const styles = useMemo(() => createStyles(colorScheme), [colorScheme]);
 
   const getInitials = (name: string) => {
     return name.split(' ').map(n => n[0]).join('').toUpperCase();

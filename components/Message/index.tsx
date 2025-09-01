@@ -1,15 +1,16 @@
-import React, { useEffect, useRef } from 'react';
+import { Feather } from '@expo/vector-icons';
+import React, { useEffect, useMemo, useRef } from 'react';
 import {
-  Modal,
-  View,
-  Text,
-  TouchableOpacity,
   Animated,
   Dimensions,
+  Modal,
+  Text,
+  TouchableOpacity,
+  View,
+  useColorScheme
 } from 'react-native';
-import { Feather } from '@expo/vector-icons';
+import { createStyles } from './styles';
 import { MessageProps } from './types';
-import { styles } from './styles';
 
 const { width } = Dimensions.get('window');
 
@@ -30,6 +31,9 @@ export const Message: React.FC<MessageProps> = ({
   const scaleAnim = useRef(new Animated.Value(0)).current;
   const opacityAnim = useRef(new Animated.Value(0)).current;
   const autoCloseTimer = useRef<number | null>(null);
+   const colorScheme = useColorScheme();
+    // 使用 useMemo 缓存样式以提高性能
+    const styles = useMemo(() => createStyles(colorScheme), [colorScheme]);
 
   // 获取图标和颜色
   const getTypeConfig = () => {

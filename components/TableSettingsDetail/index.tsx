@@ -1,7 +1,7 @@
 import NavBack from "@/components/NavBack";
 import { Colors } from "@/constants/Colors";
 import { Ionicons } from '@expo/vector-icons';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   Alert,
   ScrollView,
@@ -15,7 +15,7 @@ import {
 import { useTranslation } from '../../hooks/useTranslation';
 import { ThemedText } from '../ThemedText';
 import { ThemedView } from '../ThemedView';
-import { styles } from './styles';
+import { createStyles } from './styles';
 import {
   IntervalOption,
   TableSettings,
@@ -25,6 +25,10 @@ import {
 
 export default function TableSettingsDetail({ onBack }: TableSettingsDetailProps) {
   const { t } = useTranslation();
+  const colorScheme = useColorScheme()?? 'light';
+  const colors = Colors[colorScheme];
+  // 使用 useMemo 缓存样式以提高性能
+  const styles = useMemo(() => createStyles(colorScheme), [colorScheme]);
   
   const [settings, setSettings] = useState<TableSettings>({
     acceptReservations: true,
@@ -152,8 +156,8 @@ export default function TableSettingsDetail({ onBack }: TableSettingsDetailProps
     { value: 15, label: '15min' }
   ];
   // 获取当前主题颜色
-const colorScheme = useColorScheme() ?? 'light';
-const colors = Colors[colorScheme];
+
+
 
   return (
     <ThemedView style={styles.container}>

@@ -1,15 +1,19 @@
+import { ThemedView } from "@/components/ThemedView";
 import { Feather } from "@expo/vector-icons";
-import React, { useState } from "react";
-import { ScrollView, Text, View } from "react-native";
+import React, { useMemo, useState } from "react";
+import { ScrollView, Text, View, useColorScheme } from "react-native";
 import { useTranslation } from "../../hooks/useTranslation";
 import { NotificationHeader } from "./NotificationHeader";
 import { NotificationItem } from "./NotificationItem";
-import { styles } from "./styles";
+import { createStyles } from "./styles";
 import { Notification, NotificationsPageProps } from "./types";
 import { generateMockNotifications } from "./utils";
 
 export default function NotificationsModule({ onBack }: NotificationsPageProps) {
   const { t } = useTranslation();
+  const colorScheme = useColorScheme();
+  // 使用 useMemo 缓存样式以提高性能
+  const styles = useMemo(() => createStyles(colorScheme), [colorScheme]);
   const [notifications, setNotifications] = useState<Notification[]>(generateMockNotifications());
 
   const markAsRead = (id: string) => {
@@ -39,7 +43,7 @@ export default function NotificationsModule({ onBack }: NotificationsPageProps) 
   const unreadCount = notifications.filter((n) => !n.isRead).length;
 
   return (
-    <View style={styles.container}>
+    <ThemedView style={styles.container}>
       <NotificationHeader
         notifications={notifications}
         unreadCount={unreadCount}
@@ -80,6 +84,6 @@ export default function NotificationsModule({ onBack }: NotificationsPageProps) 
           )}
         </View>
       </ScrollView>
-    </View>
+    </ThemedView>
   );
 }

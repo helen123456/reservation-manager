@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
-    Modal as RNModal,
-    Text,
-    TouchableOpacity,
-    TouchableWithoutFeedback,
-    View,
+  Modal as RNModal,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+  useColorScheme
 } from 'react-native';
-import { styles } from './styles';
+import { createStyles } from './styles';
 import { ModalProps } from './types';
 
 export const Modal: React.FC<ModalProps> = ({
@@ -26,6 +27,9 @@ export const Modal: React.FC<ModalProps> = ({
   onBackdropPress,
   footer = true
 }) => {
+  const colorScheme = useColorScheme();
+  // 使用 useMemo 缓存样式以提高性能
+  const styles = useMemo(() => createStyles(colorScheme), [colorScheme]);
   const handleBackdropPress = () => {
     if (onBackdropPress) {
       onBackdropPress();

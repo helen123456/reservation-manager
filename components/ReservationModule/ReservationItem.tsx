@@ -1,12 +1,12 @@
-import React from 'react';
-import { TouchableOpacity } from 'react-native';
 import { Feather } from '@expo/vector-icons';
-import { ThemedView } from '../ThemedView';
+import React, { useMemo } from 'react';
+import { TouchableOpacity, useColorScheme } from 'react-native';
 import { ThemedText } from '../ThemedText';
+import { ThemedView } from '../ThemedView';
 import { StatusBadge } from './StatusBadge';
+import { createStyles } from './styles';
 import { Reservation } from './types';
 import { formatDate } from './utils';
-import { styles } from './styles';
 
 interface ReservationItemProps {
   reservation: Reservation;
@@ -17,6 +17,9 @@ export const ReservationItem: React.FC<ReservationItemProps> = ({ reservation, o
   const getInitials = (name: string) => {
     return name.split(' ').map(n => n[0]).join('').toUpperCase();
   };
+  const colorScheme = useColorScheme();
+  // 使用 useMemo 缓存样式以提高性能
+  const styles = useMemo(() => createStyles(colorScheme), [colorScheme]);
 
   return (
     <TouchableOpacity
