@@ -1,7 +1,6 @@
 import React, { useCallback, useMemo, useState } from "react";
 import { ActivityIndicator, Alert, FlatList } from "react-native";
 import { useTranslation } from "../../hooks/useTranslation";
-import { useThemeColor } from "../../hooks/useThemeColor";
 import { NavBack } from "../NavBack";
 import { ThemedText } from "../ThemedText";
 import { ThemedView } from "../ThemedView";
@@ -10,7 +9,7 @@ import { ReservationDetail } from "./ReservationDetail";
 import { ReservationItem } from "./ReservationItem";
 import { SearchBar } from "./SearchBar";
 import { StatsCard } from "./StatsCard";
-import {styles} from "./styles";
+import { styles } from "./styles";
 import { FlatDataItem, Reservation } from "./types";
 import {
   calculateStats,
@@ -180,7 +179,10 @@ export default function ReservationModule() {
               style={[styles.countBadge]}
             >
               <ThemedText style={styles.countBadgeText}>
-                {item.count} {item.count === 1 ? "reservation" : "reservations"}
+                {item.count} 
+              </ThemedText>
+               <ThemedText style={styles.countBadgeText}>
+                {item.count === 1 ? "reservation" : "reservations"}
               </ThemedText>
             </ThemedView>
             {item.pendingCount && item.pendingCount > 0 && (

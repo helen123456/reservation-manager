@@ -12,7 +12,7 @@ import {
 function isFormInput<T extends FieldValues>(
   props: InputProps<T>
 ): props is FormInputProps<T> {
-  return 'control' in props && 'name' in props;
+  return  'name' in props;
 }
 
 // 主要的 Input 组件

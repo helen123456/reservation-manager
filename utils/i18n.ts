@@ -112,6 +112,12 @@ export const translations = {
     language: "Language",
     preferences: "Preferences",
     save: "Save",
+    restaurantNameRequired:"Restaurant name is required",
+    ownerNameRequired:"Owner name is required",
+    emailInvalid:"Email is invalid",
+    phoneRequired:"Phone is required",
+    addressRequired:"Address is required",
+    phoneInvalid:"Phone is invalid",
 
     // Reservation Settings
     reservationSettings: "Reservation Settings",
@@ -250,6 +256,12 @@ export const translations = {
     language: "Langue",
     preferences: "Préférences",
     save: "Enregistrer",
+    restaurantNameRequired:"Le nom du restaurant est requis",
+    ownerNameRequired:"Le nom du propriétaire est requis",
+    emailInvalid:"L'email est invalide",
+    phoneRequired:"Le téléphone est requis",
+    addressRequired:"L'adresse est requise",
+    phoneInvalid:"Le téléphone est invalide",
 
     // Reservation Settings
     reservationSettings: "Paramètres de Réservation",

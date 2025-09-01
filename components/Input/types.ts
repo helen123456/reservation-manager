@@ -1,5 +1,5 @@
 import { Control, FieldValues, Path, RegisterOptions } from "react-hook-form";
-import { TextInputProps, TextStyle, ViewStyle } from "react-native";
+import { InputModeOptions, TextInputProps, TextStyle, ViewStyle } from "react-native";
 import { z } from "zod";
 
 // 基础 Input 组件属性接口
@@ -8,6 +8,7 @@ export interface BaseInputProps extends Omit<TextInputProps, "style"> {
   error?: string;
   placeholder?: string;
   helperText?: string;
+  inputMode?: InputModeOptions;
   leftIcon?: string;
   rightIcon?: string;
   iconColor?: string;
@@ -16,6 +17,7 @@ export interface BaseInputProps extends Omit<TextInputProps, "style"> {
   disabled?: boolean;
   required?: boolean;
   containerStyle?: ViewStyle;
+  inputContainerStyle?: ViewStyle;
   inputStyle?: TextStyle;
   labelStyle?: TextStyle;
   errorStyle?: TextStyle;

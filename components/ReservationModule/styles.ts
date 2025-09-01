@@ -1,4 +1,9 @@
-import { StyleSheet } from 'react-native';
+import { Colors } from '@/constants/Colors';
+import { StyleSheet, useColorScheme } from 'react-native';
+
+// 获取当前主题颜色
+const colorScheme = useColorScheme() ?? 'light';
+const colors = Colors[colorScheme];
 
 export const styles = StyleSheet.create({
   container: {
@@ -8,26 +13,26 @@ export const styles = StyleSheet.create({
   header: {
     paddingHorizontal: 16,
     paddingVertical: 16,
-    backgroundColor: '#fff',
+    backgroundColor: colors.card,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#111827',
+    color: colors.text,
   },
   subtitle: {
     fontSize: 14,
-    color: '#6b7280',
+    color: colors.mutedForeground,
     marginTop: 4,
   },
   statsCard: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.card,
     marginHorizontal: 16,
     marginVertical: 8,
     borderRadius: 8,
     padding: 16,
     borderWidth: 1,
-    borderColor: '#e5e7eb',
+    borderColor: colors.border,
   },
   statsGrid: {
     flexDirection: 'row',
@@ -44,13 +49,13 @@ export const styles = StyleSheet.create({
   },
   statLabel: {
     fontSize: 12,
-    color: '#6b7280',
+    color: colors.mutedForeground,
     marginLeft: 4,
   },
   statValue: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#111827',
+    color: colors.text,
   },
   searchContainer: {
      flexDirection: 'row',
@@ -61,10 +66,10 @@ export const styles = StyleSheet.create({
   searchInputContainer: {
    flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: colors.card,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#e5e7eb',
+    borderColor: colors.border,
     paddingHorizontal: 12,
     height: 40,
     flex:1
@@ -75,7 +80,7 @@ export const styles = StyleSheet.create({
   searchInput: {
     flex: 1,
     fontSize: 16,
-    color: '#111827',
+    color: colors.text,
   },
   dateButton: {
     marginLeft: 8,
@@ -83,10 +88,10 @@ export const styles = StyleSheet.create({
     height: 40,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#e5e7eb',
+    borderColor: colors.border,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: colors.card,
     position: 'relative',
   },
   dateButtonSelected: {
@@ -95,10 +100,10 @@ export const styles = StyleSheet.create({
     height: 40,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#111827',
+    borderColor: colors.primary,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#111827',
+    backgroundColor: colors.primary,
     position: 'relative',
   },
   selectedDot: {
@@ -108,7 +113,7 @@ export const styles = StyleSheet.create({
     width: 6,
     height: 6,
     borderRadius: 3,
-    backgroundColor: '#10b981',
+    backgroundColor: colors.success,
   },
   list: {
     flex: 1,
@@ -122,11 +127,11 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 4,
   },
   popoverContent: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.card,
     padding: 8,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#e5e7eb',
+    borderColor: colors.border,
   },
   filterBarContainer: {
     flexDirection: 'row',
@@ -137,7 +142,7 @@ export const styles = StyleSheet.create({
   },
   filterLabel: {
     fontSize: 14,
-    color: '#6b7280',
+    color: colors.mutedForeground,
   },
   filterBadgesContainer: {
     flexDirection: 'row',
@@ -148,7 +153,7 @@ export const styles = StyleSheet.create({
   filterBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#f3f4f6',
+    backgroundColor: colors.muted,
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 6,
@@ -156,7 +161,7 @@ export const styles = StyleSheet.create({
   },
   filterBadgeText: {
     fontSize: 12,
-    color: '#374151',
+    color: colors.mutedForeground,
   },
   filterClearButton: {
     padding: 2,
@@ -165,27 +170,30 @@ export const styles = StyleSheet.create({
   dateHeaderText: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#6b7280',
+    color: colors.mutedForeground,
   },
   countBadge: {
+    flexDirection:'row',
+    alignItems:'center',
     paddingHorizontal: 8,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#e5e7eb',
+    borderColor: colors.border,
   },
   countBadgeText: {
     fontSize: 12,
-    color: '#6b7280',
+    color: colors.mutedForeground,
   },
   reservationItem: {
     borderRadius: 8,
     marginVertical: 4,
     borderWidth: 1,
-    borderColor: '#e5e7eb',
+    borderColor: colors.border,
   },
   reservationContent: {
     padding: 16,
     borderRadius: 8,
+    backgroundColor: colors.card,
   },
   reservationLeft: {
     flexDirection: 'row',
@@ -195,7 +203,7 @@ export const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: '#f3f4f6',
+    backgroundColor: colors.muted,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 12,
@@ -203,7 +211,7 @@ export const styles = StyleSheet.create({
   smallAvatarText: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#111827',
+    color: colors.text,
   },
   reservationInfo: {
     flex: 1,
@@ -217,7 +225,7 @@ export const styles = StyleSheet.create({
   customerNameSmall: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#111827',
+    color: colors.text,
     flex: 1,
     marginRight: 8,
   },
@@ -232,17 +240,19 @@ export const styles = StyleSheet.create({
   },
   detailTextSmall: {
     fontSize: 12,
-    color: '#6b7280',
+    color: colors.mutedForeground,
     marginLeft: 4,
   },
   badge: {
     paddingHorizontal: 8,
     borderRadius: 8,
     borderWidth: 1,
+    borderColor: colors.border,
   },
   badgeText: {
     fontSize: 12,
     fontWeight: '500',
+    color: colors.text,
   },
   backButtonContainer: {
     flexDirection: 'row',
@@ -257,20 +267,20 @@ export const styles = StyleSheet.create({
   detailTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#111827',
+    color: colors.text,
   },
   statusContainer: {
     alignItems: 'center',
     paddingVertical: 16,
   },
   card: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.card,
     marginHorizontal: 16,
     marginVertical: 8,
     borderRadius: 8,
     padding: 16,
     borderWidth: 1,
-    borderColor: '#e5e7eb',
+    borderColor: colors.border,
   },
   customerInfo: {
     alignItems: 'center',
@@ -279,7 +289,7 @@ export const styles = StyleSheet.create({
     width: 64,
     height: 64,
     borderRadius: 32,
-    backgroundColor: '#f3f4f6',
+    backgroundColor: colors.muted,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 12,
@@ -287,12 +297,12 @@ export const styles = StyleSheet.create({
   avatarText: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#111827',
+    color: colors.text,
   },
   customerName: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#111827',
+    color: colors.text,
     marginBottom: 8,
   },
   phoneContainer: {
@@ -301,13 +311,13 @@ export const styles = StyleSheet.create({
   },
   phoneText: {
     fontSize: 14,
-    color: '#6b7280',
+    color: colors.mutedForeground,
     marginLeft: 8,
   },
   cardTitle: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#111827',
+    color: colors.text,
     marginBottom: 16,
   },
   detailsGrid: {
@@ -325,34 +335,34 @@ export const styles = StyleSheet.create({
   },
   detailLabel: {
     fontSize: 12,
-    color: '#6b7280',
+    color: colors.mutedForeground,
     marginLeft: 8,
   },
   detailValue: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#111827',
+    color: colors.text,
     marginBottom: 4,
   },
   detailSubValue: {
     fontSize: 14,
-    color: '#6b7280',
+    color: colors.mutedForeground,
   },
   specialRequests: {
     marginTop: 16,
     paddingTop: 16,
     borderTopWidth: 1,
-    borderTopColor: '#e5e7eb',
+    borderTopColor: colors.border,
   },
   requestsBox: {
-    backgroundColor: '#f9fafb',
+    backgroundColor: colors.muted,
     padding: 12,
     borderRadius: 8,
     marginTop: 8,
   },
   requestsText: {
     fontSize: 14,
-    color: '#111827',
+    color: colors.text,
   },
   actionsContainer: {
     flexDirection: 'row',
@@ -369,13 +379,13 @@ export const styles = StyleSheet.create({
     borderRadius: 8,
   },
   rejectButton: {
-    backgroundColor: '#ef4444',
+    backgroundColor: colors.destructive,
   },
   confirmButton: {
-    backgroundColor: '#10b981',
+    backgroundColor: colors.success,
   },
   actionButtonText: {
-    color: '#fff',
+    color: colors.primaryForeground,
     fontSize: 16,
     fontWeight: '600',
     marginLeft: 8,

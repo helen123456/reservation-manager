@@ -1,13 +1,15 @@
+import { Feather } from "@expo/vector-icons";
 import React, { useState } from "react";
 import {
-  View,
-  Text,
-  TouchableOpacity,
   ScrollView,
   StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
-import { Feather } from "@expo/vector-icons";
 import { useTranslation } from "../hooks/useTranslation";
+import NavBack from "./NavBack";
+import { ThemedView } from "./ThemedView";
 
 interface HelpSupportProps {
   onBack: () => void;
@@ -46,24 +48,16 @@ export default function HelpSupport({ onBack }: HelpSupportProps) {
   ];
 
   return (
-    <View style={styles.container}>
+    <ThemedView style={styles.container}>
+      {/* Header */}
+      <NavBack 
+        title={t('helpSupport')}
+        subtitle={t('helpSupportDescription')}
+        onBack={onBack}
+      />
+      
       <ScrollView style={styles.scrollView}>
         <View style={styles.content}>
-          {/* Header */}
-          <View style={styles.header}>
-            <View style={styles.headerLeft}>
-              <TouchableOpacity style={styles.backButton} onPress={onBack}>
-                <Feather name="arrow-left" size={20} color="#666" />
-              </TouchableOpacity>
-              <View style={styles.titleContainer}>
-                <Text style={styles.title}>{t('helpSupport')}</Text>
-                <Text style={styles.subtitle}>
-                  {t('helpSupportDescription')}
-                </Text>
-              </View>
-            </View>
-          </View>
-
           <View style={styles.sectionsContainer}>
             {/* Quick Actions */}
             <View style={styles.card}>
@@ -184,14 +178,13 @@ export default function HelpSupport({ onBack }: HelpSupportProps) {
           </View>
         </View>
       </ScrollView>
-    </View>
+    </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "#f8f9fa",
+    flex: 1
   },
   scrollView: {
     flex: 1,
@@ -201,32 +194,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     width: "100%",
     paddingHorizontal: 16,
-  },
-  header: {
-    marginBottom: 24,
-    marginTop: 16,
-  },
-  headerLeft: {
-    flexDirection: "row",
-    alignItems: "flex-start",
-  },
-  backButton: {
-    padding: 8,
-    marginRight: 12,
-    marginTop: -4,
-  },
-  titleContainer: {
-    flex: 1,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "600",
-    color: "#1a1a1a",
-    marginBottom: 4,
-  },
-  subtitle: {
-    fontSize: 14,
-    color: "#666",
+    paddingTop: 16,
   },
   sectionsContainer: {
     gap: 16,
@@ -235,11 +203,8 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 12,
     padding: 16,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
-    elevation: 2,
+    borderWidth:1,
+    borderColor:"#e0e0e0"
   },
   sectionTitle: {
     fontSize: 18,
@@ -256,7 +221,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     padding: 12,
     borderRadius: 8,
-    backgroundColor: "#f8f9fa",
+   
   },
   actionContent: {
     flexDirection: "row",

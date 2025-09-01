@@ -1,8 +1,7 @@
 import { Feather } from '@expo/vector-icons';
 import React from 'react';
-import { TouchableOpacity, View, ViewStyle, TextStyle } from 'react-native';
+import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { ThemedText } from './ThemedText';
-import { ThemedView } from './ThemedView';
 
 interface NavBackProps {
   title: string;
@@ -59,8 +58,7 @@ const styles = {
     paddingHorizontal: 16,
     paddingVertical: 12,
     backgroundColor: '#fff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#e5e7eb',
+    
   },
   headerLeft: {
     flexDirection: 'row' as const,
@@ -73,9 +71,8 @@ const styles = {
   },
   backButton: {
     padding: 8,
-    marginRight: 8,
-    borderRadius: 8,
-    backgroundColor: '#f3f4f6',
+    paddingLeft:0,
+    marginRight: 8
   },
   titleContainer: {
     flex: 1,
@@ -94,3 +91,4 @@ const styles = {
 
 export { NavBack };
 export type { NavBackProps };
+

@@ -1,4 +1,9 @@
-import { StyleSheet } from "react-native";
+import { Colors } from '@/constants/Colors';
+import { StyleSheet, useColorScheme } from 'react-native';
+
+// 获取当前主题颜色
+const colorScheme = useColorScheme() ?? 'light';
+const colors = Colors[colorScheme];
 
 export const styles = StyleSheet.create({
   container: {
@@ -39,11 +44,11 @@ export const styles = StyleSheet.create({
   },
   title: {
     fontSize: 16,
-    color: "#1a1a1a",
+    color: colors.text,
     marginRight: 8,
   },
   badge: {
-    backgroundColor: "#FF3B30",
+    backgroundColor: colors.destructive,
     borderRadius: 10,
     paddingHorizontal: 6,
     paddingVertical: 2,
@@ -51,17 +56,15 @@ export const styles = StyleSheet.create({
     alignItems: "center",
   },
   badgeText: {
-    color: "white",
+    color: colors.destructiveForeground,
     fontSize: 12,
     fontWeight: "600",
   },
   subtitle: {
     fontSize: 14,
-    color: "#666",
+    color: colors.mutedForeground,
   },
   headerActions: {
-    
-    
     flexDirection: "row", 
     gap: 8,
     justifyContent: "flex-end",
@@ -75,10 +78,10 @@ export const styles = StyleSheet.create({
     paddingVertical: 8,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: "#000"
+    borderColor: colors.border
   },
   actionButtonText: {
-    color: "#000",
+    color: colors.text,
     fontSize: 14,
     marginLeft: 4,
   },
@@ -93,26 +96,27 @@ export const styles = StyleSheet.create({
   emptyTitle: {
     fontSize: 18,
     fontWeight: "600",
-    color: "#1a1a1a",
+    color: colors.text,
     marginBottom: 8,
   },
   emptyDescription: {
     fontSize: 14,
-    color: "#666",
+    color: colors.mutedForeground,
     textAlign: "center",
   },
   notificationsList: {
     gap: 12,
   },
   notificationCard: {
+    backgroundColor: colors.card,
     borderRadius: 12,
     padding: 16,
     borderWidth: 1,
-    borderColor: "#f0f0f0",
+    borderColor: colors.border,
   },
   unreadCard: {
-    borderColor: "#D1D5DC",
-    backgroundColor: "#F8F9FA",
+    borderColor: colors.border,
+    backgroundColor: colors.muted,
   },
   notificationContent: {
     flexDirection: "row",
@@ -134,22 +138,22 @@ export const styles = StyleSheet.create({
   notificationTitle: {
     fontSize: 16,
     fontWeight: "600",
-    color: "#1a1a1a",
+    color: colors.text,
     flex: 1,
   },
   readTitle: {
-    color: "#666",
+    color: colors.mutedForeground,
   },
   unreadDot: {
     width: 8,
     height: 8,
     borderRadius: 4,
-    backgroundColor: "#000",
+    backgroundColor: colors.primary,
     marginLeft: 8,
   },
   notificationMessage: {
     fontSize: 14,
-    color: "#666",
+    color: colors.mutedForeground,
     lineHeight: 20,
     marginBottom: 8,
   },
@@ -160,7 +164,7 @@ export const styles = StyleSheet.create({
   },
   timestamp: {
     fontSize: 12,
-    color: "#999",
+    color: colors.mutedForeground,
   },
   customerInfo: {
     flexDirection: "row",
@@ -169,11 +173,11 @@ export const styles = StyleSheet.create({
   },
   customerText: {
     fontSize: 12,
-    color: "#999",
+    color: colors.mutedForeground,
   },
   separator: {
     height: 1,
-    backgroundColor: "#f0f0f0",
+    backgroundColor: colors.border,
     marginVertical: 12,
   },
 });

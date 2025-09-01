@@ -1,7 +1,8 @@
+import Input from "@/components/Input";
 import { Feather } from "@expo/vector-icons";
 import dayjs from "dayjs";
 import React, { useState } from "react";
-import { TextInput, TouchableOpacity } from "react-native";
+import { TouchableOpacity } from "react-native";
 import Popover from "react-native-popover-view";
 import DateTimePicker, { useDefaultStyles } from "react-native-ui-datepicker";
 import { ThemedText } from "../ThemedText";
@@ -47,55 +48,55 @@ export const SearchBar: React.FC<SearchBarProps> = ({
 
   return (
     <ThemedView style={styles.searchContainer}>
-      <ThemedView style={styles.searchInputContainer}>
-        <Feather
-          name="search"
-          size={16}
-          color="#6b7280"
-          style={styles.searchIcon}
-        />
-        <TextInput
-          style={styles.searchInput}
+     
+        <Input
+          containerStyle={{marginBottom:0,flex:1}}
+          inputContainerStyle={{ height: 40 }}
+          inputStyle={{height:60}}
+          iconSize={16}
+          leftIcon="search"
           placeholder={"Search reservations..."}
           placeholderTextColor="#9ca3af"
           value={searchQuery}
           onChangeText={onSearchChange}
         />
-        
-      </ThemedView>
+    
       {/* Date Filter Button with Popover */}
-        <Popover
-          arrowSize={{ width: 0, height: 0 }}
-          isVisible={dateOpen}
-          onRequestClose={() => setDateOpen(false)}
-          from={
-            <TouchableOpacity
-              style={selectedDate ? styles.dateButtonSelected : styles.dateButton}
-              onPress={() => setDateOpen(true)}
-            >
-              <Feather name="calendar" size={16} color={selectedDate ? "#ffffff" : "#6b7280"} />
-              
-            </TouchableOpacity>
-          }
-        >
-          <ThemedView style={styles.popoverContent}>
-            <ThemedText className="text-sm font-medium">
-              Filter by date
-            </ThemedText>
-            <DateTimePicker
-              mode="single"
-              date={selectedDate ?? undefined}
-              onChange={handleDateChange}
-              minDate={new Date(new Date().setHours(0, 0, 0, 0))}
-              styles={{
-                ...defaultStyles,
-                today: { backgroundColor: "#f3f4f6" }, // Add a border to today's date
-                selected: { backgroundColor: "#000" }, // Highlight the selected day
-                selected_label: { color: "white" }, // Highlight the selected day label
-              }}
+      <Popover
+        arrowSize={{ width: 0, height: 0 }}
+        isVisible={dateOpen}
+        onRequestClose={() => setDateOpen(false)}
+        from={
+          <TouchableOpacity
+            style={selectedDate ? styles.dateButtonSelected : styles.dateButton}
+            onPress={() => setDateOpen(true)}
+          >
+            <Feather
+              name="calendar"
+              size={16}
+              color={selectedDate ? "#ffffff" : "#6b7280"}
             />
-          </ThemedView>
-        </Popover>
+          </TouchableOpacity>
+        }
+      >
+        <ThemedView style={styles.popoverContent}>
+          <ThemedText style={{ fontSize: 14, fontWeight: '500' }}>
+            Filter by date
+          </ThemedText>
+          <DateTimePicker
+            mode="single"
+            date={selectedDate ?? undefined}
+            onChange={handleDateChange}
+            minDate={new Date(new Date().setHours(0, 0, 0, 0))}
+            styles={{
+              ...defaultStyles,
+              today: { backgroundColor: "#f3f4f6" }, // Add a border to today's date
+              selected: { backgroundColor: "#000" }, // Highlight the selected day
+              selected_label: { color: "white" }, // Highlight the selected day label
+            }}
+          />
+        </ThemedView>
+      </Popover>
     </ThemedView>
   );
 };

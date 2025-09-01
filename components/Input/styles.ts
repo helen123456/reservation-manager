@@ -1,4 +1,9 @@
-import { Platform, StyleSheet } from 'react-native';
+import { Colors } from "@/constants/Colors";
+import { Platform, StyleSheet, useColorScheme } from 'react-native';
+
+// 获取当前主题颜色
+const colorScheme = useColorScheme() ?? 'light';
+const colors = Colors[colorScheme];
 
 export const styles = StyleSheet.create({
   container: {
@@ -7,38 +12,37 @@ export const styles = StyleSheet.create({
   label: {
     fontSize: 14,
     fontWeight: '500',
-    color: '#374151',
+    color: colors.mutedForeground,
     marginBottom: 6,
   },
   required: {
-    color: '#ef4444', // 红色表示必填
+    color: colors.destructive, // 红色表示必填
   },
   inputContainer: {
-     height: 50,
+      height: 50,
       position: "relative",
       flexDirection: "row",
       alignItems: "center",
       borderWidth: 1,
-      borderColor: "#d1d5db",
+      borderColor: colors.border,
       borderRadius: 8,
-      backgroundColor: "#f9fafb",
+      backgroundColor: colors.inputBackground,
   },
   focusedContainer: {
-    borderColor: '#3b82f6',
-    boxShadow:' 0 0 0 1px #3b82f6',
+    borderColor: colors.primary,
     elevation: 2,
   },
   errorContainer: {
-    borderColor: '#ef4444',
+    borderColor: colors.destructive,
   },
   disabledContainer: {
-    backgroundColor: '#f9fafb',
-    borderColor: '#e5e7eb',
+    backgroundColor: colors.muted,
+    borderColor: colors.border,
   },
   input: {
     flex: 1,
     fontSize: 16,
-    color: '#111827',
+    color: colors.text,
     paddingHorizontal: 12,
     height:60,
     
@@ -69,13 +73,13 @@ export const styles = StyleSheet.create({
   },
   errorText: {
     fontSize: 12,
-    color: '#ef4444',
+    color: colors.destructive,
     marginTop: 4,
     marginLeft: 4,
   },
   helperText: {
     fontSize: 12,
-    color: '#6b7280',
+    color: colors.mutedForeground,
     marginTop: 4,
     marginLeft: 4,
   },

@@ -14,16 +14,19 @@ import {
 } from "react-native";
 import { z } from "zod";
 import { useTranslation } from "../../hooks/useTranslation";
-import { createStyles } from "./styles";
+import { styles } from "./styles";
 import { LoginProps, registerSchema } from "./types";
 
 export default function Login({ onLogin }: LoginProps) {
   const { t } = useTranslation();
-  const styles = createStyles();
   type RegisterFormData = z.infer<typeof registerSchema>;
 
   const methods = useForm({
     resolver: zodResolver(registerSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
     mode: "onChange", // 实时验证
   });
   const {
@@ -71,8 +74,7 @@ export default function Login({ onLogin }: LoginProps) {
             <ThemedView style={styles.form}>
               {/* Email Field */}
               <Input
-                keyboardType="email-address"
-                control={methods.control}
+                inputMode='email'
                 name="email"
                 label={t("loginEmail")}
                 placeholder={t("emailPlaceholder")}
@@ -82,7 +84,6 @@ export default function Login({ onLogin }: LoginProps) {
               />
               <Input
                 keyboardType="email-address"
-                control={methods.control}
                 name="password"
                 label={t("password")}
                 placeholder={t("passwordPlaceholder")}

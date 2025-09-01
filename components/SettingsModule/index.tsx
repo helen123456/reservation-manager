@@ -1,6 +1,6 @@
 import { Feather } from "@expo/vector-icons";
-import React, { useState } from "react";
-import { ScrollView, TouchableOpacity, View } from "react-native";
+import React, { useState, useMemo } from "react";
+import { ScrollView, TouchableOpacity, View, useColorScheme } from "react-native";
 import { useTranslation } from "../../hooks/useTranslation";
 import { NavBack } from "../NavBack";
 import { ThemedText } from "../ThemedText";
@@ -8,7 +8,7 @@ import { ThemedView } from "../ThemedView";
 import QuickSettings from "./QuickSettings";
 import RestaurantStatus from "./RestaurantStatus";
 import SettingsCategory from "./SettingsCategory";
-import { styles } from "./styles";
+import { createStyles } from "./styles";
 import { QuickSettingsState, SettingsModuleProps } from "./types";
 import { getRestaurantStatus, getSettingsCategories } from "./utils";
 
@@ -17,6 +17,10 @@ export default function SettingsModule({
   onBack,
 }: SettingsModuleProps) {
   const { t } = useTranslation();
+  const colorScheme = useColorScheme();
+  
+  // 使用 useMemo 缓存样式以提高性能
+  const styles = useMemo(() => createStyles(colorScheme), [colorScheme]);
 
   const [quickSettings, setQuickSettings] = useState<QuickSettingsState>({
     acceptReservations: true,

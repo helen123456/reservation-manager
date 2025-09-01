@@ -14,7 +14,7 @@ export interface LoginState {
   isLoading: boolean;
 }
 export  const registerSchema = z.object({
-    email: z.string().min(6, "密码不能少于6位"),
+    email: z.string().email("请输入正确的邮箱"),
     password: z
       .string()
       .min(6, "密码不能少于6位")

@@ -1,23 +1,26 @@
+import NavBack from "@/components/NavBack";
+import { Colors } from "@/constants/Colors";
 import { Ionicons } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
 import {
-    Alert,
-    ScrollView,
-    Switch,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+  Alert,
+  ScrollView,
+  Switch,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+  useColorScheme,
 } from 'react-native';
 import { useTranslation } from '../../hooks/useTranslation';
 import { ThemedText } from '../ThemedText';
 import { ThemedView } from '../ThemedView';
 import { styles } from './styles';
 import {
-    IntervalOption,
-    TableSettings,
-    TableSettingsDetailProps,
-    TimeSlot,
+  IntervalOption,
+  TableSettings,
+  TableSettingsDetailProps,
+  TimeSlot,
 } from './types';
 
 export default function TableSettingsDetail({ onBack }: TableSettingsDetailProps) {
@@ -148,22 +151,23 @@ export default function TableSettingsDetail({ onBack }: TableSettingsDetailProps
     { value: 30, label: '30min' },
     { value: 15, label: '15min' }
   ];
+  // 获取当前主题颜色
+const colorScheme = useColorScheme() ?? 'light';
+const colors = Colors[colorScheme];
 
   return (
     <ThemedView style={styles.container}>
       {/* Header */}
-      <View style={styles.header}>
-        <View style={styles.headerLeft}>
-          <TouchableOpacity onPress={onBack} style={styles.backButton}>
-            <Ionicons name="arrow-back" size={20} color="#000" />
+      <NavBack 
+        title={t('reservationSettings')}
+        onBack={onBack}
+        rightComponent={
+          <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
+            <Ionicons name="save" size={14} color={colors.primary} style={styles.saveIcon} />
+            <Text style={styles.saveText}>{t('save')}</Text>
           </TouchableOpacity>
-          <ThemedText style={styles.title}>{t('reservationSettings')}</ThemedText>
-        </View>
-        <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-          <Ionicons name="save" size={14} color="#fff" style={styles.saveIcon} />
-          <Text style={styles.saveText}>{t('save')}</Text>
-        </TouchableOpacity>
-      </View>
+        }
+      />
 
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         {/* Accept Reservations */}
@@ -254,7 +258,7 @@ export default function TableSettingsDetail({ onBack }: TableSettingsDetailProps
               style={styles.counterButton}
               onPress={() => updateMaxReservationsPerSlot(settings.maxReservationsPerSlot + 1)}
             >
-              <Ionicons name="add" size={14} color="#000" />
+              <Ionicons name="add" size={14} color={colors.primary} />
             </TouchableOpacity>
           </View>
         </View>
