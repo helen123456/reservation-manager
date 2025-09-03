@@ -1,13 +1,16 @@
-import { Feather } from '@expo/vector-icons';
-import React, { useMemo } from 'react';
-import { ScrollView, TouchableOpacity, useColorScheme } from 'react-native';
-import { useTranslation } from '../../hooks/useTranslation';
-import { ThemedText } from '../ThemedText';
-import { ThemedView } from '../ThemedView';
-import { StatusBadge } from './StatusBadge';
-import { createStyles } from './styles';
-import { Reservation } from './types';
-import { formatDate } from './utils';
+import Modal from "@/components/Modal";
+import { useColors } from "@/hooks/useTheme";
+import { Feather } from "@expo/vector-icons";
+import dayjs from "dayjs";
+import React, { useMemo, useState } from "react";
+import { ScrollView, Text, TouchableOpacity, useColorScheme } from "react-native";
+import { useTranslation } from "../../hooks/useTranslation";
+import { ThemedText } from "../ThemedText";
+import { ThemedView } from "../ThemedView";
+import { StatusBadge } from "./StatusBadge";
+import { createStyles } from "./styles";
+import { Reservation } from "./types";
+import { formatDate } from "./utils";
 
 interface ReservationDetailProps {
   reservation: Reservation;
@@ -20,16 +23,37 @@ export const ReservationDetail: React.FC<ReservationDetailProps> = ({
   reservation,
   onBack,
   onAccept,
-  onReject
+  onReject,
 }) => {
   const { t } = useTranslation();
+  const Colors = useColors();
   const colorScheme = useColorScheme();
   // 使用 useMemo 缓存样式以提高性能
-  const styles = useMemo(() => createStyles(colorScheme), [colorScheme]);
+  const styles = useMemo(() => createStyles(colorScheme), [colorScheme])
+  const [visible,setVisible] = useState<boolean>(false)
+  const [tipsText,setTipsText] = useState<string>("")
 
   const getInitials = (name: string) => {
-    return name.split(' ').map(n => n[0]).join('').toUpperCase();
+    return name
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase();
   };
+  const handleAccept=(reservation:Reservation)=>{
+    setVisible(true)
+    setTipsText(t("acceptTip"))
+  }
+  const handleReject=(reservation:Reservation)=>{
+    setVisible(true)
+    setTipsText(t("rejectTip"))
+  }
+  const handelCancel=()=>{
+    setVisible(false)
+  }
+  const handleSure=()=>{
+    setVisible(false)
+  }
 
   return (
     <ThemedView style={styles.container}>
@@ -49,16 +73,16 @@ export const ReservationDetail: React.FC<ReservationDetailProps> = ({
           <ThemedView style={styles.customerInfo}>
             <ThemedView style={styles.avatar}>
               <ThemedText style={styles.avatarText}>
-                {getInitials(reservation.customerName)}
+                {getInitials(reservation.contactName)}
               </ThemedText>
             </ThemedView>
-            <ThemedText style={styles.customerName}>
-              {reservation.customerName}
+            <ThemedText style={styles.contactName}>
+              {reservation.contactName}
             </ThemedText>
             <ThemedView style={styles.phoneContainer}>
               <Feather name="phone" size={16} color="#6b7280" />
               <ThemedText style={styles.phoneText}>
-                {reservation.phone}
+                {reservation.contactPhone}
               </ThemedText>
             </ThemedView>
           </ThemedView>
@@ -73,7 +97,7 @@ export const ReservationDetail: React.FC<ReservationDetailProps> = ({
                 <ThemedText style={styles.detailLabel}>Date</ThemedText>
               </ThemedView>
               <ThemedText style={styles.detailValue}>
-                {formatDate(reservation.date)}
+                {formatDate(reservation.reserveTime)}
               </ThemedText>
             </ThemedView>
 
@@ -83,63 +107,52 @@ export const ReservationDetail: React.FC<ReservationDetailProps> = ({
                 <ThemedText style={styles.detailLabel}>Time</ThemedText>
               </ThemedView>
               <ThemedText style={styles.detailValue}>
-                {reservation.time}
+                {dayjs(reservation.reserveTime).format("HH:mm")}
               </ThemedText>
             </ThemedView>
-          </ThemedView>
 
-          <ThemedView style={styles.detailsGrid}>
             <ThemedView style={styles.detailItem}>
               <ThemedView style={styles.detailHeader}>
                 <Feather name="users" size={16} color="#6b7280" />
-                <ThemedText style={styles.detailLabel}>{t('guests')}</ThemedText>
+                <ThemedText style={styles.detailLabel}>
+                  {t("guests")}
+                </ThemedText>
               </ThemedView>
               <ThemedText style={styles.detailValue}>
                 {reservation.guests}
               </ThemedText>
-              <ThemedText style={styles.detailSubValue}>people</ThemedText>
             </ThemedView>
           </ThemedView>
-
-          {reservation.specialRequests && (
-            <ThemedView style={styles.specialRequests}>
-              <ThemedView style={styles.detailHeader}>
-                <Feather name="message-square" size={16} color="#6b7280" />
-                <ThemedText style={styles.detailLabel}>Special Requests</ThemedText>
-              </ThemedView>
-              <ThemedView style={styles.requestsBox}>
-                <ThemedText style={styles.requestsText}>
-                  {reservation.specialRequests}
-                </ThemedText>
-              </ThemedView>
-            </ThemedView>
-          )}
         </ThemedView>
-      </ScrollView>
-
-      {reservation.status === 'pending' && (
+ {reservation.status === 0 && (
         <ThemedView style={styles.actionsContainer}>
           <TouchableOpacity
             style={[styles.actionButton, styles.rejectButton]}
-            onPress={() => onReject(reservation)}
+            onPress={() => handleReject(reservation)}
           >
-            <Feather name="x" size={20} color="#fff" />
+            <Feather name="x" size={20} color={Colors.text} />
             <ThemedText style={styles.actionButtonText}>
-              {t('decline')}
+              {t("decline")}
             </ThemedText>
           </TouchableOpacity>
-          
+
           <TouchableOpacity
             style={[styles.actionButton, styles.confirmButton]}
-            onPress={() => onAccept(reservation)}
+            onPress={() => handleAccept(reservation)}
           >
-            <Feather name="check" size={20} color="#fff" />
-            <ThemedText style={styles.actionButtonText}>
-              {t('accept')}
+            <Feather name="check" size={20} color={Colors.primaryForeground} />
+            <ThemedText style={styles.rejectButtonText}>
+              {t("accept")}
             </ThemedText>
           </TouchableOpacity>
         </ThemedView>
       )}
+      </ScrollView>
+
+     
+      <Modal visible={visible} title={t("tip")} onCancel={handelCancel} onOk={handleSure}>
+        <Text>{tipsText}</Text>
+      </Modal>
     </ThemedView>
   );
 };

@@ -85,14 +85,14 @@ export default function App() {
 
         // If not authenticated, redirect to login page
         if (!isAuth) {
-          router.replace("/login");
+          // router.replace("/login");
         }
       } catch (error) {
         console.error("Error initializing app:", error);
         // Still set fonts loaded to true to prevent infinite loading
         setFontsLoaded(true);
         // Redirect to login on error
-        router.replace("/login");
+        // router.replace("/login");
       }
     };
     initializeApp();

@@ -1,31 +1,31 @@
-import React, { useMemo } from 'react';
+import React, { useMemo } from "react";
 import {
   Modal as RNModal,
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
-  useColorScheme
-} from 'react-native';
-import { createStyles } from './styles';
-import { ModalProps } from './types';
+  useColorScheme,
+} from "react-native";
+import { createStyles } from "./styles";
+import { ModalProps } from "./types";
 
 export const Modal: React.FC<ModalProps> = ({
   visible,
   title,
   children,
-  cancelText = '取消',
-  sureText = '确定',
+  cancelText = "取消",
+  sureText = "确定",
   onCancel,
   onOk,
   showCancel = true,
   showOk = true,
-  cancelButtonColor = '#f5f5f5',
-  okButtonColor = '#000',
-  cancelTextColor = '#333',
-  okTextColor = '#fff',
+  cancelButtonColor = "#f5f5f5",
+  okButtonColor = "#000",
+  cancelTextColor = "#333",
+  okTextColor = "#fff",
   onBackdropPress,
-  footer = true
+  footer = true,
 }) => {
   const colorScheme = useColorScheme();
   // 使用 useMemo 缓存样式以提高性能
@@ -44,9 +44,9 @@ export const Modal: React.FC<ModalProps> = ({
       return null;
     }
 
-    const hasCancel = showCancel && onCancel;
-    const hasOk = showOk && onOk;
-    
+    const hasCancel = showCancel;
+    const hasOk = showOk;
+
     if (!hasCancel && !hasOk) {
       return null;
     }
@@ -59,7 +59,7 @@ export const Modal: React.FC<ModalProps> = ({
             style={[
               styles.button,
               styles.cancelButton,
-              { backgroundColor: cancelButtonColor }
+              { backgroundColor: cancelButtonColor },
             ]}
             onPress={onCancel}
           >
@@ -67,12 +67,12 @@ export const Modal: React.FC<ModalProps> = ({
               {cancelText}
             </Text>
           </TouchableOpacity>
-          
+
           <TouchableOpacity
             style={[
               styles.button,
               styles.okButton,
-              { backgroundColor: okButtonColor }
+              { backgroundColor: okButtonColor },
             ]}
             onPress={onOk}
           >
@@ -93,10 +93,7 @@ export const Modal: React.FC<ModalProps> = ({
     return (
       <View style={styles.singleButtonContainer}>
         <TouchableOpacity
-          style={[
-            styles.singleButton,
-            { backgroundColor: singleButtonColor }
-          ]}
+          style={[styles.singleButton, { backgroundColor: singleButtonColor }]}
           onPress={singleButtonAction}
         >
           <Text style={[styles.buttonText, { color: singleTextColor }]}>
@@ -120,24 +117,19 @@ export const Modal: React.FC<ModalProps> = ({
             <View style={styles.modalContainer}>
               {/* 右上角关闭按钮 - 只在 footer 为 false 时显示 */}
               {!footer && onCancel && (
-                <TouchableOpacity
-                  style={styles.closeButton}
-                  onPress={onCancel}
-                >
+                <TouchableOpacity style={styles.closeButton} onPress={onCancel}>
                   <Text style={styles.closeButtonText}>×</Text>
                 </TouchableOpacity>
               )}
-              
+
               {title && (
                 <View style={styles.header}>
                   <Text style={styles.title}>{title}</Text>
                 </View>
               )}
-              
-              <View style={styles.content}>
-                {children}
-              </View>
-              
+
+              <View style={styles.content}>{children}</View>
+
               {renderButtons()}
             </View>
           </TouchableWithoutFeedback>

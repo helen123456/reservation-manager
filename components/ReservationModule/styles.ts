@@ -1,5 +1,5 @@
 import { Colors } from '@/constants/Colors';
-import { StyleSheet, ColorSchemeName } from 'react-native';
+import { ColorSchemeName, StyleSheet } from 'react-native';
 
 export const createStyles = (colorScheme: ColorSchemeName) => {
   const colors = Colors[colorScheme ?? 'light'];
@@ -298,7 +298,7 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
       fontWeight: 'bold',
       color: colors.text,
     },
-    customerName: {
+    contactName: {
       fontSize: 20,
       fontWeight: 'bold',
       color: colors.text,
@@ -378,16 +378,32 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
       borderRadius: 8,
     },
     rejectButton: {
-      backgroundColor: colors.destructive,
+      backgroundColor: colors.muted,
     },
     confirmButton: {
-      backgroundColor: colors.success,
+      backgroundColor: colors.primary,
     },
     actionButtonText: {
+      color: colors.text,
+      fontSize: 16,
+      fontWeight: '600',
+      marginLeft: 8,
+    },
+    rejectButtonText: {
       color: colors.primaryForeground,
       fontSize: 16,
       fontWeight: '600',
       marginLeft: 8,
     },
+    emptyContainer:{
+      flex:1,
+      justifyContent:'center',
+      alignItems:'center',
+      marginTop:60
+    },
+    emptyText:{
+      marginTop:30,
+       color:colors.primary,
+    }
   });
 };

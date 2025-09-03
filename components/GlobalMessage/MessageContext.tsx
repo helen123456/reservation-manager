@@ -1,5 +1,6 @@
-import React, { ReactNode, createContext, useCallback, useContext, useState } from 'react';
+import React, { ReactNode, createContext, useCallback, useContext, useState, useEffect } from 'react';
 import { MessageConfig, MessageContextType, MessageItem } from './types';
+import { message } from '@/utils/message';
 
 const MessageContext = createContext<MessageContextType | undefined>(undefined);
 
@@ -12,17 +13,16 @@ export const MessageProvider: React.FC<MessageProviderProps> = ({ children }) =>
 
   const open = useCallback((config: MessageConfig) => {
     const id = `message_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    const duration = config.duration ?? 3; // 使用空值合并运算符确保有默认值
+    const duration = config.duration ?? 3;
     const newMessage: MessageItem = {
       ...config,
       id,
       timestamp: Date.now(),
-      duration, // 使用处理后的 duration
+      duration,
     };
 
     setMessages(prev => [...prev, newMessage]);
 
-    // 自动关闭
     if (duration > 0) {
       setTimeout(() => {
         close(id);
@@ -43,6 +43,11 @@ export const MessageProvider: React.FC<MessageProviderProps> = ({ children }) =>
   const clear = useCallback(() => {
     setMessages([]);
   }, []);
+
+  // 初始化message实例
+  useEffect(() => {
+    message.setHandler({ open, close, clear });
+  }, [open, close, clear]);
 
   const value: MessageContextType = {
     messages,

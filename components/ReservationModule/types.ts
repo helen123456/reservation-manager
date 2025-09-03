@@ -1,12 +1,14 @@
 export interface Reservation {
-  id: string;
-  customerName: string;
-  phone: string;
-  date: string;
-  time: string;
+  id: number;
+  restaurantId: number;
+  contactName: string;
+  contactPhone: string;
+  contactEmail: string;
   guests: number;
-  status: 'pending' | 'confirmed' | 'rejected';
-  specialRequests?: string;
+  reserveTime: string;
+  otherRequirements: string;
+  status: number;
+  createTime: string;
 }
 
 export interface GroupedReservation {

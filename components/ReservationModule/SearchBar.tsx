@@ -30,19 +30,10 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   const [dateOpen, setDateOpen] = useState(false);
 
   const handleDateChange = (params: any) => {
-    let next: Date | undefined;
-    const raw = params?.date;
-    if (!raw) {
-      next = undefined;
-    } else if (dayjs.isDayjs(raw)) {
-      next = raw.toDate();
-    } else if (raw instanceof Date) {
-      next = raw;
-    } else if (typeof raw === "string" || typeof raw === "number") {
-      const d = new Date(raw);
-      next = isNaN(d.getTime()) ? undefined : d;
-    }
-    onDateChange?.(next);
+    console.log(params)
+    setDateOpen(false);
+    onDateChange?.(params.date);
+  
   };
 
   const clearDate = () => {
@@ -91,7 +82,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
             mode="single"
             date={selectedDate ?? undefined}
             onChange={handleDateChange}
-            minDate={new Date(new Date().setHours(0, 0, 0, 0))}
+            minDate={dayjs().format("YYYY-MM-DD 00:00:00")}
             styles={{
               ...defaultStyles,
               today: { backgroundColor: "#f3f4f6" }, // Add a border to today's date

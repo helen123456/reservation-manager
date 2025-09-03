@@ -1,4 +1,5 @@
 import { Feather } from '@expo/vector-icons';
+import dayjs from 'dayjs';
 import React, { useMemo } from 'react';
 import { TouchableOpacity, useColorScheme } from 'react-native';
 import { ThemedText } from '../ThemedText';
@@ -6,7 +7,6 @@ import { ThemedView } from '../ThemedView';
 import { StatusBadge } from './StatusBadge';
 import { createStyles } from './styles';
 import { Reservation } from './types';
-import { formatDate } from './utils';
 
 interface ReservationItemProps {
   reservation: Reservation;
@@ -30,14 +30,14 @@ export const ReservationItem: React.FC<ReservationItemProps> = ({ reservation, o
         <ThemedView style={styles.reservationLeft}>
           <ThemedView style={styles.smallAvatar}>
             <ThemedText style={styles.smallAvatarText}>
-              {getInitials(reservation.customerName)}
+              {getInitials(reservation.contactName)}
             </ThemedText>
           </ThemedView>
           
           <ThemedView style={styles.reservationInfo}>
             <ThemedView style={styles.reservationHeader}>
               <ThemedText style={styles.customerNameSmall}>
-                {reservation.customerName}
+                {reservation.contactName}
               </ThemedText>
               <StatusBadge status={reservation.status} />
             </ThemedView>
@@ -46,7 +46,7 @@ export const ReservationItem: React.FC<ReservationItemProps> = ({ reservation, o
               <ThemedView style={styles.detailRow}>
                 <Feather name="clock" size={12} color="#6b7280" />
                 <ThemedText style={styles.detailTextSmall}>
-                  {formatDate(reservation.date)} {reservation.time}
+                  {dayjs(reservation.reserveTime).format('HH:mm')}
                 </ThemedText>
               </ThemedView>
               

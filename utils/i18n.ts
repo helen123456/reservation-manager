@@ -150,6 +150,9 @@ export const translations = {
     accept: "Accept",
     decline: "Decline",
     guests: "guests",
+    acceptTip:"Are you sure you want to confirm this reservation?",
+    rejectTip:"Are you sure you want to reject this reservation?",
+    tip:"Tip",
 
     // Help & Support
     helpSupport: "Help & Support",
@@ -261,7 +264,7 @@ export const translations = {
     emailInvalid:"L'email est invalide",
     phoneRequired:"Le téléphone est requis",
     addressRequired:"L'adresse est requise",
-    phoneInvalid:"Le téléphone est invalide",
+    languageRequired:"La langue est requise",
 
     // Reservation Settings
     reservationSettings: "Paramètres de Réservation",
@@ -295,6 +298,11 @@ export const translations = {
     accept: "Accepter",
     decline: "Refuser",
     guests: "invités",
+    acceptTip:"Are you sure you want to confirm this reservation?",
+    rejectTip:"Are you sure you want to reject this reservation?",
+    tip:"Tip",
+
+    
 
     // Help & Support
     helpSupport: "Aide et Support",

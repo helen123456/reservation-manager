@@ -1,5 +1,5 @@
 import { Colors } from '@/constants/Colors';
-import { StyleSheet, ColorSchemeName } from 'react-native';
+import { ColorSchemeName, StyleSheet } from 'react-native';
 
 export const createStyles = (colorScheme: ColorSchemeName) => {
   const colors = Colors[colorScheme ?? 'light'];
@@ -25,9 +25,7 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
       shadowOpacity: 0.25,
       shadowRadius: 3.84,
       elevation: 5,
-      position: 'relative',
-      borderWidth: 1,
-      borderColor: colors.border,
+      position: 'relative'
     },
     closeButton: {
       position: 'absolute',
@@ -64,8 +62,7 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
     },
     buttonContainer: {
       flexDirection: 'row',
-      borderTopWidth: 1,
-      borderTopColor: colors.border,
+     
     },
     button: {
       flex: 1,
@@ -74,8 +71,7 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
       justifyContent: 'center',
     },
     cancelButton: {
-      borderRightWidth: 1,
-      borderRightColor: colors.border,
+     
       borderBottomLeftRadius: 12,
     },
     okButton: {

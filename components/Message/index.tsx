@@ -1,8 +1,7 @@
 import { Feather } from '@expo/vector-icons';
-import React, { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import {
   Animated,
-  Dimensions,
   Modal,
   Text,
   TouchableOpacity,
@@ -11,8 +10,6 @@ import {
 } from 'react-native';
 import { createStyles } from './styles';
 import { MessageProps } from './types';
-
-const { width } = Dimensions.get('window');
 
 export const Message: React.FC<MessageProps> = ({
   visible,

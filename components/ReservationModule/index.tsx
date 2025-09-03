@@ -1,125 +1,173 @@
-import React, { useCallback, useMemo, useState } from "react";
-import { ActivityIndicator, Alert, FlatList, useColorScheme } from "react-native";
-import { useTranslation } from "../../hooks/useTranslation";
+import { useColors } from "@/hooks/useTheme";
+import { useTranslation } from "@/hooks/useTranslation";
+import { ReservationService } from "@/services/api/reservationService";
+import { Reservation } from "@/services/types";
+import { message } from "@/utils/message";
+import dayjs from "dayjs";
+import _ from "lodash";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import {
+  ActivityIndicator,
+  Alert,
+  FlatList,
+  Text,
+  View,
+  useColorScheme,
+} from "react-native";
 import { NavBack } from "../NavBack";
 import { ThemedText } from "../ThemedText";
 import { ThemedView } from "../ThemedView";
+import { IconSymbol } from "../ui/IconSymbol";
 import { FilterBar } from "./FilterBar";
 import { ReservationDetail } from "./ReservationDetail";
 import { ReservationItem } from "./ReservationItem";
 import { SearchBar } from "./SearchBar";
 import { StatsCard } from "./StatsCard";
 import { createStyles } from "./styles";
-import { FlatDataItem, Reservation } from "./types";
-import {
-  calculateStats,
-  formatDateHeader,
-  generateMockReservations,
-  getFilteredReservations,
-} from "./utils";
+import { FlatDataItem } from "./types";
+import { calculateStats, formatDateHeader, getFlatData } from "./utils";
 
 export default function ReservationModule() {
   const { t } = useTranslation();
   const colorScheme = useColorScheme();
-  // 使用 useMemo 缓存样式以提高性能
+  const colors = useColors();
   const styles = useMemo(() => createStyles(colorScheme), [colorScheme]);
-
   const [selectedReservation, setSelectedReservation] =
     useState<Reservation | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
-  const [allReservations, setAllReservations] = useState<Reservation[]>(generateMockReservations());
+  const [allReservations, setAllReservations] = useState<Reservation[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [hasNextPage, setHasNextPage] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
+  const [total, setTotal] = useState(0);
+  const [error, setError] = useState<string | null>(null);
 
-  const filteredReservations = useMemo(() => {
-    return getFilteredReservations(allReservations, searchQuery, selectedDate);
-  }, [allReservations, searchQuery, selectedDate]);
+  // 按日期重新分组合并数据的函数
+  const mergeReservationsByDate = useCallback(
+    (existingReservations: Reservation[], newReservations: Reservation[]) => {
+      // 将现有数据按日期分组
+      const existingByDate = _.groupBy(existingReservations, (item) =>
+        dayjs(item.reserveTime).format("YYYY-MM-DD")
+      );
+   
+
+      // 将新数据按日期分组
+      const newByDate: { [date: string]: Reservation[] } = _.groupBy(
+        newReservations,
+        (item) => dayjs(item.reserveTime).format("YYYY-MM-DD")
+      );
+     
+
+      // 合并数据：对于相同日期，合并并去重；对于新日期，直接添加
+      const mergedByDate: { [date: string]: Reservation[] } = _.merge(
+        existingByDate,
+        newByDate
+      );
+
+      // 将分组数据转换回扁平数组，按日期排序
+      const result: Reservation[] = [];
+      Object.keys(mergedByDate)
+        .sort((a, b) => new Date(a).getTime() - new Date(b).getTime())
+        .forEach((date) => {
+          result.push(...mergedByDate[date]);
+        });
+     
+      return result;
+    },
+    []
+  );
+
+  // 加载预订数据
+  const loadReservations = useCallback(
+    async (page: number = 1, reset: boolean = false) => {
+      console.log('reset',reset)
+      if (isLoading) return;
+      setIsLoading(true);
+      setError(null);
+
+      try {
+        const params = {
+          page,
+          pageSize: 10,
+          ...(searchQuery && { search: searchQuery }),
+          ...(selectedDate && {
+            date: dayjs(selectedDate).format("YYYY-MM-DD"),
+          }),
+        };
+        const response: any = await ReservationService.getReservations(params);
+       
+        if (response.code === 200) {
+          if (reset) {
+            setAllReservations(response.data);
+            setCurrentPage(1);
+          } else {
+            // 使用新的按日期合并逻辑
+            setAllReservations((prev) =>
+              mergeReservationsByDate(prev, response.data)
+            );
+            setCurrentPage(page);
+          }
+
+          setTotal(response.total);
+          const hasMore = page * params.pageSize < response.total;
+          setHasNextPage(hasMore);
+          
+        } else {
+          message.error(response.msg || "获取预订列表失败");
+        }
+      } catch (error) {
+        message.error("网络错误，请稍后重试");
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [isLoading,searchQuery,selectedDate, mergeReservationsByDate]
+  );
+
+  // 初始加载
+  useEffect(() => {
+    loadReservations(1, true);
+  }, []);
+
+  // 搜索和筛选变化时重新加载
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      loadReservations(1, true);
+    }, 300); // 防抖
+
+    return () => clearTimeout(timeoutId);
+  }, [searchQuery, selectedDate]);
+
+  // 加载更多数据
+  const loadMore = useCallback(() => {
+    if (hasNextPage && !isLoading) {
+      loadReservations(currentPage + 1, false);
+    }
+  }, [hasNextPage, isLoading, currentPage, loadReservations]);
+
+  // 刷新数据
+  const refreshData = useCallback(() => {
+    loadReservations(1, true);
+  }, [loadReservations]);
 
   const stats = useMemo(() => {
     return calculateStats(allReservations);
   }, [allReservations]);
 
-  // 合并新数据到现有数据的函数
-  const mergeReservations = useCallback((existingReservations: Reservation[], newReservations: Reservation[]) => {
-    const merged = [...existingReservations];
-    const existingIds = new Set(existingReservations.map(r => r.id));
-    
-    newReservations.forEach(newReservation => {
-      if (!existingIds.has(newReservation.id)) {
-        merged.push(newReservation);
-      }
-    });
-    
-    return merged;
-  }, []);
-
   // 加载下一页数据的函数
-  const loadNextPage = useCallback(async () => {
-    if (isLoading || !hasNextPage) return;
-    
-    setIsLoading(true);
-    try {
-      // 这里应该是实际的API调用
-      // const newReservations = await fetchReservations(currentPage + 1);
-      
-      // 模拟API调用
-      const newReservations = generateMockReservations(10, currentPage + 1);
-      
-      if (newReservations.length === 0) {
-        setHasNextPage(false);
-      } else {
-        setAllReservations(prev => mergeReservations(prev, newReservations));
-        setCurrentPage(prev => prev + 1);
-      }
-    } catch (error) {
-      console.error('Failed to load next page:', error);
-    } finally {
-      setIsLoading(false);
+  const loadNextPage = useCallback(() => {
+    if (isLoading || !hasNextPage) {
+      return;
     }
-  }, [isLoading, hasNextPage, currentPage, mergeReservations]);
-
-  const groupedReservations = useMemo(() => {
-    const grouped: { [key: string]: Reservation[] } = {};
-
-    filteredReservations.forEach((reservation) => {
-      if (!grouped[reservation.date]) {
-        grouped[reservation.date] = [];
-      }
-      grouped[reservation.date].push(reservation);
-    });
-
-    return Object.entries(grouped)
-      .sort(([a], [b]) => new Date(a).getTime() - new Date(b).getTime())
-      .map(([date, reservations]) => ({
-        date,
-        reservations: reservations.sort((a, b) => a.time.localeCompare(b.time)),
-      }));
-  }, [filteredReservations]);
-  console.log("groupedReservations", groupedReservations);
+    console.log("loadNextPage triggered");
+    loadMore();
+  }, [isLoading, hasNextPage, loadMore]);
 
   const flatData: FlatDataItem[] = useMemo(() => {
-    return groupedReservations.flatMap((group) => {
-      const pendingCount = group.reservations.filter(
-        (r) => r.status === "pending"
-      ).length;
-      return [
-        {
-          type: "header",
-          date: group.date,
-          count: group.reservations.length,
-          pendingCount,
-        },
-        ...group.reservations.map((res) => ({
-          type: "reservation" as const,
-          reservation: res,
-        })),
-      ];
-    });
-  }, [groupedReservations]);
-  console.log("flatData11", flatData);
-  console.log("allReservations", allReservations);
+    return getFlatData(allReservations);
+  }, [allReservations]);
+
   const handleReservationPress = (reservation: Reservation) => {
     setSelectedReservation(reservation);
   };
@@ -131,13 +179,19 @@ export default function ReservationModule() {
   const handleAcceptReservation = (reservation: Reservation) => {
     Alert.alert(
       "Accept Reservation",
-      `Accept reservation for ${reservation.customerName}?`,
+      `Accept reservation for ${reservation.contactName}?`,
       [
         { text: t("cancel"), style: "cancel" },
         {
           text: t("accept"),
           onPress: () => {
-            reservation.status = "confirmed";
+            // 更新状态为确认（假设1为确认状态）
+            const updatedReservation = { ...reservation, status: 1 };
+            setAllReservations((prev) =>
+              prev.map((r) =>
+                r.id === reservation.id ? updatedReservation : r
+              )
+            );
             setSelectedReservation(null);
           },
         },
@@ -148,14 +202,20 @@ export default function ReservationModule() {
   const handleRejectReservation = (reservation: Reservation) => {
     Alert.alert(
       "Decline Reservation",
-      `Decline reservation for ${reservation.customerName}?`,
+      `Decline reservation for ${reservation.contactName}?`,
       [
         { text: t("cancel"), style: "cancel" },
         {
           text: t("decline"),
           style: "destructive",
           onPress: () => {
-            reservation.status = "rejected";
+            // 更新状态为拒绝（假设-1为拒绝状态）
+            const updatedReservation = { ...reservation, status: -1 };
+            setAllReservations((prev) =>
+              prev.map((r) =>
+                r.id === reservation.id ? updatedReservation : r
+              )
+            );
             setSelectedReservation(null);
           },
         },
@@ -179,23 +239,17 @@ export default function ReservationModule() {
             {formatDateHeader(item.date)}
           </ThemedText>
           <ThemedView style={{ flexDirection: "row", gap: 8 }}>
-            <ThemedView
-              style={[styles.countBadge]}
-            >
+            <ThemedView style={[styles.countBadge]}>
               <ThemedText style={styles.countBadgeText}>
-                {item.count} 
+                {item.count}
               </ThemedText>
-               <ThemedText style={styles.countBadgeText}>
+              <ThemedText style={styles.countBadgeText}>
                 {item.count === 1 ? "reservation" : "reservations"}
               </ThemedText>
             </ThemedView>
-            {item.pendingCount && item.pendingCount > 0 && (
-              <ThemedView
-                style={[styles.countBadge]}
-              >
-                <ThemedText
-                  style={[styles.countBadgeText]}
-                >
+            {!!item.pendingCount && item.pendingCount > 0 && (
+              <ThemedView style={[styles.countBadge]}>
+                <ThemedText style={[styles.countBadgeText]}>
                   {item.pendingCount} {t("pending")}
                 </ThemedText>
               </ThemedView>
@@ -216,7 +270,9 @@ export default function ReservationModule() {
 
     return null;
   };
-
+  const onDateChange = (date: Date | undefined) => {
+    setSelectedDate(date);
+  };
   if (selectedReservation) {
     return (
       <ReservationDetail
@@ -231,31 +287,40 @@ export default function ReservationModule() {
   return (
     <ThemedView style={[styles.container]}>
       <ThemedView>
-      <NavBack
-         title={t("reservations")}
-         subtitle="Manage your restaurant reservations"
-         showBackButton={false}
-         onBack={() => {}}
-       />
+        <NavBack
+          title={t("reservations")}
+          subtitle="Manage your restaurant reservations"
+          showBackButton={false}
+          onBack={() => {}}
+        />
 
-      <StatsCard
-        todayReservations={stats.todayReservations}
-        pendingCount={stats.pendingCount}
-        confirmedCount={stats.confirmedCount}
-        totalGuests={stats.totalGuests}
-      />
+        <StatsCard
+          todayReservations={stats.todayReservations}
+          pendingCount={stats.pendingCount}
+          confirmedCount={stats.confirmedCount}
+          totalGuests={stats.totalGuests}
+        />
 
-      <SearchBar searchQuery={searchQuery} onSearchChange={setSearchQuery} selectedDate={selectedDate} onDateChange={setSelectedDate} />
-      
-      <FilterBar 
-        searchQuery={searchQuery} 
-        selectedDate={selectedDate} 
-        onClearSearch={handleClearSearch} 
-        onClearDate={handleClearDate} 
-      />
+        <SearchBar
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
+          selectedDate={selectedDate}
+          onDateChange={onDateChange}
+        />
+
+        <FilterBar
+          searchQuery={searchQuery}
+          selectedDate={selectedDate}
+          onClearSearch={handleClearSearch}
+          onClearDate={handleClearDate}
+        />
       </ThemedView>
 
-      
+      {error && (
+        <ThemedView style={{ padding: 16, backgroundColor: "#ffebee" }}>
+          <ThemedText style={{ color: "#c62828" }}>{error}</ThemedText>
+        </ThemedView>
+      )}
 
       <FlatList
         data={flatData}
@@ -268,19 +333,38 @@ export default function ReservationModule() {
         style={styles.list}
         showsVerticalScrollIndicator={false}
         onEndReached={loadNextPage}
-        onEndReachedThreshold={0.1}
+        onEndReachedThreshold={0.5}
+        onRefresh={refreshData}
+        refreshing={isLoading && currentPage === 1}
+        removeClippedSubviews={false}
+        ListEmptyComponent={
+          <View style={styles.emptyContainer}>
+            <IconSymbol
+              library="Feather"
+              size={26}
+              name="calendar"
+              color={colors.primary}
+            />
+            <Text style={styles.emptyText}>这里还没有内容哦</Text>
+          </View>
+        }
         ListFooterComponent={
-          isLoading ? (
-            <ThemedView style={{ padding: 20, alignItems: 'center' }}>
+          flatData.length === 0 ? null : isLoading && currentPage > 1 ? (
+            <ThemedView style={{ padding: 20, alignItems: "center" }}>
               <ActivityIndicator size="small" />
               <ThemedText style={{ marginTop: 8, opacity: 0.6 }}>
-                Loading more reservations...
+                Loading reservations...
               </ThemedText>
             </ThemedView>
-          ) : null
+          ) : (
+            <ThemedView style={{ padding: 20, alignItems: "center" }}>
+              <ThemedText style={{ opacity: 0.6 }}>
+                No more reservations
+              </ThemedText>
+            </ThemedView>
+          )
         }
       />
-      
     </ThemedView>
   );
 }
