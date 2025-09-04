@@ -150,7 +150,6 @@ export default function TableSettingsDetail({
   };
 
   const handleBusinessHoursChange = (field: "start" | "end", value: string,onlyUpdate:boolean) => {
-    
     if(onlyUpdate){
       setSettings((prev) => ({
         ...prev,
