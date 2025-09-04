@@ -22,10 +22,7 @@ export interface TableSettings {
   timeSlots: TimeSlot[];
   advanceBookingDays: number;
   minAdvanceHours: number;
-}
-
-export interface TableSettingsDetailProps {
-  onBack: () => void;
+  restaurantId: number;
 }
 
 export interface SettingsHeaderProps {

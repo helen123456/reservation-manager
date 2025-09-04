@@ -36,7 +36,7 @@ export * from './errorHandler';
 
 // 导出API服务
 export { AuthService } from './api/authService';
-export { ReservationService } from './api/reservationService';
+export * from './api/reservationService';
 
 // 在应用启动时调用初始化
 initializeNetworkServices();

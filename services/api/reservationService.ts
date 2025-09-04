@@ -2,6 +2,7 @@
  * 预订相关API服务
  */
 
+import { TableSettings } from "@/components/TableSettingsDetail/types";
 import { API_ENDPOINTS } from "../config";
 import httpClient from "../httpClient";
 import { Reservation } from "../types";
@@ -32,33 +33,40 @@ export const updateReservation = async (params?: {
 
   return response.data;
 };
+
+
+export interface BusinessHours {
+  start: string;
+  end: string;
+}
+
+export interface ReservationSettingType {
+  acceptReservations: boolean;
+  maxGuests: number;
+  minGuests: number;
+  businessHours: BusinessHours;
+  timeInterval: number; // minutes: 60 = 1h, 30 = 30min, 15 = 15min
+  maxReservationsPerSlot: number; // maximum reservations allowed per time slot
+  timeSlots: string[];
+  advanceBookingDays: number;
+  minAdvanceHours: number;
+  restaurantId: number;
+}
+
 // 获取预订设置信息
 export const getReservationSettingInfo = async (
   id: number
-): Promise<Reservation> => {
-  const response = await httpClient.get<Reservation>(API_ENDPOINTS.RESERVATIONS.SETTINGINFO(id));
+): Promise<ReservationSettingType> => {
+  const response = await httpClient.get<ReservationSettingType>(API_ENDPOINTS.RESERVATIONS.SETTINGINFO(id));
   return response.data;
 };
 
-// 预订设置更新参数接口
-interface ReservationSettingUpdateParams {
-  startTime?: string;
-  endTime: string;
-  isReserve: number;
-  restaurantId: number;
-  interval: number;
-  maxCapacity: number;
-  avilableTime: string[];
-  minGuest: number;
-  maxGuesst: number;
-}
-
 // 更新预订设置信息
 export const getReservationSettingUpdate = async (
-  params: ReservationSettingUpdateParams
-): Promise<Reservation> => {
-  const response = await httpClient.post<Reservation>(API_ENDPOINTS.RESERVATIONS.SETTINGUPDATE, params);
+  params: TableSettings
+): Promise<void> => {
+  const response = await httpClient.post(API_ENDPOINTS.RESERVATIONS.SETTINGUPDATE, params);
   return response.data;
-};  
+};
 
 
