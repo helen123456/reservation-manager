@@ -1,9 +1,15 @@
 import Modal from "@/components/Modal";
 import { useColors } from "@/hooks/useTheme";
+import { updateReservation } from "@/services/api/reservationService";
 import { Feather } from "@expo/vector-icons";
 import dayjs from "dayjs";
 import React, { useMemo, useState } from "react";
-import { ScrollView, Text, TouchableOpacity, useColorScheme } from "react-native";
+import {
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  useColorScheme,
+} from "react-native";
 import { useTranslation } from "../../hooks/useTranslation";
 import { ThemedText } from "../ThemedText";
 import { ThemedView } from "../ThemedView";
@@ -29,9 +35,9 @@ export const ReservationDetail: React.FC<ReservationDetailProps> = ({
   const Colors = useColors();
   const colorScheme = useColorScheme();
   // 使用 useMemo 缓存样式以提高性能
-  const styles = useMemo(() => createStyles(colorScheme), [colorScheme])
-  const [visible,setVisible] = useState<boolean>(false)
-  const [tipsText,setTipsText] = useState<string>("")
+  const styles = useMemo(() => createStyles(colorScheme), [colorScheme]);
+  const [visible, setVisible] = useState<boolean>(false);
+  const [tipsText, setTipsText] = useState<string>("");
 
   const getInitials = (name: string) => {
     return name
@@ -40,20 +46,32 @@ export const ReservationDetail: React.FC<ReservationDetailProps> = ({
       .join("")
       .toUpperCase();
   };
-  const handleAccept=(reservation:Reservation)=>{
-    setVisible(true)
-    setTipsText(t("acceptTip"))
-  }
-  const handleReject=(reservation:Reservation)=>{
-    setVisible(true)
-    setTipsText(t("rejectTip"))
-  }
-  const handelCancel=()=>{
-    setVisible(false)
-  }
-  const handleSure=()=>{
-    setVisible(false)
-  }
+  const handleAccept = () => {
+    setVisible(true);
+    setTipsText(t("acceptTip"));
+  };
+  const handleReject = () => {
+    setVisible(true);
+    setTipsText(t("rejectTip"));
+  };
+  const handelCancel = () => {
+    updateReservation({
+      id: reservation.id,
+      status: 3,
+    }).then((reservation: Reservation) => {
+      onAccept(reservation);
+      setVisible(false);
+    });
+  };
+  const handleConfirm = () => {
+    updateReservation({
+      id: reservation.id,
+      status: 1,
+    }).then((reservation: Reservation) => {
+      onReject(reservation);
+      setVisible(false);
+    });
+  };
 
   return (
     <ThemedView style={styles.container}>
@@ -124,33 +142,41 @@ export const ReservationDetail: React.FC<ReservationDetailProps> = ({
             </ThemedView>
           </ThemedView>
         </ThemedView>
- {reservation.status === 0 && (
-        <ThemedView style={styles.actionsContainer}>
-          <TouchableOpacity
-            style={[styles.actionButton, styles.rejectButton]}
-            onPress={() => handleReject(reservation)}
-          >
-            <Feather name="x" size={20} color={Colors.text} />
-            <ThemedText style={styles.actionButtonText}>
-              {t("decline")}
-            </ThemedText>
-          </TouchableOpacity>
+        {reservation.status === 0 && (
+          <ThemedView style={styles.actionsContainer}>
+            <TouchableOpacity
+              style={[styles.actionButton, styles.rejectButton]}
+              onPress={() => handleReject()}
+            >
+              <Feather name="x" size={20} color={Colors.text} />
+              <ThemedText style={styles.actionButtonText}>
+                {t("decline")}
+              </ThemedText>
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            style={[styles.actionButton, styles.confirmButton]}
-            onPress={() => handleAccept(reservation)}
-          >
-            <Feather name="check" size={20} color={Colors.primaryForeground} />
-            <ThemedText style={styles.rejectButtonText}>
-              {t("accept")}
-            </ThemedText>
-          </TouchableOpacity>
-        </ThemedView>
-      )}
+            <TouchableOpacity
+              style={[styles.actionButton, styles.confirmButton]}
+              onPress={() => handleAccept()}
+            >
+              <Feather
+                name="check"
+                size={20}
+                color={Colors.primaryForeground}
+              />
+              <ThemedText style={styles.rejectButtonText}>
+                {t("accept")}
+              </ThemedText>
+            </TouchableOpacity>
+          </ThemedView>
+        )}
       </ScrollView>
 
-     
-      <Modal visible={visible} title={t("tip")} onCancel={handelCancel} onOk={handleSure}>
+      <Modal
+        visible={visible}
+        title={t("tip")}
+        onCancel={handelCancel}
+        onOk={handleConfirm}
+      >
         <Text>{tipsText}</Text>
       </Modal>
     </ThemedView>

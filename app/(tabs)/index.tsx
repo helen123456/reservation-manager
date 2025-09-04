@@ -6,12 +6,14 @@ import ProfileDetail from "@/components/ProfileDetail";
 import ReservationModule from "@/components/ReservationModule";
 import SettingsModule from "@/components/SettingsModule";
 import TableSettingsDetail from "@/components/TableSettingsDetail";
+import { ThemedView } from "@/components/ThemedView";
 import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Font from "expo-font";
 import { router } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { Platform, StyleSheet, Text, View } from "react-native";
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 // Cross-platform storage utility
 const storage = {
@@ -192,7 +194,7 @@ export default function App() {
   }
 
   return (
-    <View style={styles.container}>
+    <ThemedView style={styles.container}>
       {/* Header */}
       <Header
         onSettingsClick={handleSettingsClick}
@@ -207,10 +209,12 @@ export default function App() {
         {/* <ParallaxScrollView
           headerBackgroundColor={{ light: "#D0D0D0", dark: "#353636" }}
         > */}
+         <SafeAreaView edges={['bottom']} style={{ flex: 1 }}>
           {renderContent()}
+          </SafeAreaView>
         {/* </ParallaxScrollView> */}
       
-    </View>
+    </ThemedView>
   );
 }
 

@@ -134,6 +134,7 @@ export const BaseInput = forwardRef<TextInput, BaseInputProps>(
             placeholderTextColor="#9ca3af"
             editable={!disabled}
             cursorColor={"#6b7280"}
+            underlineColorAndroid="transparent" 
             {...textInputProps}
           />
 

@@ -1,6 +1,6 @@
 import { useColors } from "@/hooks/useTheme";
 import { useTranslation } from "@/hooks/useTranslation";
-import { ReservationService } from "@/services/api/reservationService";
+import { getReservations } from "@/services/api/reservationService";
 import { Reservation } from "@/services/types";
 import { message } from "@/utils/message";
 import dayjs from "dayjs";
@@ -8,11 +8,10 @@ import _ from "lodash";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   ActivityIndicator,
-  Alert,
   FlatList,
   Text,
   View,
-  useColorScheme,
+  useColorScheme
 } from "react-native";
 import { NavBack } from "../NavBack";
 import { ThemedText } from "../ThemedText";
@@ -50,14 +49,12 @@ export default function ReservationModule() {
       const existingByDate = _.groupBy(existingReservations, (item) =>
         dayjs(item.reserveTime).format("YYYY-MM-DD")
       );
-   
 
       // 将新数据按日期分组
       const newByDate: { [date: string]: Reservation[] } = _.groupBy(
         newReservations,
         (item) => dayjs(item.reserveTime).format("YYYY-MM-DD")
       );
-     
 
       // 合并数据：对于相同日期，合并并去重；对于新日期，直接添加
       const mergedByDate: { [date: string]: Reservation[] } = _.merge(
@@ -72,7 +69,7 @@ export default function ReservationModule() {
         .forEach((date) => {
           result.push(...mergedByDate[date]);
         });
-     
+
       return result;
     },
     []
@@ -81,7 +78,7 @@ export default function ReservationModule() {
   // 加载预订数据
   const loadReservations = useCallback(
     async (page: number = 1, reset: boolean = false) => {
-      console.log('reset',reset)
+      console.log("reset", reset);
       if (isLoading) return;
       setIsLoading(true);
       setError(null);
@@ -95,8 +92,8 @@ export default function ReservationModule() {
             date: dayjs(selectedDate).format("YYYY-MM-DD"),
           }),
         };
-        const response: any = await ReservationService.getReservations(params);
-       
+        const response: any = await getReservations(params);
+
         if (response.code === 200) {
           if (reset) {
             setAllReservations(response.data);
@@ -112,7 +109,6 @@ export default function ReservationModule() {
           setTotal(response.total);
           const hasMore = page * params.pageSize < response.total;
           setHasNextPage(hasMore);
-          
         } else {
           message.error(response.msg || "获取预订列表失败");
         }
@@ -122,7 +118,7 @@ export default function ReservationModule() {
         setIsLoading(false);
       }
     },
-    [isLoading,searchQuery,selectedDate, mergeReservationsByDate]
+    [isLoading, searchQuery, selectedDate, mergeReservationsByDate]
   );
 
   // 初始加载
@@ -176,51 +172,11 @@ export default function ReservationModule() {
     setSelectedReservation(null);
   };
 
-  const handleAcceptReservation = (reservation: Reservation) => {
-    Alert.alert(
-      "Accept Reservation",
-      `Accept reservation for ${reservation.contactName}?`,
-      [
-        { text: t("cancel"), style: "cancel" },
-        {
-          text: t("accept"),
-          onPress: () => {
-            // 更新状态为确认（假设1为确认状态）
-            const updatedReservation = { ...reservation, status: 1 };
-            setAllReservations((prev) =>
-              prev.map((r) =>
-                r.id === reservation.id ? updatedReservation : r
-              )
-            );
-            setSelectedReservation(null);
-          },
-        },
-      ]
+  const handleUpdateReservation = (reservation: Reservation) => {
+    setAllReservations((prev) =>
+      prev.map((r) => (r.id === reservation.id ? reservation : r))
     );
-  };
-
-  const handleRejectReservation = (reservation: Reservation) => {
-    Alert.alert(
-      "Decline Reservation",
-      `Decline reservation for ${reservation.contactName}?`,
-      [
-        { text: t("cancel"), style: "cancel" },
-        {
-          text: t("decline"),
-          style: "destructive",
-          onPress: () => {
-            // 更新状态为拒绝（假设-1为拒绝状态）
-            const updatedReservation = { ...reservation, status: -1 };
-            setAllReservations((prev) =>
-              prev.map((r) =>
-                r.id === reservation.id ? updatedReservation : r
-              )
-            );
-            setSelectedReservation(null);
-          },
-        },
-      ]
-    );
+    setSelectedReservation(null);
   };
 
   const handleClearSearch = () => {
@@ -278,8 +234,8 @@ export default function ReservationModule() {
       <ReservationDetail
         reservation={selectedReservation}
         onBack={handleBack}
-        onAccept={handleAcceptReservation}
-        onReject={handleRejectReservation}
+        onAccept={handleUpdateReservation}
+        onReject={handleUpdateReservation}
       />
     );
   }

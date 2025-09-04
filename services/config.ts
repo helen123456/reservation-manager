@@ -80,19 +80,16 @@ export const API_ENDPOINTS = {
   
   // 用户相关
   USER: {
-    PROFILE: '/user/profile',
-    UPDATE_PROFILE: '/user/profile',
-    CHANGE_PASSWORD: '/user/change-password',
+    INFO:(id:string|null) =>`/user/detail/${id}`, //用户详情
+    UPDATE:'/user/update', //更新用户
   },
   
   // 预订相关
   RESERVATIONS: {
-    LIST: '/reservations/list',
-    CREATE: '/reservations',
-    UPDATE: (id: string) => `/reservations/${id}`,
-    DELETE: (id: string) => `/reservations/${id}`,
-    CONFIRM: (id: string) => `/reservations/${id}/confirm`,
-    CANCEL: (id: string) => `/reservations/${id}/cancel`,
+    LIST: '/reservations/list',//列表
+    CONFIRM:'/reservation/update',//确认/取消预订
+    SETTINGINFO:(id:number)=>`/reservation/setting/${id}`,
+    SETTINGUPDATE:'/reservation/setting/update'
   },
   
   // 餐桌相关

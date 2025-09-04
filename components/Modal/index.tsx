@@ -1,3 +1,4 @@
+import { i18n } from "@/utils/i18n";
 import React, { useMemo } from "react";
 import {
   Modal as RNModal,
@@ -10,12 +11,13 @@ import {
 import { createStyles } from "./styles";
 import { ModalProps } from "./types";
 
+
 export const Modal: React.FC<ModalProps> = ({
   visible,
   title,
   children,
-  cancelText = "取消",
-  sureText = "确定",
+  cancelText = i18n.t("modelCancel"),
+  sureText = i18n.t("modelOk"),
   onCancel,
   onOk,
   showCancel = true,

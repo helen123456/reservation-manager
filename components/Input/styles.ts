@@ -1,5 +1,5 @@
 import { Colors } from "@/constants/Colors";
-import { Platform, StyleSheet, ColorSchemeName } from 'react-native';
+import { ColorSchemeName, Platform, StyleSheet } from 'react-native';
 
 // 创建动态样式函数
 export const createStyles = (colorScheme: ColorSchemeName) => {
@@ -13,13 +13,13 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
       fontSize: 14,
       fontWeight: '500',
       color: colors.mutedForeground,
-      marginBottom: 6,
+      marginBottom: 10,
     },
     required: {
       color: colors.destructive, // 红色表示必填
     },
     inputContainer: {
-      height: 50,
+      minHeight: 40,
       position: "relative",
       flexDirection: "row",
       alignItems: "center",
@@ -44,9 +44,13 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
       fontSize: 16,
       color: colors.text,
       paddingHorizontal: 12,
-      height: 60,
+      minHeight: 40,
       paddingVertical: Platform.OS === 'ios' ? 12 : 8,
       textAlignVertical: 'center',
+      backgroundColor:'transparent',
+      outline: 'none',
+      borderWidth: 0,
+      
     },
     inputWithLeftIcon: {
       paddingLeft: 8,

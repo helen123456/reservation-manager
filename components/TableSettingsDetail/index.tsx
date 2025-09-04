@@ -352,37 +352,6 @@ export default function TableSettingsDetail({ onBack }: TableSettingsDetailProps
             </View>
           </View>
         </View>
-
-        {/* Booking Rules */}
-        <View style={[styles.card, styles.lastCard]}>
-          <ThemedText style={styles.cardTitle}>{t('bookingRules')}</ThemedText>
-          <View style={styles.row}>
-            <View style={styles.inputGroup}>
-              <ThemedText style={styles.label}>{t('maxAdvanceBookingDays')}</ThemedText>
-              <TextInput
-                style={styles.numberInput}
-                value={settings.advanceBookingDays.toString()}
-                onChangeText={(value) => 
-                  setSettings(prev => ({ ...prev, advanceBookingDays: parseInt(value) || 0 }))
-                }
-                keyboardType="numeric"
-                placeholder="30"
-              />
-            </View>
-            <View style={styles.inputGroup}>
-              <ThemedText style={styles.label}>{t('minAdvanceNoticeHours')}</ThemedText>
-              <TextInput
-                style={styles.numberInput}
-                value={settings.minAdvanceHours.toString()}
-                onChangeText={(value) => 
-                  setSettings(prev => ({ ...prev, minAdvanceHours: parseInt(value) || 0 }))
-                }
-                keyboardType="numeric"
-                placeholder="2"
-              />
-            </View>
-          </View>
-        </View>
       </ScrollView>
     </ThemedView>
   );

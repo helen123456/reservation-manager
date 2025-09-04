@@ -105,7 +105,7 @@ export const translations = {
     profileTitle: "Profile",
     personalInformation: "Personal Information",
     restaurantName: "Restaurant Name",
-    ownerName: "Owner Name",
+    userName: "userName",
     email: "Email",
     phone: "Phone",
     address: "Address",
@@ -113,7 +113,7 @@ export const translations = {
     preferences: "Preferences",
     save: "Save",
     restaurantNameRequired:"Restaurant name is required",
-    ownerNameRequired:"Owner name is required",
+    userNameRequired:"user name is required",
     emailInvalid:"Email is invalid",
     phoneRequired:"Phone is required",
     addressRequired:"Address is required",
@@ -148,7 +148,7 @@ export const translations = {
     completed: "Completed",
     cancelled: "Cancelled",
     accept: "Accept",
-    decline: "Decline",
+    decline: "Reject",
     guests: "guests",
     acceptTip:"Are you sure you want to confirm this reservation?",
     rejectTip:"Are you sure you want to reject this reservation?",
@@ -216,6 +216,9 @@ export const translations = {
     settingsSaved: "Settings saved successfully!",
     profileUpdated: "Profile updated successfully!",
     success: "",
+    // Model
+    modelCancel: "Cancel",
+    modelOk: "OK",
   },
   fr: {
     // Header
@@ -252,7 +255,7 @@ export const translations = {
     profileTitle: "Profil",
     personalInformation: "Informations Personnelles",
     restaurantName: "Nom du Restaurant",
-    ownerName: "Nom du Propriétaire",
+    userName: "Nom d'utilisateur",
     email: "Email",
     phone: "Téléphone",
     address: "Adresse",
@@ -260,9 +263,10 @@ export const translations = {
     preferences: "Préférences",
     save: "Enregistrer",
     restaurantNameRequired:"Le nom du restaurant est requis",
-    ownerNameRequired:"Le nom du propriétaire est requis",
+    userNameRequired:"Le nom d'utilisateur est requis",
     emailInvalid:"L'email est invalide",
     phoneRequired:"Le téléphone est requis",
+    phoneInvalid:"Le téléphone est invalide",
     addressRequired:"L'adresse est requise",
     languageRequired:"La langue est requise",
 
@@ -301,8 +305,6 @@ export const translations = {
     acceptTip:"Are you sure you want to confirm this reservation?",
     rejectTip:"Are you sure you want to reject this reservation?",
     tip:"Tip",
-
-    
 
     // Help & Support
     helpSupport: "Aide et Support",
@@ -366,6 +368,9 @@ export const translations = {
     settingsSaved: "Paramètres sauvegardés avec succès !",
     profileUpdated: "Profil mis à jour avec succès !",
     success: "",
+    // Model
+    modelCancel: "Annuler",
+    modelOk: "OK",
   },
 };
 

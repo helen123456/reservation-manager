@@ -1,9 +1,12 @@
-import { useMessage } from "@/components/GlobalMessage";
+import { useMessage } from '@/components/GlobalMessage';
 import Input from "@/components/Input";
-import { Modal } from "@/components/Modal";
+import { Modal } from '@/components/Modal';
+import { useColors } from '@/hooks/useTheme';
+import { getUserInfo, updateUserInfo } from '@/services/api/userService';
 import { Feather } from "@expo/vector-icons";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import React, { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import z from "zod";
@@ -22,22 +25,18 @@ export default function ProfileDetail({ onBack }: ProfileDetailProps) {
   const message = useMessage();
   const [modalVisible, setModalVisible] = useState(false);
   const [singleButtonModal, setSingleButtonModal] = useState(true);
+  const colors = useColors()
 
   const schema = z.object({
-    restaurantName: z.string().min(1, t("restaurantNameRequired")),
-    ownerName: z.string().min(1, t("ownerNameRequired")),
+    userName: z.string().min(1, t("userNameRequired")),
     email: z.string().email(t("emailInvalid")),
-    phone: z
-      .string()
-      .min(1, t("phoneRequired"))
-      .regex(/^\+?[1-9]\d{1,14}$/, t("phoneInvalid")), // 国际电话号码格式,
+    phone: z.string().min(1, t("phoneRequired")).regex(/^\+?[1-9]\d{1,14}$/, t("phoneInvalid")), // 国际电话号码格式,
     address: z.string().min(1, t("addressRequired")),
   });
   const methods = useForm({
     mode: "onChange",
     defaultValues: {
-      restaurantName: "Le Petit Bistro",
-      ownerName: "Marie Dubois",
+      userName: "Marie Dubois",
       email: "marie@lepetitbistro.com",
       phone: "122",
       address: "123 Rue de la Paix, Paris, France",
@@ -47,15 +46,21 @@ export default function ProfileDetail({ onBack }: ProfileDetailProps) {
   const {
     handleSubmit,
     formState: { isValid },
+    reset
   } = methods;
 
   const [showLanguageSelector, setShowLanguageSelector] = useState(false);
+  useEffect(() => {
+    getUserInfo().then((res) => {
+      reset(res)
+    })
+  }, [reset])
 
   const handleSave = async (data: z.infer<typeof schema>) => {
     if (!isValid) return;
-    console.log(data);
-    message.success("保存成功！", 3);
-    // Alert.alert("Success", t("profileUpdated"));
+    const uid = await AsyncStorage.getItem('uid')
+    await updateUserInfo({...data,lang:currentLanguage,uid:uid||'1'})
+     message.success('保存成功！', 3);
   };
 
   const handleLanguageChange = (newLanguage: string) => {
@@ -73,7 +78,7 @@ export default function ProfileDetail({ onBack }: ProfileDetailProps) {
       style={styles.saveButton}
       onPress={handleSubmit(handleSave)}
     >
-      <Feather name="save" size={14} color="#fff" />
+      <Feather name="save" size={14} color={colors.primaryForeground} />
       <Text style={styles.saveButtonText}>{t("save")}</Text>
     </TouchableOpacity>
   );
@@ -95,16 +100,12 @@ export default function ProfileDetail({ onBack }: ProfileDetailProps) {
             </ThemedText>
           </View>
           <FormProvider {...methods}>
-            <Input
-              name={"restaurantName"}
-              label={t("restaurantName")}
-              placeholder={t("restaurantName")}
-            />
+           
 
             <Input
-              name={"ownerName"}
-              label={t("ownerName")}
-              placeholder={t("ownerName")}
+              name={"userName"}
+              label={t("userName")}
+              placeholder={t("userName")}
             />
 
             <Input
@@ -129,6 +130,7 @@ export default function ProfileDetail({ onBack }: ProfileDetailProps) {
               label={t("address")}
               placeholder={t("address")}
               multiline
+              numberOfLines={2}
             />
           </FormProvider>
         </View>
@@ -152,8 +154,8 @@ export default function ProfileDetail({ onBack }: ProfileDetailProps) {
           </TouchableOpacity>
         </View>
       </ScrollView>
-
-      {/* 单按钮 Modal */}
+      
+ {/* 单按钮 Modal */}
       <Modal
         visible={showLanguageSelector}
         title={t("language")}
@@ -161,20 +163,25 @@ export default function ProfileDetail({ onBack }: ProfileDetailProps) {
         onCancel={() => setShowLanguageSelector(false)}
       >
         {languages.map((language) => (
-          <TouchableOpacity
-            key={language.code}
-            style={[
-              styles.languageOption,
-              currentLanguage === language.code &&
-                styles.languageOptionSelected,
-            ]}
-            onPress={() => handleLanguageChange(language.code)}
-          >
-            <Text style={styles.languageOptionText}>{language.nativeName}</Text>
-            <Text style={styles.languageOptionSubtext}>({language.name})</Text>
-          </TouchableOpacity>
-        ))}
+                <TouchableOpacity
+                  key={language.code}
+                  style={[
+                    styles.languageOption,
+                    currentLanguage === language.code &&
+                      styles.languageOptionSelected,
+                  ]}
+                  onPress={() => handleLanguageChange(language.code)}
+                >
+                  <Text style={styles.languageOptionText}>
+                    {language.nativeName}
+                  </Text>
+                  <Text style={styles.languageOptionSubtext}>
+                    ({language.name})
+                  </Text>
+                </TouchableOpacity>
+              ))}
       </Modal>
+     
     </ThemedView>
   );
 }
