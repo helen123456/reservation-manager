@@ -1,11 +1,14 @@
-import { httpClient } from "@/services/httpClient";
+import request from "@/services/request";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { API_ENDPOINTS } from "../config";
 
 export const getUserInfo = async () => {
-  const uid = await AsyncStorage.getItem("uid")||'1';
-  const response = await httpClient.get(API_ENDPOINTS.USER.INFO(uid));
-  return response.data;
+  try {
+    const uid = (await AsyncStorage.getItem("uid")) || "1";
+    const response = await request.get(`/api/user/detail/${uid}`);
+    return response.data;
+  } catch (error) {
+    console.error("获取用户信息失败:", error);
+  }
 };
 export const updateUserInfo = async (params?: {
   uid?: string;
@@ -15,6 +18,10 @@ export const updateUserInfo = async (params?: {
   address?: string;
   lang?: string;
 }) => {
-  const response = await httpClient.post(API_ENDPOINTS.USER.UPDATE, params);
-  return response;
+  try {
+    const response = await request.post("/api/user/update", params);
+    return response;
+  } catch (error) {
+    console.error("更新用户信息失败:", error);
+  }
 };

@@ -2,8 +2,9 @@ import Input from "@/components/Input";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { Colors } from "@/constants/Colors";
+import { login } from "@/services/api/authService";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import {
   ActivityIndicator,
@@ -23,7 +24,6 @@ import { LoginProps, registerSchema } from "./types";
 
 
 export default function Login({ onLogin }: LoginProps) {
-  const [loading, setLoading] = useState(false);
   const { t } = useTranslation();
   const colorScheme = useColorScheme()??'light';
   const colors = Colors[colorScheme];
@@ -45,27 +45,13 @@ export default function Login({ onLogin }: LoginProps) {
   } = methods;
  
   
-  // 原始提交函数
-  const submitLogin = useCallback(async (data: RegisterFormData) => {
-    if (loading || isSubmitting) {
-      return; // 如果正在提交，直接返回
-    }
-    setLoading(true);
-    try {
-      // await AuthService.login(data);
+  // 带防抖的登录提交函数
+  const onSubmit = useAsyncDebounce(useCallback(async (data: RegisterFormData) => {
+    const res = await login(data);
+    if(res){
       onLogin();
-    } catch (error) {
-      console.log('error')
-    } finally {
-      setLoading(false);
     }
-  }, [loading, isSubmitting, onLogin]);
-  
-  // 使用防抖 Hook
-  const debouncedSubmit = useAsyncDebounce(submitLogin, 300);
-  const onSubmit = useCallback((data: RegisterFormData) => {
-    debouncedSubmit(data);
-  }, [debouncedSubmit]);
+  }, [onLogin]), 300);
 
   //忘记密码
   const handleForgotPassword = () => {
@@ -109,7 +95,7 @@ export default function Login({ onLogin }: LoginProps) {
                 helperText="用户名将作为您的登录凭证"
               />
               <Input
-               labelStyle={{color: colors.primary}}
+                labelStyle={{color: colors.primary}}
                 keyboardType="email-address"
                 name="password"
                 label={t("password")}
@@ -132,12 +118,12 @@ export default function Login({ onLogin }: LoginProps) {
               <TouchableOpacity
                 style={[
                   styles.signInButton,
-                  (isSubmitting || loading || !isValid) && styles.disabledButton,
+                  (isSubmitting  || !isValid) && styles.disabledButton,
                 ]}
                 onPress={handleSubmit(onSubmit)}
-                disabled={isSubmitting || loading}
+                disabled={isSubmitting }
               >
-                {(isSubmitting || loading) ? (
+                {(isSubmitting) ? (
                   <ActivityIndicator color="white" />
                 ) : (
                   <ThemedText style={styles.signInButtonText}>

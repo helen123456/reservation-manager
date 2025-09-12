@@ -51,7 +51,7 @@ export default function ProfileDetail({ onBack }: ProfileDetailProps) {
 
   const [showLanguageSelector, setShowLanguageSelector] = useState(false);
   useEffect(() => {
-    getUserInfo().then((res) => {
+    getUserInfo().then((res:any) => {
       reset(res)
     })
   }, [reset])

@@ -2,37 +2,36 @@
  * 预订相关API服务
  */
 
-import { API_ENDPOINTS } from "../config";
-import httpClient from "../httpClient";
+import request from "@/services/request";
 import { Reservation } from "../types";
 
 // 获取预订列表
-export const getReservations = async (params?: {
+export const getReservations = async (data?: {
   page?: number;
   pageSize?: number;
   status?: string;
   date?: string;
   search?: string;
 }) => {
-  const response = await httpClient.post(
-    API_ENDPOINTS.RESERVATIONS.LIST,
-    params
-  );
-  return response;
+  try {
+    const response = await request.post("/reservations/list", data);
+    return response;
+  } catch (error) {
+    console.error("获取预订列表失败:", error);
+  }
 };
 // 确认/取消预订
-export const updateReservation = async (params?: {
+export const updateReservation = async (data?: {
   id?: number;
   status?: number;
-}): Promise<Reservation> => {
-  const response = await httpClient.post<Reservation>(
-    API_ENDPOINTS.RESERVATIONS.CONFIRM,
-    params
-  );
-
-  return response.data;
+}) => {
+  try {
+    const response = await request.post<Reservation>("/record/update", data);
+    return response;
+  } catch (error) {
+    console.error("更新预订失败:", error);
+  }
 };
-
 
 export interface BusinessHours {
   start: string;
@@ -53,19 +52,23 @@ export interface ReservationSettingType {
 }
 
 // 获取预订设置信息
-export const getReservationSettingInfo = async (
-  id: number
-): Promise<ReservationSettingType> => {
-  const response = await httpClient.get<ReservationSettingType>(API_ENDPOINTS.RESERVATIONS.SETTINGINFO(id));
-  return response.data;
+export const getReservationSettingInfo = async (id: number) => {
+  try {
+    const response = await request.get<ReservationSettingType>(
+      `/reservation/setting/${id}`
+    );
+    return response;
+  } catch (error) {
+    console.error("获取预订设置信息失败:", error);
+  }
 };
 
 // 更新预订设置信息
-export const getReservationSettingUpdate = async (
-  params:any
-) => {
-  const response = await httpClient.post(API_ENDPOINTS.RESERVATIONS.SETTINGUPDATE, params);
-  return response;
+export const getReservationSettingUpdate = async (data: any) => {
+  try {
+    const response = await request.post("/reservation/setting/update", data);
+    return response;
+  } catch (error) {
+    console.error("更新预订设置信息失败:", error);
+  }
 };
-
-
