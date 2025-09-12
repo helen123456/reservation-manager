@@ -1,19 +1,19 @@
 import NavBack from "@/components/NavBack";
 import { Colors } from "@/constants/Colors";
+import { message } from "@/utils/message";
 import { Ionicons } from "@expo/vector-icons";
 import React, { useEffect, useMemo, useState } from "react";
 import {
-  Alert,
   ScrollView,
   Switch,
   Text,
   TextInput,
   TouchableOpacity,
   View,
-  useColorScheme,
+  useColorScheme
 } from "react-native";
 import { useTranslation } from "../../hooks/useTranslation";
-import { ReservationSettingType, getReservationSettingInfo } from "../../services/api/reservationService";
+import { ReservationSettingType, getReservationSettingInfo, getReservationSettingUpdate } from "../../services/api/reservationService";
 import { ThemedText } from "../ThemedText";
 import { ThemedView } from "../ThemedView";
 import { createStyles } from "./styles";
@@ -204,8 +204,14 @@ export default function TableSettingsDetail({
     });
   };
 
-  const handleSave = () => {
-    Alert.alert(t("success"), t("settingsSaved"));
+  const handleSave = async() => {
+    const {timeSlots,...rest} = settings
+    const selectTime = timeSlots.filter(slot => slot.enabled).map(slot=>slot.time)
+    const response = await getReservationSettingUpdate({...rest,timeSlots:selectTime});
+    if(response.code === 200){
+      message.success('保存成功')
+    }
+    
   };
 
   const enabledSlotsCount = settings.timeSlots.filter(

@@ -2,7 +2,6 @@
  * 预订相关API服务
  */
 
-import { TableSettings } from "@/components/TableSettingsDetail/types";
 import { API_ENDPOINTS } from "../config";
 import httpClient from "../httpClient";
 import { Reservation } from "../types";
@@ -63,10 +62,10 @@ export const getReservationSettingInfo = async (
 
 // 更新预订设置信息
 export const getReservationSettingUpdate = async (
-  params: TableSettings
-): Promise<void> => {
+  params:any
+) => {
   const response = await httpClient.post(API_ENDPOINTS.RESERVATIONS.SETTINGUPDATE, params);
-  return response.data;
+  return response;
 };
 
 

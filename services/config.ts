@@ -19,7 +19,7 @@ export const CURRENT_ENV = __DEV__ ? ENV.DEVELOPMENT : ENV.PRODUCTION;
 export const API_CONFIG = {
   // 基础URL配置
   BASE_URL: {
-    [ENV.DEVELOPMENT]: 'https://m1.apifoxmock.com/m1/7045660-6765697-default/api',
+    [ENV.DEVELOPMENT]: 'http://127.0.0.1:4523/m1/7045660-6765697-default/api',
     [ENV.STAGING]: 'https://staging-api.yourapp.com/api',
     [ENV.PRODUCTION]: 'https://api.yourapp.com/api',
   },
