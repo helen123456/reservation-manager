@@ -1,6 +1,7 @@
 import { Feather } from "@expo/vector-icons";
 import React, { useState, useMemo } from "react";
-import { ScrollView, TouchableOpacity, View, useColorScheme } from "react-native";
+import { ScrollView, TouchableOpacity, View } from "react-native";
+import { useTheme } from '@/hooks/ThemeContext';
 import { useTranslation } from "../../hooks/useTranslation";
 import { NavBack } from "../NavBack";
 import { ThemedText } from "../ThemedText";
@@ -17,10 +18,8 @@ export default function SettingsModule({
   onBack,
 }: SettingsModuleProps) {
   const { t } = useTranslation();
-  const colorScheme = useColorScheme();
-  
-  // 使用 useMemo 缓存样式以提高性能
-  const styles = useMemo(() => createStyles(colorScheme), [colorScheme]);
+  const {theme} = useTheme();
+  const styles = useMemo(() => createStyles(theme), [theme]);
 
   const [quickSettings, setQuickSettings] = useState<QuickSettingsState>({
     acceptReservations: true,

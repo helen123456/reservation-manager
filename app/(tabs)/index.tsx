@@ -1,4 +1,3 @@
-
 import Header from "@/components/Header";
 import HelpSupport from "@/components/HelpSupport";
 import NotificationsPage from "@/components/NotificationsPage";
@@ -7,61 +6,16 @@ import ReservationModule from "@/components/ReservationModule";
 import SettingsModule from "@/components/SettingsModule";
 import TableSettingsDetail from "@/components/TableSettingsDetail";
 import { ThemedView } from "@/components/ThemedView";
+import storage from "@/utils/storage";
 import { Ionicons } from "@expo/vector-icons";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Font from "expo-font";
 import { router } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { Platform, StyleSheet, Text, View } from "react-native";
-import { SafeAreaView } from 'react-native-safe-area-context';
-
-// Cross-platform storage utility
-const storage = {
-  async getItem(key: string): Promise<string | null> {
-    if (Platform.OS === "web") {
-      try {
-        return typeof window !== "undefined"
-          ? window.localStorage.getItem(key)
-          : null;
-      } catch {
-        return null;
-      }
-    }
-    return AsyncStorage.getItem(key);
-  },
-
-  async setItem(key: string, value: string): Promise<void> {
-    if (Platform.OS === "web") {
-      try {
-        if (typeof window !== "undefined") {
-          window.localStorage.setItem(key, value);
-        }
-      } catch {
-        // Ignore storage errors on web
-      }
-      return;
-    }
-    return AsyncStorage.setItem(key, value);
-  },
-
-  async removeItem(key: string): Promise<void> {
-    if (Platform.OS === "web") {
-      try {
-        if (typeof window !== "undefined") {
-          window.localStorage.removeItem(key);
-        }
-      } catch {
-        // Ignore storage errors on web
-      }
-      return;
-    }
-    return AsyncStorage.removeItem(key);
-  },
-};
+import { StyleSheet, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [activeTab, setActiveTab] = useState("reservations");
   const [currentView, setCurrentView] = useState<
     "main" | "settings" | "profile" | "help" | "notifications"
   >("main");
@@ -79,22 +33,18 @@ export default function App() {
           ...Ionicons.font,
         });
         setFontsLoaded(true);
-
-        // Check authentication status
-        const authStatus = await storage.getItem("isAuthenticated");
-        const isAuth = authStatus === "true";
+        const token = await storage.getItem("token");
+        const isAuth = Boolean(token);
         setIsAuthenticated(isAuth);
-
-        // If not authenticated, redirect to login page
         if (!isAuth) {
-          // router.replace("/login");
+          router.replace("/login");
         }
       } catch (error) {
         console.error("Error initializing app:", error);
         // Still set fonts loaded to true to prevent infinite loading
         setFontsLoaded(true);
         // Redirect to login on error
-        // router.replace("/login");
+        router.replace("/login");
       }
     };
     initializeApp();
@@ -172,7 +122,7 @@ export default function App() {
     if (currentView === "notifications") {
       return <NotificationsPage onBack={handleBackToMain} />;
     }
-     return <ReservationModule />;
+    return <ReservationModule />;
   };
 
   // Show loading screen while fonts are loading
@@ -205,15 +155,14 @@ export default function App() {
       />
 
       {/* Main Content */}
-    
-        {/* <ParallaxScrollView
+
+      {/* <ParallaxScrollView
           headerBackgroundColor={{ light: "#D0D0D0", dark: "#353636" }}
         > */}
-         <SafeAreaView edges={['bottom']} style={{ flex: 1 }}>
-          {renderContent()}
-          </SafeAreaView>
-        {/* </ParallaxScrollView> */}
-      
+      <SafeAreaView edges={["bottom"]} style={{ flex: 1 }}>
+        {renderContent()}
+      </SafeAreaView>
+      {/* </ParallaxScrollView> */}
     </ThemedView>
   );
 }

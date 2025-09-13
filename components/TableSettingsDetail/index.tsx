@@ -1,5 +1,5 @@
 import NavBack from "@/components/NavBack";
-import { Colors } from "@/constants/Colors";
+import { useTheme } from '@/hooks/ThemeContext';
 import { message } from "@/utils/message";
 import { Ionicons } from "@expo/vector-icons";
 import React, { useEffect, useMemo, useState } from "react";
@@ -9,11 +9,10 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  View,
-  useColorScheme
+  View
 } from "react-native";
 import { useTranslation } from "../../hooks/useTranslation";
-import { ReservationSettingType, getReservationSettingInfo, getReservationSettingUpdate } from "../../services/api/reservationService";
+import { getReservationSettingInfo, getReservationSettingUpdate } from "../../services/api/reservationService";
 import { ThemedText } from "../ThemedText";
 import { ThemedView } from "../ThemedView";
 import { createStyles } from "./styles";
@@ -28,13 +27,11 @@ export default function TableSettingsDetail({
   onBack,
 }: TableSettingsDetailProps) {
   const { t } = useTranslation();
-  const colorScheme = useColorScheme() ?? "light";
-  const colors = Colors[colorScheme];
-  // 使用 useMemo 缓存样式以提高性能
-  const styles = useMemo(() => createStyles(colorScheme), [colorScheme]);
+  const {theme} = useTheme();
+  const styles = useMemo(() => createStyles(theme), [theme]);
 
   useEffect(() => {
-    getReservationSettingInfo(1).then((res: ReservationSettingType) => {
+    getReservationSettingInfo(1).then((res: any) => {
       setSettings({
         ...res,
         timeSlots: res.timeSlots.map((slot: string) => ({
@@ -88,7 +85,7 @@ export default function TableSettingsDetail({
   useEffect(() => {
     const fetchReservationSettings = async () => {
       try {
-        const data: ReservationSettingType = await getReservationSettingInfo(1);
+        const data: any = await getReservationSettingInfo(1);
         
         // 根据接口数据生成时间段
         const newSlots = generateTimeSlots(
@@ -207,7 +204,7 @@ export default function TableSettingsDetail({
   const handleSave = async() => {
     const {timeSlots,...rest} = settings
     const selectTime = timeSlots.filter(slot => slot.enabled).map(slot=>slot.time)
-    const response = await getReservationSettingUpdate({...rest,timeSlots:selectTime});
+    const response:any = await getReservationSettingUpdate({...rest,timeSlots:selectTime});
     if(response.code === 200){
       message.success('保存成功')
     }
@@ -236,7 +233,7 @@ export default function TableSettingsDetail({
             <Ionicons
               name="save"
               size={14}
-              color={colors.primary}
+              color={theme.primary}
               style={styles.saveIcon}
             />
             <Text style={styles.saveText}>{t("save")}</Text>
@@ -375,7 +372,7 @@ export default function TableSettingsDetail({
                 )
               }
             >
-              <Ionicons name="add" size={14} color={colors.primary} />
+              <Ionicons name="add" size={14} color={theme.primary} />
             </TouchableOpacity>
           </View>
         </View>

@@ -1,10 +1,7 @@
-import { Colors } from '@/constants/Colors';
-import { StyleSheet, ColorSchemeName } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 // 创建动态样式函数
-export const createStyles = (colorScheme: ColorSchemeName) => {
-  const colors = Colors[colorScheme ?? 'light'];
-  
+export const createStyles = (theme: any) => {
   return StyleSheet.create({
     container: {
       flex: 1,
@@ -30,23 +27,23 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
     title: {
       fontSize: 24,
       fontWeight: 'bold',
-      color: colors.text,
+      color: theme.text,
     },
     moreButton: {
       padding: 8,
     },
     card: {
-      backgroundColor: colors.card,
+      backgroundColor: theme.card,
       borderRadius: 8,
       padding: 16,
       marginBottom: 16,
       borderWidth: 1,
-      borderColor: colors.border,
+      borderColor: theme.border,
     },
     cardTitle: {
       fontSize: 18,
       fontWeight: '600',
-      color: colors.text,
+      color: theme.text,
       marginBottom: 12,
     },
     settingItem: {
@@ -61,26 +58,26 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
     settingTitle: {
       fontSize: 16,
       fontWeight: '500',
-      color: colors.text,
+      color: theme.text,
     },
     settingDescription: {
       fontSize: 14,
-      color: colors.mutedForeground,
+      color: theme.mutedForeground,
       marginTop: 2,
     },
     categoryTitle: {
       fontSize: 14,
-      color: colors.mutedForeground,
+      color: theme.mutedForeground,
       marginBottom: 8,
       marginTop: 8,
     },
     categoryItem: {
-      backgroundColor: colors.card,
+      backgroundColor: theme.card,
       borderRadius: 8,
       padding: 12,
       marginBottom: 8,
       borderWidth: 1,
-      borderColor: colors.border,
+      borderColor: theme.border,
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
@@ -96,7 +93,7 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
     iconContainer: {
       width: 32,
       height: 32,
-      backgroundColor: colors.muted,
+      backgroundColor: theme.muted,
       borderRadius: 8,
       alignItems: 'center',
       justifyContent: 'center',
@@ -105,24 +102,24 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
     categoryItemTitle: {
       fontSize: 14,
       fontWeight: '500',
-      color: colors.text,
+      color: theme.text,
     },
     categoryItemDescription: {
       fontSize: 12,
-      color: colors.mutedForeground,
+      color: theme.mutedForeground,
       marginTop: 2,
     },
     badge: {
-      backgroundColor: colors.muted,
+      backgroundColor: theme.muted,
       paddingHorizontal: 8,
       paddingVertical: 4,
       borderRadius: 4,
       borderWidth: 1,
-      borderColor: colors.border,
+      borderColor: theme.border,
     },
     badgeText: {
       fontSize: 12,
-      color: colors.mutedForeground,
+      color: theme.mutedForeground,
     },
     statusContainer: {
       flexDirection: 'row',
@@ -135,17 +132,17 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
     statusTitle: {
       fontSize: 16,
       fontWeight: '500',
-      color: colors.text,
+      color: theme.text,
     },
     statusTime: {
       fontSize: 14,
-      color: colors.mutedForeground,
+      color: theme.mutedForeground,
       marginTop: 2,
     },
     statusDot: {
       width: 12,
       height: 12,
-      backgroundColor: colors.success,
+      backgroundColor: theme.success,
       borderRadius: 6,
     },
   });

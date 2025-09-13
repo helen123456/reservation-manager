@@ -11,12 +11,16 @@
     "lint": "expo lint"
   },
   "dependencies": {
+    "@ant-design/icons-react-native": "^2.3.2",
+    "@ant-design/react-native": "^5.4.3",
     "@expo/vector-icons": "^14.1.0",
     "@hookform/resolvers": "^5.2.1",
     "@react-native-async-storage/async-storage": "^2.1.2",
     "@react-navigation/bottom-tabs": "^7.3.10",
     "@react-navigation/elements": "^2.3.8",
     "@react-navigation/native": "^7.1.6",
+    "antd-mobile": "^5.39.0",
+    "axios": "^1.12.1",
     "dayjs": "^1.11.13",
     "expo": "~53.0.22",
     "expo-blur": "~14.1.5",

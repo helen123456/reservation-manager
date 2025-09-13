@@ -1,11 +1,8 @@
-import { Colors } from "@/constants/Colors";
-import { Dimensions, StyleSheet, ColorSchemeName } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 
 const { width } = Dimensions.get('window');
 
-export const createStyles = (colorScheme: ColorSchemeName) => {
-  const colors = Colors[colorScheme ?? 'light'];
-  
+export const createStyles = (theme: any) => {
   return StyleSheet.create({
     backdrop: {
       flex: 1,
@@ -15,13 +12,13 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
       paddingHorizontal: 20,
     },
     container: {
-      backgroundColor: colors.card,
+      backgroundColor: theme.card,
       borderRadius: 12,
       padding: 24,
       maxWidth: width - 40,
       minWidth: 280,
       alignItems: 'center',
-      shadowColor: colors.text,
+      shadowColor: theme.text,
       shadowOffset: {
         width: 0,
         height: 4,
@@ -30,7 +27,7 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
       shadowRadius: 12,
       elevation: 8,
       borderWidth: 1,
-      borderColor: colors.border,
+      borderColor: theme.border,
     },
     iconContainer: {
       width: 56,
@@ -47,13 +44,13 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
     title: {
       fontSize: 18,
       fontWeight: '600',
-      color: colors.text,
+      color: theme.text,
       marginBottom: 8,
       textAlign: 'center',
     },
     message: {
       fontSize: 16,
-      color: colors.mutedForeground,
+      color: theme.mutedForeground,
       textAlign: 'center',
       lineHeight: 24,
     },
@@ -71,22 +68,22 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
       alignItems: 'center',
     },
     cancelButton: {
-      backgroundColor: colors.secondary,
+      backgroundColor: theme.secondary,
       borderWidth: 1,
-      borderColor: colors.border,
+      borderColor: theme.border,
     },
     confirmButton: {
-      backgroundColor: colors.primary,
+      backgroundColor: theme.primary,
     },
     cancelButtonText: {
       fontSize: 16,
       fontWeight: '500',
-      color: colors.secondaryForeground,
+      color: theme.secondaryForeground,
     },
     confirmButtonText: {
       fontSize: 16,
       fontWeight: '500',
-      color: colors.primaryForeground,
+      color: theme.primaryForeground,
     },
   });
 };

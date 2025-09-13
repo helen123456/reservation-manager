@@ -1,9 +1,6 @@
-import { Colors } from "@/constants/Colors";
-import { StyleSheet, ColorSchemeName } from "react-native";
+import { StyleSheet } from "react-native";
 
-export const createStyles = (colorScheme: ColorSchemeName) => {
-  const colors = Colors[colorScheme ?? 'light'];
-  
+export const createStyles = (theme: any) => {
   return StyleSheet.create({
     container: {
       flex: 1
@@ -14,9 +11,9 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
       justifyContent: "space-between",
       paddingHorizontal: 16,
       paddingVertical: 12,
-      backgroundColor: colors.card,
+      backgroundColor: theme.card,
       borderBottomWidth: 1,
-      borderBottomColor: colors.border,
+      borderBottomColor: theme.border,
     },
     headerLeft: {
       flexDirection: "row",
@@ -29,12 +26,12 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
     title: {
       fontSize: 18,
       fontWeight: "600",
-      color: colors.text,
+      color: theme.text,
     },
     saveButton: {
       flexDirection: "row",
       alignItems: "center",
-      backgroundColor: colors.primary,
+      backgroundColor: theme.primary,
       paddingHorizontal: 12,
       paddingVertical: 6,
       borderRadius: 6,
@@ -43,7 +40,7 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
       marginRight: 4,
     },
     saveText: {
-      color: colors.primaryForeground,
+      color: theme.primaryForeground,
       fontSize: 14,
       fontWeight: "500",
     },
@@ -52,12 +49,12 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
       paddingHorizontal: 16,
     },
     card: {
-      backgroundColor: colors.card,
+      backgroundColor: theme.card,
       borderRadius: 8,
       padding: 16,
       marginTop: 16,
       borderWidth: 1,
-      borderColor: colors.border,
+      borderColor: theme.border,
     },
     lastCard: {
       marginBottom: 20,
@@ -74,11 +71,11 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
       fontSize: 16,
       fontWeight: "500",
       marginBottom: 4,
-      color: colors.text,
+      color: theme.text,
     },
     cardSubtitle: {
       fontSize: 14,
-      color: colors.mutedForeground,
+      color: theme.mutedForeground,
     },
     row: {
       flexDirection: "row",
@@ -90,28 +87,28 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
     },
     label: {
       fontSize: 14,
-      color: colors.mutedForeground,
+      color: theme.mutedForeground,
       marginBottom: 6,
     },
     timeInput: {
       borderWidth: 1,
-      borderColor: colors.border,
+      borderColor: theme.border,
       borderRadius: 6,
       paddingHorizontal: 12,
       paddingVertical: 10,
       fontSize: 16,
-      backgroundColor: colors.inputBackground,
-      color: colors.text,
+      backgroundColor: theme.inputBackground,
+      color: theme.text,
     },
     numberInput: {
       borderWidth: 1,
-      borderColor: colors.border,
+      borderColor: theme.border,
       borderRadius: 6,
       paddingHorizontal: 12,
       paddingVertical: 10,
       fontSize: 16,
-      backgroundColor: colors.inputBackground,
-      color: colors.text,
+      backgroundColor: theme.inputBackground,
+      color: theme.text,
     },
     intervalRow: {
       flexDirection: "row",
@@ -124,21 +121,21 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
       paddingHorizontal: 12,
       borderRadius: 6,
       borderWidth: 1,
-      borderColor: colors.border,
-      backgroundColor: colors.card,
+      borderColor: theme.border,
+      backgroundColor: theme.card,
       alignItems: "center",
     },
     intervalButtonActive: {
-      backgroundColor: colors.primary,
-      borderColor: colors.primary,
+      backgroundColor: theme.primary,
+      borderColor: theme.primary,
     },
     intervalButtonText: {
       fontSize: 14,
       fontWeight: "500",
-      color: colors.mutedForeground,
+      color: theme.mutedForeground,
     },
     intervalButtonTextActive: {
-      color: colors.primaryForeground,
+      color: theme.primaryForeground,
     },
     counterRow: {
       flexDirection: "row",
@@ -151,13 +148,13 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
       height: 32,
       borderRadius: 6,
       borderWidth: 1,
-      borderColor: colors.border,
-      backgroundColor: colors.card,
+      borderColor: theme.border,
+      backgroundColor: theme.card,
       alignItems: "center",
       justifyContent: "center",
     },
     counterButtonDisabled: {
-      backgroundColor: colors.muted,
+      backgroundColor: theme.muted,
     },
     counterContent: {
       flex: 1,
@@ -166,11 +163,11 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
     counterValue: {
       fontSize: 16,
       fontWeight: "500",
-      color: colors.text,
+      color: theme.text,
     },
     counterLabel: {
       fontSize: 12,
-      color: colors.mutedForeground,
+      color: theme.mutedForeground,
     },
     slotsHeader: {
       flexDirection: "row",
@@ -178,16 +175,16 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
       gap: 8,
     },
     badge: {
-      backgroundColor: colors.muted,
+      backgroundColor: theme.muted,
       paddingHorizontal: 8,
       paddingVertical: 4,
       borderRadius: 4,
       borderWidth: 1,
-      borderColor: colors.border,
+      borderColor: theme.border,
     },
     badgeText: {
       fontSize: 12,
-      color: colors.mutedForeground,
+      color: theme.mutedForeground,
     },
     slotsGrid: {
       flexDirection: "row",
@@ -204,22 +201,22 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
       alignItems: "center",
     },
     slotButtonActive: {
-      backgroundColor: colors.primary,
-      borderColor: colors.primary,
+      backgroundColor: theme.primary,
+      borderColor: theme.primary,
     },
     slotButtonInactive: {
-      backgroundColor: colors.card,
-      borderColor: colors.border,
+      backgroundColor: theme.card,
+      borderColor: theme.border,
     },
     slotButtonText: {
       fontSize: 14,
       fontWeight: "500",
     },
     slotButtonTextActive: {
-      color: colors.primaryForeground,
+      color: theme.primaryForeground,
     },
     slotButtonTextInactive: {
-      color: colors.mutedForeground,
+      color: theme.mutedForeground,
     },
     guestGroup: {
       flex: 1,
@@ -234,20 +231,20 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
       height: 28,
       borderRadius: 4,
       borderWidth: 1,
-      borderColor: colors.border,
-      backgroundColor: colors.card,
+      borderColor: theme.border,
+      backgroundColor: theme.card,
       alignItems: "center",
       justifyContent: "center",
     },
     guestButtonDisabled: {
-      backgroundColor: colors.muted,
+      backgroundColor: theme.muted,
     },
     guestValue: {
       fontSize: 14,
       fontWeight: "500",
       minWidth: 24,
       textAlign: "center",
-      color: colors.text,
+      color: theme.text,
     },
   });
 };

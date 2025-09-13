@@ -1,9 +1,8 @@
-import { Colors } from "@/constants/Colors";
-import { StyleSheet, ColorSchemeName } from "react-native";
 
-export const createStyles = (colorScheme: ColorSchemeName) => {
-  const colors = Colors[colorScheme ?? 'light'];
-  
+import { StyleSheet } from 'react-native';
+
+// 创建动态样式函数
+const createStyles = (theme: any) => {
   return StyleSheet.create({
     container: {
       flex: 1,
@@ -21,13 +20,13 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
     title: {
       fontSize: 24,
       fontWeight: "bold",
-      color: colors.text,
+      color: theme.text,
       marginBottom: 8,
       lineHeight: 32,
     },
     subtitle: {
       fontSize: 16,
-      color: colors.mutedForeground,
+      color: theme.mutedForeground,
       textAlign: "center",
     },
     form: {
@@ -39,7 +38,7 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
     label: {
       fontSize: 14,
       fontWeight: "500",
-      color: colors.text,
+      color: theme.text,
       marginBottom: 8,
     },
     inputContainer: {
@@ -48,9 +47,9 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
       flexDirection: "row",
       alignItems: "center",
       borderWidth: 1,
-      borderColor: colors.border,
+      borderColor: theme.border,
       borderRadius: 8,
-      backgroundColor: colors.inputBackground,
+      backgroundColor: theme.inputBackground,
     },
     inputIcon: {
       position: "absolute",
@@ -66,7 +65,7 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
       paddingLeft: 44,
       paddingRight: 12,
       fontSize: 16,
-      color: colors.text,
+      color: theme.text,
       textAlignVertical: "center",
     },
     passwordInput: {
@@ -83,10 +82,10 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
     },
     forgotPasswordText: {
       fontSize: 14,
-      color: colors.mutedForeground,
+      color: theme.mutedForeground,
     },
     signInButton: {
-      backgroundColor: colors.primary,
+      backgroundColor: theme.primary,
       borderRadius: 8,
       paddingVertical: 12,
       alignItems: "center",
@@ -97,7 +96,7 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
       opacity: 0.6,
     },
     signInButtonText: {
-      color: colors.primaryForeground,
+      color: theme.primaryForeground,
       fontSize: 16,
       fontWeight: "500",
     },
@@ -109,21 +108,21 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
     divider: {
       flex: 1,
       height: 1,
-      backgroundColor: colors.border,
+      backgroundColor: theme.border,
     },
     dividerText: {
       paddingHorizontal: 12,
       fontSize: 14,
-      color: colors.mutedForeground,
+      color: theme.mutedForeground,
     },
     googleButton: {
       borderWidth: 1,
-      borderColor: colors.border,
+      borderColor: theme.border,
       borderRadius: 8,
       paddingVertical: 12,
       alignItems: "center",
       justifyContent: "center",
-      backgroundColor: colors.card,
+      backgroundColor: theme.card,
       marginBottom: 24,
     },
     googleButtonContent: {
@@ -146,7 +145,7 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
     },
     googleButtonText: {
       fontSize: 16,
-      color: colors.text,
+      color: theme.text,
     },
     footer: {
       alignItems: "center",
@@ -154,27 +153,27 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
     },
     footerText: {
       fontSize: 14,
-      color: colors.mutedForeground,
+      color: theme.mutedForeground,
     },
     signUpLink: {
-      color: colors.text,
+      color: theme.text,
       fontWeight: "500",
     },
     demoContainer: {
-      backgroundColor: colors.muted,
+      backgroundColor: theme.muted,
       borderRadius: 8,
       padding: 12,
       alignItems: "center",
     },
     demoTitle: {
       fontSize: 12,
-      color: colors.mutedForeground,
+      color: theme.mutedForeground,
       marginBottom: 8,
       textAlign: "center",
     },
     demoText: {
       fontSize: 12,
-      color: colors.text,
+      color: theme.text,
       textAlign: "center",
     },
     demoBold: {
@@ -182,3 +181,4 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
     },
   });
 };
+export default createStyles;

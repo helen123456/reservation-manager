@@ -1,9 +1,6 @@
-import { Colors } from '@/constants/Colors';
-import { ColorSchemeName, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 
-export const createStyles = (colorScheme: ColorSchemeName) => {
-  const colors = Colors[colorScheme ?? 'light'];
-  
+export const createStyles = (theme: any) => {
   return StyleSheet.create({
     container: {
       flex: 1,
@@ -12,26 +9,26 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
     header: {
       paddingHorizontal: 16,
       paddingVertical: 16,
-      backgroundColor: colors.card,
+      backgroundColor: theme.card,
     },
     title: {
       fontSize: 24,
       fontWeight: 'bold',
-      color: colors.text,
+      color: theme.text,
     },
     subtitle: {
       fontSize: 14,
-      color: colors.mutedForeground,
+      color: theme.mutedForeground,
       marginTop: 4,
     },
     statsCard: {
-      backgroundColor: colors.card,
+      backgroundColor: theme.card,
       marginHorizontal: 16,
       marginVertical: 8,
       borderRadius: 8,
       padding: 16,
       borderWidth: 1,
-      borderColor: colors.border,
+      borderColor: theme.border,
     },
     statsGrid: {
       flexDirection: 'row',
@@ -48,13 +45,13 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
     },
     statLabel: {
       fontSize: 12,
-      color: colors.mutedForeground,
+      color: theme.mutedForeground,
       marginLeft: 4,
     },
     statValue: {
       fontSize: 20,
       fontWeight: 'bold',
-      color: colors.text,
+      color: theme.text,
     },
     searchContainer: {
        flexDirection: 'row',
@@ -65,10 +62,10 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
     searchInputContainer: {
      flexDirection: 'row',
       alignItems: 'center',
-      backgroundColor: colors.card,
+      backgroundColor: theme.card,
       borderRadius: 8,
       borderWidth: 1,
-      borderColor: colors.border,
+      borderColor: theme.border,
       paddingHorizontal: 12,
       height: 40,
       flex:1
@@ -79,7 +76,7 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
     searchInput: {
       flex: 1,
       fontSize: 16,
-      color: colors.text,
+      color: theme.text,
     },
     dateButton: {
       marginLeft: 8,
@@ -87,10 +84,10 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
       height: 40,
       borderRadius: 8,
       borderWidth: 1,
-      borderColor: colors.border,
+      borderColor: theme.border,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: colors.card,
+      backgroundColor: theme.card,
       position: 'relative',
     },
     dateButtonSelected: {
@@ -99,10 +96,10 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
       height: 40,
       borderRadius: 8,
       borderWidth: 1,
-      borderColor: colors.primary,
+      borderColor: theme.primary,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: colors.primary,
+      backgroundColor: theme.primary,
       position: 'relative',
     },
     selectedDot: {
@@ -112,7 +109,7 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
       width: 6,
       height: 6,
       borderRadius: 3,
-      backgroundColor: colors.success,
+      backgroundColor: theme.success,
     },
     list: {
       flex: 1,
@@ -126,11 +123,11 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
       paddingHorizontal: 4,
     },
     popoverContent: {
-      backgroundColor: colors.card,
+      backgroundColor: theme.card,
       padding: 8,
       borderRadius: 8,
       borderWidth: 1,
-      borderColor: colors.border,
+      borderColor: theme.border,
     },
     filterBarContainer: {
       flexDirection: 'row',
@@ -141,7 +138,7 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
     },
     filterLabel: {
       fontSize: 14,
-      color: colors.mutedForeground,
+      color: theme.mutedForeground,
     },
     filterBadgesContainer: {
       flexDirection: 'row',
@@ -152,7 +149,7 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
     filterBadge: {
       flexDirection: 'row',
       alignItems: 'center',
-      backgroundColor: colors.muted,
+      backgroundColor: theme.muted,
       paddingHorizontal: 8,
       paddingVertical: 4,
       borderRadius: 6,
@@ -160,7 +157,7 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
     },
     filterBadgeText: {
       fontSize: 12,
-      color: colors.mutedForeground,
+      color: theme.mutedForeground,
     },
     filterClearButton: {
       padding: 2,
@@ -169,7 +166,7 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
     dateHeaderText: {
       fontSize: 16,
       fontWeight: '600',
-      color: colors.mutedForeground,
+      color: theme.mutedForeground,
     },
     countBadge: {
       flexDirection:'row',
@@ -177,22 +174,22 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
       paddingHorizontal: 8,
       borderRadius: 8,
       borderWidth: 1,
-      borderColor: colors.border,
+      borderColor: theme.border,
     },
     countBadgeText: {
       fontSize: 12,
-      color: colors.mutedForeground,
+      color: theme.mutedForeground,
     },
     reservationItem: {
       borderRadius: 8,
       marginVertical: 4,
       borderWidth: 1,
-      borderColor: colors.border,
+      borderColor: theme.border,
     },
     reservationContent: {
       padding: 16,
       borderRadius: 8,
-      backgroundColor: colors.card,
+      backgroundColor: theme.card,
     },
     reservationLeft: {
       flexDirection: 'row',
@@ -202,7 +199,7 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
       width: 40,
       height: 40,
       borderRadius: 20,
-      backgroundColor: colors.muted,
+      backgroundColor: theme.muted,
       justifyContent: 'center',
       alignItems: 'center',
       marginRight: 12,
@@ -210,7 +207,7 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
     smallAvatarText: {
       fontSize: 16,
       fontWeight: '600',
-      color: colors.text,
+      color: theme.text,
     },
     reservationInfo: {
       flex: 1,
@@ -224,7 +221,7 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
     customerNameSmall: {
       fontSize: 16,
       fontWeight: '600',
-      color: colors.text,
+      color: theme.text,
       flex: 1,
       marginRight: 8,
     },
@@ -239,19 +236,19 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
     },
     detailTextSmall: {
       fontSize: 12,
-      color: colors.mutedForeground,
+      color: theme.mutedForeground,
       marginLeft: 4,
     },
     badge: {
       paddingHorizontal: 8,
       borderRadius: 8,
       borderWidth: 1,
-      borderColor: colors.border,
+      borderColor: theme.border,
     },
     badgeText: {
       fontSize: 12,
       fontWeight: '500',
-      color: colors.text,
+      color: theme.text,
     },
     backButtonContainer: {
       flexDirection: 'row',
@@ -266,20 +263,20 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
     detailTitle: {
       fontSize: 20,
       fontWeight: 'bold',
-      color: colors.text,
+      color: theme.text,
     },
     statusContainer: {
       alignItems: 'center',
       paddingVertical: 16,
     },
     card: {
-      backgroundColor: colors.card,
+      backgroundColor: theme.card,
       marginHorizontal: 16,
       marginVertical: 8,
       borderRadius: 8,
       padding: 16,
       borderWidth: 1,
-      borderColor: colors.border,
+      borderColor: theme.border,
     },
     customerInfo: {
       alignItems: 'center',
@@ -288,7 +285,7 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
       width: 64,
       height: 64,
       borderRadius: 32,
-      backgroundColor: colors.muted,
+      backgroundColor: theme.muted,
       justifyContent: 'center',
       alignItems: 'center',
       marginBottom: 12,
@@ -296,12 +293,12 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
     avatarText: {
       fontSize: 24,
       fontWeight: 'bold',
-      color: colors.text,
+      color: theme.text,
     },
     contactName: {
       fontSize: 20,
       fontWeight: 'bold',
-      color: colors.text,
+      color: theme.text,
       marginBottom: 8,
     },
     phoneContainer: {
@@ -310,13 +307,13 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
     },
     phoneText: {
       fontSize: 14,
-      color: colors.mutedForeground,
+      color: theme.mutedForeground,
       marginLeft: 8,
     },
     cardTitle: {
       fontSize: 18,
       fontWeight: '600',
-      color: colors.text,
+      color: theme.text,
       marginBottom: 16,
     },
     detailsGrid: {
@@ -334,34 +331,34 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
     },
     detailLabel: {
       fontSize: 12,
-      color: colors.mutedForeground,
+      color: theme.mutedForeground,
       marginLeft: 8,
     },
     detailValue: {
       fontSize: 16,
       fontWeight: '600',
-      color: colors.text,
+      color: theme.text,
       marginBottom: 4,
     },
     detailSubValue: {
       fontSize: 14,
-      color: colors.mutedForeground,
+      color: theme.mutedForeground,
     },
     specialRequests: {
       marginTop: 16,
       paddingTop: 16,
       borderTopWidth: 1,
-      borderTopColor: colors.border,
+      borderTopColor: theme.border,
     },
     requestsBox: {
-      backgroundColor: colors.muted,
+      backgroundColor: theme.muted,
       padding: 12,
       borderRadius: 8,
       marginTop: 8,
     },
     requestsText: {
       fontSize: 14,
-      color: colors.text,
+      color: theme.text,
     },
     actionsContainer: {
       flexDirection: 'row',
@@ -378,19 +375,19 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
       borderRadius: 8,
     },
     rejectButton: {
-      backgroundColor: colors.muted,
+      backgroundColor: theme.muted,
     },
     confirmButton: {
-      backgroundColor: colors.primary,
+      backgroundColor: theme.primary,
     },
     actionButtonText: {
-      color: colors.text,
+      color: theme.text,
       fontSize: 16,
       fontWeight: '600',
       marginLeft: 8,
     },
     rejectButtonText: {
-      color: colors.primaryForeground,
+      color: theme.primaryForeground,
       fontSize: 16,
       fontWeight: '600',
       marginLeft: 8,
@@ -403,7 +400,7 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
     },
     emptyText:{
       marginTop:30,
-       color:colors.primary,
+       color:theme.primary,
     }
   });
 };

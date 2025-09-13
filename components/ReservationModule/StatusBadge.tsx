@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { useColorScheme } from 'react-native';
+import { useTheme } from '@/hooks/ThemeContext';
 import { useTranslation } from '../../hooks/useTranslation';
 import { ThemedText } from '../ThemedText';
 import { ThemedView } from '../ThemedView';
@@ -11,9 +11,8 @@ interface StatusBadgeProps {
 
 export const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
   const { t } = useTranslation();
-  const colorScheme = useColorScheme();
-  // 使用 useMemo 缓存样式以提高性能
-  const styles = useMemo(() => createStyles(colorScheme), [colorScheme]);
+  const {theme} = useTheme();
+  const styles = useMemo(() => createStyles(theme), [theme]);
 
   const getBadgeStyle = () => {
     switch (status) {

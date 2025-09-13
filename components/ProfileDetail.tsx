@@ -1,7 +1,7 @@
 import { useMessage } from '@/components/GlobalMessage';
 import Input from "@/components/Input";
 import { Modal } from '@/components/Modal';
-import { useColors } from '@/hooks/useTheme';
+import { useTheme } from '@/hooks/ThemeContext';
 import { getUserInfo, updateUserInfo } from '@/services/api/userService';
 import { Feather } from "@expo/vector-icons";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -25,7 +25,7 @@ export default function ProfileDetail({ onBack }: ProfileDetailProps) {
   const message = useMessage();
   const [modalVisible, setModalVisible] = useState(false);
   const [singleButtonModal, setSingleButtonModal] = useState(true);
-  const colors = useColors()
+  const { theme } = useTheme();
 
   const schema = z.object({
     userName: z.string().min(1, t("userNameRequired")),
@@ -78,7 +78,7 @@ export default function ProfileDetail({ onBack }: ProfileDetailProps) {
       style={styles.saveButton}
       onPress={handleSubmit(handleSave)}
     >
-      <Feather name="save" size={14} color={colors.primaryForeground} />
+      <Feather name="save" size={14} color={theme.primaryForeground} />
       <Text style={styles.saveButtonText}>{t("save")}</Text>
     </TouchableOpacity>
   );

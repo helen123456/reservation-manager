@@ -1,6 +1,7 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import React, { useMemo } from 'react';
-import { Animated, TouchableOpacity, View, useColorScheme } from 'react-native';
+import { Animated, TouchableOpacity, View } from 'react-native';
+import { useTheme } from '@/hooks/ThemeContext';
 import { ThemedText } from '../ThemedText';
 import { useMessageContext } from './MessageContext';
 import { createStyles } from './styles';
@@ -38,9 +39,8 @@ const getMessageColor = (type: MessageType): string => {
 
 export const GlobalMessage: React.FC = () => {
   const { messages, close } = useMessageContext();
-  const colorScheme = useColorScheme();
-    // 使用 useMemo 缓存样式以提高性能
-    const styles = useMemo(() => createStyles(colorScheme), [colorScheme]);
+  const {theme} = useTheme();
+    const styles = useMemo(() => createStyles(theme), [theme]);
 
   if (messages.length === 0) {
     return null;

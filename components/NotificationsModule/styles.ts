@@ -1,9 +1,6 @@
-import { Colors } from '@/constants/Colors';
-import { StyleSheet, ColorSchemeName } from 'react-native';
+import { StyleSheet } from 'react-native';
 
-export const createStyles = (colorScheme: ColorSchemeName) => {
-  const colors = Colors[colorScheme ?? 'light'];
-  
+export const createStyles = (theme: any) => {
   return StyleSheet.create({
     container: {
       flex: 1,
@@ -43,11 +40,11 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
     },
     title: {
       fontSize: 16,
-      color: colors.text,
+      color: theme.text,
       marginRight: 8,
     },
     badge: {
-      backgroundColor: colors.destructive,
+      backgroundColor: theme.destructive,
       borderRadius: 10,
       paddingHorizontal: 6,
       paddingVertical: 2,
@@ -55,13 +52,13 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
       alignItems: "center",
     },
     badgeText: {
-      color: colors.destructiveForeground,
+      color: theme.destructiveForeground,
       fontSize: 12,
       fontWeight: "600",
     },
     subtitle: {
       fontSize: 14,
-      color: colors.mutedForeground,
+      color: theme.mutedForeground,
     },
     headerActions: {
       flexDirection: "row", 
@@ -77,10 +74,10 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
       paddingVertical: 8,
       borderRadius: 8,
       borderWidth: 1,
-      borderColor: colors.border
+      borderColor: theme.border
     },
     actionButtonText: {
-      color: colors.text,
+      color: theme.text,
       fontSize: 14,
       marginLeft: 4,
     },
@@ -95,27 +92,27 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
     emptyTitle: {
       fontSize: 18,
       fontWeight: "600",
-      color: colors.text,
+      color: theme.text,
       marginBottom: 8,
     },
     emptyDescription: {
       fontSize: 14,
-      color: colors.mutedForeground,
+      color: theme.mutedForeground,
       textAlign: "center",
     },
     notificationsList: {
       gap: 12,
     },
     notificationCard: {
-      backgroundColor: colors.card,
+      backgroundColor: theme.card,
       borderRadius: 12,
       padding: 16,
       borderWidth: 1,
-      borderColor: colors.border,
+      borderColor: theme.border,
     },
     unreadCard: {
-      borderColor: colors.border,
-      backgroundColor: colors.muted,
+      borderColor: theme.border,
+      backgroundColor: theme.muted,
     },
     notificationContent: {
       flexDirection: "row",
@@ -137,22 +134,22 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
     notificationTitle: {
       fontSize: 16,
       fontWeight: "600",
-      color: colors.text,
+      color: theme.text,
       flex: 1,
     },
     readTitle: {
-      color: colors.mutedForeground,
+      color: theme.mutedForeground,
     },
     unreadDot: {
       width: 8,
       height: 8,
       borderRadius: 4,
-      backgroundColor: colors.primary,
+      backgroundColor: theme.primary,
       marginLeft: 8,
     },
     notificationMessage: {
       fontSize: 14,
-      color: colors.mutedForeground,
+      color: theme.mutedForeground,
       lineHeight: 20,
       marginBottom: 8,
     },
@@ -163,7 +160,7 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
     },
     timestamp: {
       fontSize: 12,
-      color: colors.mutedForeground,
+      color: theme.mutedForeground,
     },
     customerInfo: {
       flexDirection: "row",
@@ -172,11 +169,11 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
     },
     customerText: {
       fontSize: 12,
-      color: colors.mutedForeground,
+      color: theme.mutedForeground,
     },
     separator: {
       height: 1,
-      backgroundColor: colors.border,
+      backgroundColor: theme.border,
       marginVertical: 12,
     },
   });

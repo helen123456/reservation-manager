@@ -1,4 +1,4 @@
-import { useColors } from "@/hooks/useTheme";
+import { useTheme } from "@/hooks/ThemeContext";
 import { useTranslation } from "@/hooks/useTranslation";
 import { getReservations } from "@/services/api/reservationService";
 import { Reservation } from "@/services/types";
@@ -10,8 +10,7 @@ import {
   ActivityIndicator,
   FlatList,
   Text,
-  View,
-  useColorScheme
+  View
 } from "react-native";
 import { NavBack } from "../NavBack";
 import { ThemedText } from "../ThemedText";
@@ -28,9 +27,8 @@ import { calculateStats, formatDateHeader, getFlatData } from "./utils";
 
 export default function ReservationModule() {
   const { t } = useTranslation();
-  const colorScheme = useColorScheme();
-  const colors = useColors();
-  const styles = useMemo(() => createStyles(colorScheme), [colorScheme]);
+  const {theme} = useTheme();
+  const styles = useMemo(() => createStyles(theme), [theme]);
   const [selectedReservation, setSelectedReservation] =
     useState<Reservation | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -299,7 +297,7 @@ export default function ReservationModule() {
               library="Feather"
               size={26}
               name="calendar"
-              color={colors.primary}
+              color={theme.primary}
             />
             <Text style={styles.emptyText}>这里还没有内容哦</Text>
           </View>

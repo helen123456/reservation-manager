@@ -2,9 +2,10 @@ import Input from "@/components/Input";
 import { Feather } from "@expo/vector-icons";
 import dayjs from "dayjs";
 import React, { useMemo, useState } from "react";
-import { TouchableOpacity, useColorScheme } from "react-native";
+import { TouchableOpacity } from "react-native";
 import Popover from "react-native-popover-view";
 import DateTimePicker, { useDefaultStyles } from "react-native-ui-datepicker";
+import { useTheme } from '@/hooks/ThemeContext';
 import { ThemedText } from "../ThemedText";
 import { ThemedView } from "../ThemedView";
 import { createStyles } from "./styles";
@@ -22,9 +23,8 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   selectedDate,
   onDateChange,
 }) => {
- const colorScheme = useColorScheme();
-  // 使用 useMemo 缓存样式以提高性能
-  const styles = useMemo(() => createStyles(colorScheme), [colorScheme]);
+  const {theme} = useTheme();
+  const styles = useMemo(() => createStyles(theme), [theme]);
 
   const defaultStyles = useDefaultStyles();
   const [dateOpen, setDateOpen] = useState(false);

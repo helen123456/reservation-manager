@@ -1,16 +1,14 @@
-import { Colors } from '@/constants/Colors';
 import React, { useMemo } from 'react';
-import { View, useColorScheme } from 'react-native';
+import { View } from 'react-native';
+import { useTheme } from '@/hooks/ThemeContext';
 import { ThemedText } from '../ThemedText';
 import { createStyles } from './styles';
 import { RestaurantStatusProps } from './types';
 import { formatBusinessHours } from './utils';
 
 export default function RestaurantStatus({ status }: RestaurantStatusProps) {
-  const colorScheme = useColorScheme()?? 'light';
-  const colors = Colors[colorScheme];
-  // 使用 useMemo 缓存样式以提高性能
-  const styles = useMemo(() => createStyles(colorScheme), [colorScheme]);
+  const {theme} = useTheme();
+  const styles = useMemo(() => createStyles(theme), [theme]);
   return (
     <View style={styles.card}>
       <ThemedText style={styles.cardTitle}>Restaurant Status</ThemedText>

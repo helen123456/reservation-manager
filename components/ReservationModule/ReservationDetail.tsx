@@ -1,5 +1,4 @@
 import Modal from "@/components/Modal";
-import { useColors } from "@/hooks/useTheme";
 import { updateReservation } from "@/services/api/reservationService";
 import { Feather } from "@expo/vector-icons";
 import dayjs from "dayjs";
@@ -7,9 +6,9 @@ import React, { useMemo, useState } from "react";
 import {
   ScrollView,
   Text,
-  TouchableOpacity,
-  useColorScheme,
+  TouchableOpacity
 } from "react-native";
+import { useTheme } from '@/hooks/ThemeContext';
 import { useTranslation } from "../../hooks/useTranslation";
 import { ThemedText } from "../ThemedText";
 import { ThemedView } from "../ThemedView";
@@ -32,10 +31,8 @@ export const ReservationDetail: React.FC<ReservationDetailProps> = ({
   onReject,
 }) => {
   const { t } = useTranslation();
-  const Colors = useColors();
-  const colorScheme = useColorScheme();
-  // 使用 useMemo 缓存样式以提高性能
-  const styles = useMemo(() => createStyles(colorScheme), [colorScheme]);
+  const {theme} = useTheme();
+  const styles = useMemo(() => createStyles(theme), [theme]);
   const [visible, setVisible] = useState<boolean>(false);
   const [tipsText, setTipsText] = useState<string>("");
 
@@ -58,7 +55,7 @@ export const ReservationDetail: React.FC<ReservationDetailProps> = ({
     updateReservation({
       id: reservation.id,
       status: 3,
-    }).then((reservation: Reservation) => {
+    }).then((reservation: any) => {
       onAccept(reservation);
       setVisible(false);
     });
@@ -67,7 +64,7 @@ export const ReservationDetail: React.FC<ReservationDetailProps> = ({
     updateReservation({
       id: reservation.id,
       status: 1,
-    }).then((reservation: Reservation) => {
+    }).then((reservation: any) => {
       onReject(reservation);
       setVisible(false);
     });
@@ -148,7 +145,7 @@ export const ReservationDetail: React.FC<ReservationDetailProps> = ({
               style={[styles.actionButton, styles.rejectButton]}
               onPress={() => handleReject()}
             >
-              <Feather name="x" size={20} color={Colors.text} />
+              <Feather name="x" size={20} color={theme.text} />
               <ThemedText style={styles.actionButtonText}>
                 {t("decline")}
               </ThemedText>
@@ -161,7 +158,7 @@ export const ReservationDetail: React.FC<ReservationDetailProps> = ({
               <Feather
                 name="check"
                 size={20}
-                color={Colors.primaryForeground}
+                color={theme.primaryForeground}
               />
               <ThemedText style={styles.rejectButtonText}>
                 {t("accept")}

@@ -13,8 +13,8 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-  useColorScheme,
 } from "react-native";
+import { useTheme } from '@/hooks/ThemeContext';
 import { createStyles } from "./styles";
 
 import { BaseInputProps } from "./types";
@@ -49,9 +49,8 @@ export const BaseInput = forwardRef<TextInput, BaseInputProps>(
     },
     ref
   ) => {
-    const colorScheme = useColorScheme();
-    // 使用 useMemo 缓存样式以提高性能
-    const styles = useMemo(() => createStyles(colorScheme), [colorScheme]);
+    const {theme} = useTheme();
+    const styles = useMemo(() => createStyles(theme), [theme]);
     const [focused, setFocused] = useState(false);
     const blurTimeoutRef = useRef<number | null>(null);
 

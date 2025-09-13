@@ -1,11 +1,10 @@
-import { Colors } from "@/constants/Colors";
-import { Dimensions, StyleSheet, ColorSchemeName } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
 
 // 创建动态样式函数
-export const createStyles = (colorScheme: ColorSchemeName) => {
-  const colors = Colors[colorScheme ?? 'light'];
+export const createStyles = (theme: any) => {
+
   
   return StyleSheet.create({
     container: {
@@ -20,7 +19,7 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
       justifyContent: 'center',
     },
     messageItem: {
-      backgroundColor: colors.card,
+      backgroundColor: theme.card,
       borderRadius: 8,
       borderLeftWidth: 4,
       marginBottom: 8,
@@ -28,7 +27,7 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
-      shadowColor: colors.primary,
+      shadowColor: theme.primary,
       shadowOffset: {
         width: 0,
         height: 2,
@@ -39,7 +38,7 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
       minWidth: 200, // 最小宽度
       maxWidth: width - 32, // 最大宽度，确保不超出屏幕
       alignSelf: 'center', // 自身居中
-      borderColor: colors.border,
+      borderColor: theme.border,
     },
     messageContent: {
       flex: 1,
@@ -53,7 +52,7 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
       fontSize: 14,
       lineHeight: 20,
       flexShrink: 1, // 允许文本收缩
-      color: colors.text,
+      color: theme.text,
     },
     closeButton: {
       padding: 4,

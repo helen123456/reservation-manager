@@ -1,39 +1,138 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Platform } from 'react-native';
-import { router } from 'expo-router';
-import React from 'react';
-import Login from '../components/Login';
+import Input from "@/components/Input";
+import { ThemedText } from "@/components/ThemedText";
+import { ThemedView } from "@/components/ThemedView";
+import { useTheme } from "@/hooks/ThemeContext";
+import { login } from "@/services/api/authService";
+import createStyles from "@/styles/login.style";
+import { registerSchema } from "@/types/login.type";
+import { Toast } from "@ant-design/react-native";
+import { zodResolver } from "@hookform/resolvers/zod";
+import React, { useMemo } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import {
+  ActivityIndicator,
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
+import { z } from "zod";
+import { useAsyncDebounce } from "../hooks/useDebounce";
+import { useTranslation } from "../hooks/useTranslation";
+type RegisterFormData = z.infer<typeof registerSchema>;
 
-// Cross-platform storage utility
-const storage = {
-  async setItem(key: string, value: string): Promise<void> {
-    if (Platform.OS === 'web') {
-      try {
-        if (typeof window !== 'undefined') {
-          window.localStorage.setItem(key, value);
-        }
-      } catch {
-        // Ignore storage errors on web
+export default function Login() {
+  const { t } = useTranslation();
+  const { theme } = useTheme();
+  const styles = useMemo(() => createStyles(theme), [theme]);
+
+  const methods = useForm({
+    resolver: zodResolver(registerSchema),
+    defaultValues: {
+      email: "fefe@11.com",
+      password: "fwef@1111",
+    },
+    mode: "onChange", // 实时验证
+  });
+
+  const {
+    handleSubmit,
+    formState: { isValid, isSubmitting },
+  } = methods;
+
+  // 带防抖的登录提交函数
+  const onSubmit = useAsyncDebounce(
+    async (data: RegisterFormData) => {
+      const res = await login(data);
+      if (res.code === 200) {
+        Toast.success("登录成功");
       }
-      return;
-    }
-    return AsyncStorage.setItem(key, value);
-  }
-};
+    },300
+  );
 
-export default function LoginPage() {
-  const handleLogin = async () => {
-    try {
-      // 保存登录状态到存储
-      await storage.setItem('isAuthenticated', 'true');
-      // 登录成功后跳转到主页面
-      router.replace('/(tabs)');
-    } catch (error) {
-      console.error('Error saving auth status:', error);
-      // 即使保存失败也跳转，让主页面处理
-      router.replace('/(tabs)');
-    }
+  //忘记密码
+  const handleForgotPassword = () => {
+    Alert.alert(
+      t("forgotPassword"),
+      "Password reset functionality would be implemented here.",
+      [{ text: "OK", style: "default" }]
+    );
   };
 
-  return <Login onLogin={handleLogin} />;
+  return (
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
+      <ThemedView style={{ flex: 1, justifyContent: "center" }}>
+        <ScrollView
+          contentContainerStyle={styles.scrollContainer}
+          keyboardShouldPersistTaps="handled"
+        >
+          {/* Header */}
+          <ThemedView style={styles.header}>
+            <ThemedText style={styles.title}>{t("signIn")}</ThemedText>
+            <ThemedText style={styles.subtitle}>
+              {t("signInDescription")}
+            </ThemedText>
+          </ThemedView>
+
+          {/* Login Form */}
+          <FormProvider {...methods}>
+            <ThemedView style={styles.form}>
+              {/* Email Field */}
+              <Input
+                labelStyle={{ color: theme.primary }}
+                inputMode="email"
+                name="email"
+                label={t("loginEmail")}
+                placeholder={t("emailPlaceholder")}
+                leftIcon="mail-outline"
+                required
+                helperText="用户名将作为您的登录凭证"
+              />
+              <Input
+                labelStyle={{ color: theme.primary }}
+                keyboardType="email-address"
+                name="password"
+                label={t("password")}
+                placeholder={t("passwordPlaceholder")}
+                leftIcon="lock-closed-outline"
+                required
+                helperText="用户名将作为您的登录凭证"
+              />
+
+              {/* Forgot Password */}
+              <ThemedView style={styles.forgotPasswordContainer}>
+                <TouchableOpacity onPress={handleForgotPassword}>
+                  <ThemedText style={styles.forgotPasswordText}>
+                    {t("forgotPassword")}
+                  </ThemedText>
+                </TouchableOpacity>
+              </ThemedView>
+
+              {/* Sign In Button */}
+              <TouchableOpacity
+                style={[
+                  styles.signInButton,
+                  (isSubmitting || !isValid) && styles.disabledButton,
+                ]}
+                onPress={handleSubmit(onSubmit)}
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? (
+                  <ActivityIndicator color="white" />
+                ) : (
+                  <ThemedText style={styles.signInButtonText}>
+                    {t("signIn")}
+                  </ThemedText>
+                )}
+              </TouchableOpacity>
+            </ThemedView>
+          </FormProvider>
+        </ScrollView>
+      </ThemedView>
+    </KeyboardAvoidingView>
+  );
 }

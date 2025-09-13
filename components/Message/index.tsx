@@ -5,9 +5,9 @@ import {
   Modal,
   Text,
   TouchableOpacity,
-  View,
-  useColorScheme
+  View
 } from 'react-native';
+import { useTheme } from '@/hooks/ThemeContext';
 import { createStyles } from './styles';
 import { MessageProps } from './types';
 
@@ -28,9 +28,8 @@ export const Message: React.FC<MessageProps> = ({
   const scaleAnim = useRef(new Animated.Value(0)).current;
   const opacityAnim = useRef(new Animated.Value(0)).current;
   const autoCloseTimer = useRef<number | null>(null);
-   const colorScheme = useColorScheme();
-    // 使用 useMemo 缓存样式以提高性能
-    const styles = useMemo(() => createStyles(colorScheme), [colorScheme]);
+   const {theme} = useTheme();
+    const styles = useMemo(() => createStyles(theme), [theme]);
 
   // 获取图标和颜色
   const getTypeConfig = () => {

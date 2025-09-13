@@ -1,6 +1,7 @@
 import { Feather } from '@expo/vector-icons';
 import React, { useMemo } from 'react';
-import { Switch, View, useColorScheme } from 'react-native';
+import { Switch, View } from 'react-native';
+import { useTheme } from '@/hooks/ThemeContext';
 import { useTranslation } from '../../hooks/useTranslation';
 import { ThemedText } from '../ThemedText';
 import { createStyles } from './styles';
@@ -8,9 +9,8 @@ import { QuickSettingsProps } from './types';
 
 export default function QuickSettings({ settings, onSettingChange }: QuickSettingsProps) {
   const { t } = useTranslation();
-  const colorScheme = useColorScheme();
-  // 使用 useMemo 缓存样式以提高性能
-  const styles = useMemo(() => createStyles(colorScheme), [colorScheme]);
+  const {theme} = useTheme();
+  const styles = useMemo(() => createStyles(theme), [theme]);
 
   return (
     <View style={styles.card}>

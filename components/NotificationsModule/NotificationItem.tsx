@@ -1,6 +1,6 @@
-import { Colors } from "@/constants/Colors";
 import React, { useMemo } from "react";
-import { Text, TouchableOpacity, View, useColorScheme } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
+import { useTheme } from '@/hooks/ThemeContext';
 import { useTranslation } from "../../hooks/useTranslation";
 import { createStyles } from "./styles";
 import { Notification } from "./types";
@@ -13,10 +13,8 @@ interface NotificationItemProps {
 
 export function NotificationItem({ notification, onPress }: NotificationItemProps) {
   const { t } = useTranslation();
-  const colorScheme = useColorScheme()??'light';
-  const colors = Colors[colorScheme];
-  // 使用 useMemo 缓存样式以提高性能
-  const styles = useMemo(() => createStyles(colorScheme), [colorScheme]);
+  const {theme} = useTheme();
+  const styles = useMemo(() => createStyles(theme), [theme]);
 
   return (
     <TouchableOpacity

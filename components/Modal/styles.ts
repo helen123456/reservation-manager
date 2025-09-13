@@ -1,9 +1,6 @@
-import { Colors } from '@/constants/Colors';
-import { ColorSchemeName, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 
-export const createStyles = (colorScheme: ColorSchemeName) => {
-  const colors = Colors[colorScheme ?? 'light'];
-  
+export const createStyles = (theme: any) => {
   return StyleSheet.create({
     overlay: {
       flex: 1,
@@ -13,11 +10,11 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
       paddingHorizontal: 20,
     },
     modalContainer: {
-      backgroundColor: colors.card,
+      backgroundColor: theme.card,
       borderRadius: 12,
       minWidth: 280,
       maxWidth: '90%',
-      shadowColor: colors.text,
+      shadowColor: theme.text,
       shadowOffset: {
         width: 0,
         height: 2,
@@ -41,7 +38,7 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
     closeButtonText: {
       fontSize: 18,
       fontWeight: 'bold',
-      color: colors.mutedForeground,
+      color: theme.mutedForeground,
       lineHeight: 18,
     },
     header: {
@@ -52,7 +49,7 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
     title: {
       fontSize: 18,
       fontWeight: '600',
-      color: colors.text,
+      color: theme.text,
       textAlign: 'center',
     },
     content: {
@@ -79,7 +76,7 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
     },
     singleButtonContainer: {
       borderTopWidth: 1,
-      borderTopColor: colors.border,
+      borderTopColor: theme.border,
     },
     singleButton: {
       paddingVertical: 15,
@@ -91,7 +88,7 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
     buttonText: {
       fontSize: 16,
       fontWeight: '500',
-      color: colors.text,
+      color: theme.text,
     },
   });
 };
