@@ -15,7 +15,7 @@ export const getReservations = async (data?: {
   queryType?: number
 }) => {
   try {
-    const response = await request.post("/reservations/list", data);
+    const response = await request.post("/record/page", data);
     return response;
   } catch (error) {
     console.error("获取预订列表失败:", error);

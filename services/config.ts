@@ -14,6 +14,7 @@ export const API_CONFIG = {
   // 基础URL配置
   BASE_URL: {
     dev: 'http://127.0.0.1:4523/m1/7045660-6765697-default/api',
+    // dev:  'http://127.0.0.1:2025/neo/api',
     prod: 'https://api.yourapp.com/api',
   },
   
