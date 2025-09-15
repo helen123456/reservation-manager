@@ -1,19 +1,22 @@
+import { useTheme } from "@/hooks/ThemeContext";
 import React, { useMemo } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
-import { useTheme } from '@/hooks/ThemeContext';
 import { useTranslation } from "../../hooks/useTranslation";
 import { createStyles } from "./styles";
 import { Notification } from "./types";
-import { getNotificationIcon, getTimeAgo } from "./utils";
+import { getNotificationIcon } from "./utils";
 
 interface NotificationItemProps {
   notification: Notification;
   onPress: (notification: Notification) => void;
 }
 
-export function NotificationItem({ notification, onPress }: NotificationItemProps) {
+export function NotificationItem({
+  notification,
+  onPress,
+}: NotificationItemProps) {
   const { t } = useTranslation();
-  const {theme} = useTheme();
+  const { theme } = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
 
   return (
@@ -34,36 +37,20 @@ export function NotificationItem({ notification, onPress }: NotificationItemProp
             <Text
               style={[
                 styles.notificationTitle,
-                notification.isRead && styles.readTitle,
+                notification.isRead===1 && styles.readTitle,
               ]}
             >
               {notification.title}
             </Text>
-            {!notification.isRead && (
-              <View style={styles.unreadDot} />
-            )}
+            {!notification.isRead && <View style={styles.unreadDot} />}
           </View>
 
-          <Text style={styles.notificationMessage}>
-            {notification.message}
-          </Text>
+          <Text style={styles.notificationMessage}>{notification.content}</Text>
 
           <View style={styles.notificationFooter}>
-            <Text style={styles.timestamp}>
-              {getTimeAgo(notification.timestamp, t)}
-            </Text>
-
-            {notification.customerName && notification.partySize && (
-              <View style={styles.customerInfo}>
-                <Text style={styles.customerText}>
-                  {notification.customerName}
-                </Text>
-                <Text style={styles.customerText}>•</Text>
-                <Text style={styles.customerText}>
-                  {notification.partySize} {t("guests")}
-                </Text>
-              </View>
-            )}
+            <View style={styles.customerInfo}>
+              <Text style={styles.customerText}>{notification.createTime}</Text>
+            </View>
           </View>
         </View>
       </View>

@@ -5,7 +5,7 @@ import { Reservation } from "@/services/types";
 import { message } from "@/utils/message";
 import dayjs from "dayjs";
 import _ from "lodash";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   ActivityIndicator,
   FlatList,
@@ -76,13 +76,13 @@ export default function ReservationModule() {
   // 加载预订数据
   const loadReservations = useCallback(
     async (page: number = 1, reset: boolean = false) => {
-      console.log("reset", reset);
       if (isLoading) return;
       setIsLoading(true);
       setError(null);
 
       try {
         const params = {
+          queryType: 0,
           page,
           pageSize: 10,
           ...(searchQuery && { search: searchQuery }),
@@ -121,11 +121,20 @@ export default function ReservationModule() {
 
   // 初始加载
   useEffect(() => {
+     console.log('init')
     loadReservations(1, true);
   }, []);
 
+  // 用于跟踪是否是首次渲染
+  const isFirstRender = useRef(true);
+
   // 搜索和筛选变化时重新加载
   useEffect(() => {
+    // 如果是首次渲染，跳过执行
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
     const timeoutId = setTimeout(() => {
       loadReservations(1, true);
     }, 300); // 防抖
@@ -135,13 +144,16 @@ export default function ReservationModule() {
 
   // 加载更多数据
   const loadMore = useCallback(() => {
+    
     if (hasNextPage && !isLoading) {
+      console.log('loadMore')
       loadReservations(currentPage + 1, false);
     }
   }, [hasNextPage, isLoading, currentPage, loadReservations]);
 
   // 刷新数据
   const refreshData = useCallback(() => {
+    console.log('refresh')
     loadReservations(1, true);
   }, [loadReservations]);
 
@@ -239,7 +251,7 @@ export default function ReservationModule() {
   }
 
   return (
-    <ThemedView style={[styles.container]}>
+    <ThemedView style={styles.container}>
       <ThemedView>
         <NavBack
           title={t("reservations")}

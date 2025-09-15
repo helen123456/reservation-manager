@@ -11,6 +11,7 @@ interface HeaderProps {
   onProfileClick?: () => void;
   onHelpClick?: () => void;
   onSignOut?: () => void;
+  onHistoryClick?: () => void;
   notificationCount?: number;
   menuCount?: number;
 }
@@ -23,6 +24,7 @@ export default function Header({
   onProfileClick, 
   onHelpClick, 
   onSignOut, 
+  onHistoryClick,
   notificationCount = 3, 
   menuCount = 1 
 }: HeaderProps) {
@@ -58,6 +60,16 @@ export default function Header({
       icon: 'help-circle-outline' as keyof typeof Ionicons.glyphMap,
       action: () => {
         onHelpClick?.();
+        setIsMenuOpen(false);
+      }
+    },
+     {
+      id: 'historyOrder',
+      title: t('historyOrder'),
+      description: 'historyOrder',
+      icon: 'help-circle-outline' as keyof typeof Ionicons.glyphMap,
+      action: () => {
+        onHistoryClick?.();
         setIsMenuOpen(false);
       }
     },

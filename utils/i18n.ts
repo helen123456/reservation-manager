@@ -99,6 +99,7 @@ export const translations = {
     settingsModule: "Settings",
     help: "Help & Support",
     about: "About",
+    historyOrder: "History Order",
 
     // Profile Page
     profile: "Profile",
@@ -139,6 +140,7 @@ export const translations = {
     bookingRules: "Booking Rules",
     maxAdvanceBookingDays: "Max advance booking (days)",
     minAdvanceNoticeHours: "Min advance notice (hours)",
+    saveSuccess:'Save success',
 
     // Reservation Module
     todaysReservations: "Today's Reservations",
@@ -249,6 +251,7 @@ export const translations = {
     settingsModule: "Paramètres",
     help: "Aide et Support",
     about: "À propos",
+    historyOrder: "Historique des Commandes",
 
     // Profile Page
     profile: "Profil",
@@ -291,6 +294,7 @@ export const translations = {
     bookingRules: "Règles de Réservation",
     maxAdvanceBookingDays: "Réservation à l'avance max (jours)",
     minAdvanceNoticeHours: "Préavis minimum (heures)",
+    saveSuccess:'économiser le succès',
 
     // Reservation Module
     todaysReservations: "Réservations d'Aujourd'hui",

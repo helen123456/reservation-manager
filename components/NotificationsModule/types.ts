@@ -2,11 +2,9 @@ export interface Notification {
   id: string;
   type: "reservation" | "cancellation" | "confirmation" | "system";
   title: string;
-  message: string;
-  timestamp: Date;
-  isRead: boolean;
-  customerName?: string;
-  partySize?: number;
+  content: string;
+  createTime: string;
+  isRead: number;
 }
 
 export interface NotificationStats {

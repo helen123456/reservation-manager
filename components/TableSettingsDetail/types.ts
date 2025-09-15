@@ -20,7 +20,6 @@ export interface TableSettings {
   timeInterval: number; // minutes: 60 = 1h, 30 = 30min, 15 = 15min
   maxReservationsPerSlot: number; // maximum reservations allowed per time slot
   timeSlots: TimeSlot[];
-  advanceBookingDays: number;
   minAdvanceHours: number;
   restaurantId: number;
 }

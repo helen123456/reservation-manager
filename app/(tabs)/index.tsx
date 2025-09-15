@@ -1,11 +1,13 @@
 import Header from "@/components/Header";
 import HelpSupport from "@/components/HelpSupport";
+import HistoryOrder from "@/components/HistoryOrder";
 import NotificationsPage from "@/components/NotificationsPage";
 import ProfileDetail from "@/components/ProfileDetail";
 import ReservationModule from "@/components/ReservationModule";
 import SettingsModule from "@/components/SettingsModule";
 import TableSettingsDetail from "@/components/TableSettingsDetail";
 import { ThemedView } from "@/components/ThemedView";
+import { logout } from "@/services/api/authService";
 import storage from "@/utils/storage";
 import { Ionicons } from "@expo/vector-icons";
 import * as Font from "expo-font";
@@ -17,7 +19,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [currentView, setCurrentView] = useState<
-    "main" | "settings" | "profile" | "help" | "notifications"
+    "main" | "settings" | "profile" | "help" | "notifications"|"history"
   >("main");
   const [currentSettingsSection, setCurrentSettingsSection] = useState<
     string | null
@@ -69,15 +71,20 @@ export default function App() {
     setCurrentView("help");
     setCurrentSettingsSection(null);
   };
+  const handleHistoryClick=()=>{
+    setCurrentView("history");
+     setCurrentSettingsSection(null);
+  }
 
   const handleSignOut = async () => {
     try {
-      setIsAuthenticated(false);
-      await storage.removeItem("isAuthenticated");
-      setCurrentView("main");
-      setCurrentSettingsSection(null);
-      // Redirect to login page after sign out
-      router.replace("/login");
+      const res: any = await logout();
+      if (res.code === 200) {
+        setCurrentView("main");
+        setCurrentSettingsSection(null);
+        // Redirect to login page after sign out
+        router.replace("/login");
+      }
     } catch (error) {
       console.error("Error removing auth status:", error);
       // Still redirect to login on error
@@ -97,6 +104,7 @@ export default function App() {
   const handleBackToSettings = () => {
     setCurrentSettingsSection(null);
   };
+  
 
   const renderContent = () => {
     if (currentView === "settings") {
@@ -121,6 +129,9 @@ export default function App() {
 
     if (currentView === "notifications") {
       return <NotificationsPage onBack={handleBackToMain} />;
+    }
+    if (currentView === "history") {
+      return <HistoryOrder onBack={handleBackToMain} />;
     }
     return <ReservationModule />;
   };
@@ -152,6 +163,7 @@ export default function App() {
         onProfileClick={handleProfileClick}
         onHelpClick={handleHelpClick}
         onSignOut={handleSignOut}
+        onHistoryClick={handleHistoryClick}
       />
 
       {/* Main Content */}

@@ -1,8 +1,13 @@
 import { ThemedView } from "@/components/ThemedView";
+import { useTheme } from "@/hooks/ThemeContext";
+import {
+  clearMessage,
+  getMessage,
+  updateMessage,
+} from "@/services/api/notificationService";
 import { Feather } from "@expo/vector-icons";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { ScrollView, Text, View } from "react-native";
-import { useTheme } from '@/hooks/ThemeContext';
 import { useTranslation } from "../../hooks/useTranslation";
 import { NotificationHeader } from "./NotificationHeader";
 import { NotificationItem } from "./NotificationItem";
@@ -10,30 +15,46 @@ import { createStyles } from "./styles";
 import { Notification, NotificationsPageProps } from "./types";
 import { generateMockNotifications } from "./utils";
 
-export default function NotificationsModule({ onBack }: NotificationsPageProps) {
+export default function NotificationsModule({
+  onBack,
+}: NotificationsPageProps) {
   const { t } = useTranslation();
-  const {theme} = useTheme();
+  const { theme } = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
-  const [notifications, setNotifications] = useState<Notification[]>(generateMockNotifications());
+  const [notifications, setNotifications] = useState<Notification[]>(
+    generateMockNotifications()
+  );
+  useEffect(() => {
+    getMessage().then((res: any) => {
+      setNotifications(res);
+    });
+  }, []);
 
-  const markAsRead = (id: string) => {
-    setNotifications((prev) =>
-      prev.map((notification) =>
-        notification.id === id
-          ? { ...notification, isRead: true }
-          : notification
-      )
-    );
+  const markAsRead = async (id: string) => {
+    const res:any = await updateMessage(id);
+    if (res.code === 200) {
+      setNotifications((prev) =>
+        prev.map((notification) =>
+          notification.id === id ? { ...notification, isRead: 1 } : notification
+        )
+      );
+    }
   };
 
-  const markAllAsRead = () => {
-    setNotifications((prev) =>
-      prev.map((notification) => ({ ...notification, isRead: true }))
-    );
+  const markAllAsRead = async () => {
+    const res:any = await updateMessage();
+    if (res.code === 200) {
+      setNotifications((prev) =>
+        prev.map((notification) => ({ ...notification, isRead: 1 }))
+      );
+    }
   };
 
-  const clearAllNotifications = () => {
-    setNotifications([]);
+  const clearAllNotifications = async () => {
+    const res:any = await clearMessage();
+    if (res.code === 200) {
+      setNotifications([]);
+    }
   };
 
   const handleNotificationPress = (notification: Notification) => {

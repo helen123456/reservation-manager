@@ -9,13 +9,13 @@ export async function login(data: { password: string; email: string }) {
   try {
     const response: any = await request.post("/auth/login", data);
     if (response?.code === 200) {
-      const { token, user, ruid, rest } = response.data || {};
+      const { token, user, restaurantId } = response.data || {};
       storage.setItem("token", token);
-      storage.setItem("user", user);
-      storage.setItem("ruid", ruid);
-      storage.setItem("rest", rest);
+      storage.setItem("user", JSON.stringify(user));
+      storage.setItem("uid", user?.id);
+      storage.setItem("restaurantId", restaurantId);
     }
-    return response.data;
+    return response;
   } catch (error) {
     console.error("获取用户列表失败:", error);
   }
@@ -23,11 +23,12 @@ export async function login(data: { password: string; email: string }) {
 
 export async function logout(): Promise<void> {
   try {
-    await request.post("/auth/logout");
+    const res:any = await request.post("/auth/logout");
+    return res
   } finally {
     storage.removeItem("token");
     storage.removeItem("user");
-    storage.removeItem("ruid");
-    storage.removeItem("rest");
+    storage.removeItem("uid");
+    storage.removeItem("restaurantId");
   }
 }

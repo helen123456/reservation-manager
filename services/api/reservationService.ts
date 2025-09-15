@@ -12,6 +12,7 @@ export const getReservations = async (data?: {
   status?: string;
   date?: string;
   search?: string;
+  queryType?: number
 }) => {
   try {
     const response = await request.post("/reservations/list", data);
@@ -57,7 +58,7 @@ export const getReservationSettingInfo = async (id: number) => {
     const response = await request.get<ReservationSettingType>(
       `/reservation/setting/${id}`
     );
-    return response;
+    return response.data || {};
   } catch (error) {
     console.error("获取预订设置信息失败:", error);
   }

@@ -1,7 +1,10 @@
 import NavBack from "@/components/NavBack";
+import { Toast } from "@/components/ui";
 import { useTheme } from '@/hooks/ThemeContext';
-import { message } from "@/utils/message";
+import storage from "@/utils/storage";
 import { Ionicons } from "@expo/vector-icons";
+import dayjs from "dayjs";
+import _ from "lodash";
 import React, { useEffect, useMemo, useState } from "react";
 import {
   ScrollView,
@@ -30,18 +33,6 @@ export default function TableSettingsDetail({
   const {theme} = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
 
-  useEffect(() => {
-    getReservationSettingInfo(1).then((res: any) => {
-      setSettings({
-        ...res,
-        timeSlots: res.timeSlots.map((slot: string) => ({
-          time: slot,
-          enabled: true,
-        })),
-      });
-    });
-  }, []);
-
   const [settings, setSettings] = useState<TableSettings>({
     acceptReservations: true,
     maxGuests: 8,
@@ -53,7 +44,6 @@ export default function TableSettingsDetail({
     timeInterval: 60, // minutes: 60 = 1h, 30 = 30min, 15 = 15min
     maxReservationsPerSlot: 10, // maximum reservations allowed per time slot
     timeSlots: [] as TimeSlot[],
-    advanceBookingDays: 30,
     minAdvanceHours: 2,
     restaurantId: 1,
   });
@@ -65,20 +55,15 @@ export default function TableSettingsDetail({
     intervalMinutes: number,
     activeTimeSlots: string[] = []
   ): TimeSlot[] => {
-    const slots: TimeSlot[] = [];
-    const start = new Date(`2000-01-01T${startTime}:00`);
-    const end = new Date(`2000-01-01T${endTime}:00`);
-
-    let current = new Date(start);
-    while (current < end) {
-      const timeString = current.toTimeString().slice(0, 5);
-      // 取交集：只有在businessHours范围内且在activeTimeSlots中的时间段才enabled
-      const enabled = activeTimeSlots.length === 0 ? true : activeTimeSlots.includes(timeString);
-      slots.push({ time: timeString, enabled });
-      current.setMinutes(current.getMinutes() + intervalMinutes);
-    }
-
-    return slots;
+    const start = dayjs(`2000-01-01 ${startTime}`);
+    const end = dayjs(`2000-01-01 ${endTime}`);
+    const totalMinutes = end.diff(start, 'minute');
+    const slotCount = Math.floor(totalMinutes / intervalMinutes);
+    return _.times(slotCount, (i) => {
+      const time = start.add(i * intervalMinutes, 'minute').format('HH:mm');
+      const enabled = _.isEmpty(activeTimeSlots) || _.includes(activeTimeSlots, time);
+      return { time, enabled };
+    });
   };
 
   // Initialize time slots on mount and fetch data from API
@@ -86,7 +71,6 @@ export default function TableSettingsDetail({
     const fetchReservationSettings = async () => {
       try {
         const data: any = await getReservationSettingInfo(1);
-        
         // 根据接口数据生成时间段
         const newSlots = generateTimeSlots(
           data.businessHours.start,
@@ -116,7 +100,6 @@ export default function TableSettingsDetail({
         }));
       }
     };
-
     fetchReservationSettings();
   }, []);
 
@@ -147,6 +130,12 @@ export default function TableSettingsDetail({
   };
 
   const handleBusinessHoursChange = (field: "start" | "end", value: string,onlyUpdate:boolean) => {
+    // 限制只能输入数字和冒号，格式为 HH:MM
+    const timeRegex = /^[0-9:]*$/;
+    if (!timeRegex.test(value)) {
+      return; // 如果输入不符合格式，直接返回不更新
+    }
+    
     if(onlyUpdate){
       setSettings((prev) => ({
         ...prev,
@@ -160,7 +149,6 @@ export default function TableSettingsDetail({
       const currentActiveSlots = prev.timeSlots
         .filter(slot => slot.enabled)
         .map(slot => slot.time);
-        
       
       // 根据新的营业时间重新生成时间段
       const newSlots = generateTimeSlots(
@@ -180,17 +168,12 @@ export default function TableSettingsDetail({
 
   const handleTimeIntervalChange = (intervalMinutes: number) => {
     setSettings((prev) => {
-      // 获取当前启用的时间段
-      const currentActiveSlots = prev.timeSlots
-        .filter(slot => slot.enabled)
-        .map(slot => slot.time);
-      
-      // 根据新的时间间隔重新生成时间段
+      // 间隔改变时重置为全选（activeTimeSlots 为空数组表示全选）
       const newSlots = generateTimeSlots(
         prev.businessHours.start,
         prev.businessHours.end,
         intervalMinutes,
-        currentActiveSlots
+        [] // 传入空数组，表示全选状态
       );
 
       return {
@@ -204,11 +187,11 @@ export default function TableSettingsDetail({
   const handleSave = async() => {
     const {timeSlots,...rest} = settings
     const selectTime = timeSlots.filter(slot => slot.enabled).map(slot=>slot.time)
-    const response:any = await getReservationSettingUpdate({...rest,timeSlots:selectTime});
+    const restaurantId = await  storage.getItem('restaurantId')
+    const response:any = await getReservationSettingUpdate({...rest,timeSlots:selectTime,restaurantId});
     if(response.code === 200){
-      message.success('保存成功')
+     Toast.success(t('saveSuccess'))
     }
-    
   };
 
   const enabledSlotsCount = settings.timeSlots.filter(
@@ -220,7 +203,7 @@ export default function TableSettingsDetail({
     { value: 30, label: "30min" },
     { value: 15, label: "15min"},
   ];
-  // 获取当前主题颜色
+
 
   return (
     <ThemedView style={styles.container}>
@@ -233,7 +216,7 @@ export default function TableSettingsDetail({
             <Ionicons
               name="save"
               size={14}
-              color={theme.primary}
+              color={theme.primaryForeground}
               style={styles.saveIcon}
             />
             <Text style={styles.saveText}>{t("save")}</Text>
@@ -272,6 +255,7 @@ export default function TableSettingsDetail({
             <View style={styles.inputGroup}>
               <ThemedText style={styles.label}>{t("openingTime")}</ThemedText>
               <TextInput
+                inputMode="numeric"
                 style={styles.timeInput}
                 value={settings.businessHours.start}
                 onChangeText={(value) =>
@@ -286,6 +270,7 @@ export default function TableSettingsDetail({
             <View style={styles.inputGroup}>
               <ThemedText style={styles.label}>{t("closingTime")}</ThemedText>
               <TextInput
+                inputMode="numeric"
                 style={styles.timeInput}
                 value={settings.businessHours.end}
                 onChangeText={(value) =>

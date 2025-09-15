@@ -19,7 +19,6 @@
     "@react-navigation/bottom-tabs": "^7.3.10",
     "@react-navigation/elements": "^2.3.8",
     "@react-navigation/native": "^7.1.6",
-    "antd-mobile": "^5.39.0",
     "axios": "^1.12.1",
     "dayjs": "^1.11.13",
     "expo": "~53.0.22",
@@ -55,6 +54,7 @@
     "@babel/core": "^7.25.2",
     "@types/lodash": "^4.17.20",
     "@types/react": "~19.0.10",
+    "babel-plugin-import": "^1.13.8",
     "eslint": "^9.25.0",
     "eslint-config-expo": "~9.2.0",
     "typescript": "~5.8.3"

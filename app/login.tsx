@@ -5,8 +5,8 @@ import { useTheme } from "@/hooks/ThemeContext";
 import { login } from "@/services/api/authService";
 import createStyles from "@/styles/login.style";
 import { registerSchema } from "@/types/login.type";
-import { Toast } from "@ant-design/react-native";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { router } from "expo-router";
 import React, { useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import {
@@ -20,6 +20,7 @@ import {
 import { z } from "zod";
 import { useAsyncDebounce } from "../hooks/useDebounce";
 import { useTranslation } from "../hooks/useTranslation";
+
 type RegisterFormData = z.infer<typeof registerSchema>;
 
 export default function Login() {
@@ -42,14 +43,13 @@ export default function Login() {
   } = methods;
 
   // 带防抖的登录提交函数
-  const onSubmit = useAsyncDebounce(
-    async (data: RegisterFormData) => {
-      const res = await login(data);
-      if (res.code === 200) {
-        Toast.success("登录成功");
-      }
-    },300
-  );
+  const onSubmit = useAsyncDebounce(async (data: RegisterFormData) => {
+    const res = await login(data);
+
+    if (res.code === 200) {
+      router.push("/(tabs)");
+    }
+  }, 300);
 
   //忘记密码
   const handleForgotPassword = () => {
