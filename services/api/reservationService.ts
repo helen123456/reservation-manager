@@ -3,6 +3,7 @@
  */
 
 import request from "@/services/request";
+import storage from "@/utils/storage";
 import { Reservation } from "../types";
 
 // 获取预订列表
@@ -14,8 +15,9 @@ export const getReservations = async (data?: {
   search?: string;
   queryType?: number
 }) => {
+  const restaurantId = await storage.getItem("restaurantId");
   try {
-    const response = await request.post("/reservations/list", data);
+    const response = await request.post("/reservations/list", {...data,restaurantId});
     return response;
   } catch (error) {
     console.error("获取预订列表失败:", error);
