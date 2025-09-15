@@ -4,7 +4,8 @@ import { getReservations } from "@/services/api/reservationService";
 import { Reservation } from "@/services/types";
 import { message } from "@/utils/message";
 import dayjs from "dayjs";
-import _ from "lodash";
+import groupBy from "lodash/groupBy";
+import merge from "lodash/merge";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   ActivityIndicator,
@@ -44,18 +45,18 @@ export default function ReservationModule() {
   const mergeReservationsByDate = useCallback(
     (existingReservations: Reservation[], newReservations: Reservation[]) => {
       // 将现有数据按日期分组
-      const existingByDate = _.groupBy(existingReservations, (item) =>
+      const existingByDate = groupBy(existingReservations, (item) =>
         dayjs(item.reserveTime).format("YYYY-MM-DD")
       );
 
       // 将新数据按日期分组
-      const newByDate: { [date: string]: Reservation[] } = _.groupBy(
+      const newByDate: { [date: string]: Reservation[] } = groupBy(
         newReservations,
         (item) => dayjs(item.reserveTime).format("YYYY-MM-DD")
       );
 
       // 合并数据：对于相同日期，合并并去重；对于新日期，直接添加
-      const mergedByDate: { [date: string]: Reservation[] } = _.merge(
+      const mergedByDate: { [date: string]: Reservation[] } = merge(
         existingByDate,
         newByDate
       );

@@ -12,7 +12,8 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { getReservations } from "@/services/api/reservationService";
 import { Feather } from "@expo/vector-icons";
 import dayjs from "dayjs";
-import _ from "lodash";
+import groupBy from "lodash/groupBy";
+import merge from "lodash/merge";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
     ActivityIndicator,
@@ -66,18 +67,18 @@ const HistoryOrder = ({ onBack }: { onBack: any }) => {
   const mergeReservationsByDate = useCallback(
     (existingReservations: any, newReservations: any) => {
       // 将现有数据按日期分组
-      const existingByDate = _.groupBy(existingReservations, (item) =>
+      const existingByDate = groupBy(existingReservations, (item) =>
         dayjs(item.reserveTime).format("YYYY-MM-DD")
       );
 
       // 将新数据按日期分组
-      const newByDate: { [date: string]: any } = _.groupBy(
+      const newByDate: { [date: string]: any } = groupBy(
         newReservations,
         (item) => dayjs(item.reserveTime).format("YYYY-MM-DD")
       );
 
       // 合并数据：对于相同日期，合并并去重；对于新日期，直接添加
-      const mergedByDate: { [date: string]: any } = _.merge(
+      const mergedByDate: { [date: string]: any } = merge(
         existingByDate,
         newByDate
       );

@@ -4,7 +4,9 @@ import { useTheme } from '@/hooks/ThemeContext';
 import storage from "@/utils/storage";
 import { Ionicons } from "@expo/vector-icons";
 import dayjs from "dayjs";
-import _ from "lodash";
+import includes from "lodash/includes";
+import isEmpty from "lodash/isEmpty";
+import times from "lodash/times";
 import React, { useEffect, useMemo, useState } from "react";
 import {
   ScrollView,
@@ -59,9 +61,9 @@ export default function TableSettingsDetail({
     const end = dayjs(`2000-01-01 ${endTime}`);
     const totalMinutes = end.diff(start, 'minute');
     const slotCount = Math.floor(totalMinutes / intervalMinutes);
-    return _.times(slotCount, (i) => {
+    return times(slotCount, (i) => {
       const time = start.add(i * intervalMinutes, 'minute').format('HH:mm');
-      const enabled = _.isEmpty(activeTimeSlots) || _.includes(activeTimeSlots, time);
+      const enabled = isEmpty(activeTimeSlots) || includes(activeTimeSlots, time);
       return { time, enabled };
     });
   };
@@ -148,7 +150,7 @@ export default function TableSettingsDetail({
       // 获取当前启用的时间段
       const currentActiveSlots = prev.timeSlots
         .filter(slot => slot.enabled)
-        .map(slot => slot.time);
+        .map(slot => slot.time)
       
       // 根据新的营业时间重新生成时间段
       const newSlots = generateTimeSlots(

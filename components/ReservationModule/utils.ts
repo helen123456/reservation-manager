@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
-import _ from "lodash";
+import groupBy from "lodash/groupBy";
+import orderBy from "lodash/orderBy";
 import { FlatDataItem, Reservation } from "./types";
 
 
@@ -69,7 +70,7 @@ export const calculateStats = (allReservations: Reservation[]) => {
 // 获取扁平化数据的方法
 export const getFlatData = (allReservations: Reservation[]): FlatDataItem[] => {
   // 按日期分组预订
-  const grouped: { [key: string]: Reservation[] } = _.groupBy(
+  const grouped: { [key: string]: Reservation[] } = groupBy(
     allReservations,
     (item) => dayjs(item.reserveTime).format("YYYY-MM-DD")
   );
@@ -79,7 +80,7 @@ export const getFlatData = (allReservations: Reservation[]): FlatDataItem[] => {
     .sort(([a], [b]) => new Date(a).getTime() - new Date(b).getTime())
     .map(([date, reservations]) => ({
       date,
-      reservations: _.orderBy(
+      reservations: orderBy(
         reservations,
         [
           (item: Reservation) => item.status, // 直接按状态数字排序，0最前，3最后
