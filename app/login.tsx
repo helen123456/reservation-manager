@@ -1,6 +1,5 @@
 import Input from "@/components/Input";
-import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
+import { Text, View } from 'react-native';
 import { useTheme } from "@/hooks/ThemeContext";
 import { login } from "@/services/api/authService";
 import createStyles from "@/styles/login.style";
@@ -65,22 +64,22 @@ export default function Login() {
       style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      <ThemedView style={{ flex: 1, justifyContent: "center" }}>
+      <View style={{ flex: 1, justifyContent: "center" }}>
         <ScrollView
           contentContainerStyle={styles.scrollContainer}
           keyboardShouldPersistTaps="handled"
         >
           {/* Header */}
-          <ThemedView style={styles.header}>
-            <ThemedText style={styles.title}>{t("signIn")}</ThemedText>
-            <ThemedText style={styles.subtitle}>
+          <View style={styles.header}>
+            <Text style={styles.title}>{t("signIn")}</Text>
+            <Text style={styles.subtitle}>
               {t("signInDescription")}
-            </ThemedText>
-          </ThemedView>
+            </Text>
+          </View>
 
           {/* Login Form */}
           <FormProvider {...methods}>
-            <ThemedView style={styles.form}>
+            <View style={styles.form}>
               {/* Email Field */}
               <Input
                 labelStyle={{ color: theme.primary }}
@@ -104,13 +103,13 @@ export default function Login() {
               />
 
               {/* Forgot Password */}
-              <ThemedView style={styles.forgotPasswordContainer}>
+              <View style={styles.forgotPasswordContainer}>
                 <TouchableOpacity onPress={handleForgotPassword}>
-                  <ThemedText style={styles.forgotPasswordText}>
+                  <Text style={styles.forgotPasswordText}>
                     {t("forgotPassword")}
-                  </ThemedText>
+                  </Text>
                 </TouchableOpacity>
-              </ThemedView>
+              </View>
 
               {/* Sign In Button */}
               <TouchableOpacity
@@ -124,15 +123,15 @@ export default function Login() {
                 {isSubmitting ? (
                   <ActivityIndicator color="white" />
                 ) : (
-                  <ThemedText style={styles.signInButtonText}>
+                  <Text style={styles.signInButtonText}>
                     {t("signIn")}
-                  </ThemedText>
+                  </Text>
                 )}
               </TouchableOpacity>
-            </ThemedView>
+            </View>
           </FormProvider>
         </ScrollView>
-      </ThemedView>
+      </View>
     </KeyboardAvoidingView>
   );
 }

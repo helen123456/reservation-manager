@@ -1,8 +1,7 @@
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+import { useTheme } from "@/hooks/ThemeContext";
 import { Ionicons } from "@expo/vector-icons";
 import React, { useState } from "react";
-import { Dimensions, Modal, StyleSheet, TouchableOpacity } from "react-native";
+import { Dimensions, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useTranslation } from "../hooks/useTranslation";
 
 interface HeaderProps {
@@ -30,6 +29,7 @@ export default function Header({
 }: HeaderProps) {
   const { t } = useTranslation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { theme } = useTheme();
 
   const menuItems = [
     {
@@ -89,15 +89,15 @@ export default function Header({
   return (
     <>
       {/* Header */}
-      <ThemedView style={styles.header}>
-        <ThemedView style={styles.headerContent}>
+      <View style={styles.header}>
+        <View style={styles.headerContent}>
           {/* Logo/Title */}
-          <ThemedView style={styles.titleContainer}>
-            <ThemedText style={styles.title}>NEO</ThemedText>
-          </ThemedView>
+          <View style={styles.titleContainer}>
+            <Text style={styles.title}>NEO</Text>
+          </View>
 
           {/* Actions */}
-          <ThemedView style={styles.actions}>
+          <View style={styles.actions}>
             {/* Notifications */}
             <TouchableOpacity 
               style={styles.actionButton}
@@ -105,11 +105,11 @@ export default function Header({
             >
               <Ionicons name="notifications-outline" size={20} color="white" />
               {notificationCount > 0 && (
-                <ThemedView style={styles.badge}>
-                  <ThemedText style={styles.badgeText}>
+                <View style={styles.badge}>
+                  <Text style={styles.badgeText}>
                     {notificationCount > 9 ? '9+' : notificationCount}
-                  </ThemedText>
-                </ThemedView>
+                  </Text>
+                </View>
               )}
             </TouchableOpacity>
 
@@ -124,14 +124,14 @@ export default function Header({
                 color="white" 
               />
               {menuCount > 0 && !isMenuOpen && (
-                <ThemedView style={[styles.badge, styles.primaryBadge]}>
-                  <ThemedText style={styles.badgeText}>{menuCount}</ThemedText>
-                </ThemedView>
+                <View style={[styles.badge, styles.primaryBadge]}>
+                  <Text style={styles.badgeText}>{menuCount}</Text>
+                </View>
               )}
             </TouchableOpacity>
-          </ThemedView>
-        </ThemedView>
-      </ThemedView>
+          </View>
+        </View>
+      </View>
 
       {/* Menu Modal */}
       <Modal
@@ -147,21 +147,21 @@ export default function Header({
           onPress={() => setIsMenuOpen(false)}
         >
           {/* Menu Panel */}
-          <ThemedView style={styles.menuPanel}>
+          <View style={[styles.menuPanel,{backgroundColor:theme.background}]}>
             <TouchableOpacity activeOpacity={1}>
               {/* User Info */}
-              <ThemedView style={styles.userInfo}>
-                <ThemedView style={styles.userAvatar}>
+              <View style={styles.userInfo}>
+                <View style={styles.userAvatar}>
                   <Ionicons name="person" size={20} color="#666" />
-                </ThemedView>
-                <ThemedView style={styles.userDetails}>
-                  <ThemedText style={styles.userName}>Restaurant Owner</ThemedText>
-                  <ThemedText style={styles.userEmail}>owner@restaurant.com</ThemedText>
-                </ThemedView>
-              </ThemedView>
+                </View>
+                <View style={styles.userDetails}>
+                  <Text style={styles.userName}>Restaurant Owner</Text>
+                  <Text style={styles.userEmail}>owner@restaurant.com</Text>
+                </View>
+              </View>
 
               {/* Menu Items */}
-              <ThemedView style={styles.menuItems}>
+              <View style={styles.menuItems}>
                 {menuItems.map((item) => (
                   <TouchableOpacity
                     key={item.id}
@@ -171,32 +171,32 @@ export default function Header({
                       item.variant === 'destructive' && styles.destructiveMenuItem
                     ]}
                   >
-                    <ThemedView style={styles.menuItemIcon}>
+                    <View style={styles.menuItemIcon}>
                       <Ionicons 
                         name={item.icon} 
                         size={20} 
                         color={item.variant === 'destructive' ? '#ef4444' : '#333'} 
                       />
                       {item.hasNotification && (
-                        <ThemedView style={styles.notificationDot} />
+                        <View style={styles.notificationDot} />
                       )}
-                    </ThemedView>
-                    <ThemedView style={styles.menuItemContent}>
-                      <ThemedText style={[
+                    </View>
+                    <View style={styles.menuItemContent}>
+                      <Text style={[
                         styles.menuItemTitle,
                         item.variant === 'destructive' && styles.destructiveText
                       ]}>
                         {item.title}
-                      </ThemedText>
-                      <ThemedText style={styles.menuItemDescription}>
+                      </Text>
+                      <Text style={styles.menuItemDescription}>
                         {item.description}
-                      </ThemedText>
-                    </ThemedView>
+                      </Text>
+                    </View>
                   </TouchableOpacity>
                 ))}
-              </ThemedView>
+              </View>
             </TouchableOpacity>
-          </ThemedView>
+          </View>
         </TouchableOpacity>
       </Modal>
     </>
@@ -205,7 +205,7 @@ export default function Header({
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: '#000000',
+    backgroundColor: '#000',
     borderBottomWidth: 1,
     borderBottomColor: '#374151',
     paddingTop: 30, // Account for status bar

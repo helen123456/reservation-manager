@@ -1,11 +1,9 @@
 import { Feather } from "@expo/vector-icons";
 import React, { useState, useMemo } from "react";
-import { ScrollView, TouchableOpacity, View } from "react-native";
+import { ScrollView, TouchableOpacity, View, Text } from "react-native";
 import { useTheme } from '@/hooks/ThemeContext';
 import { useTranslation } from "../../hooks/useTranslation";
 import { NavBack } from "../NavBack";
-import { ThemedText } from "../ThemedText";
-import { ThemedView } from "../ThemedView";
 import QuickSettings from "./QuickSettings";
 import RestaurantStatus from "./RestaurantStatus";
 import SettingsCategory from "./SettingsCategory";
@@ -38,7 +36,7 @@ export default function SettingsModule({
   const restaurantStatus = getRestaurantStatus();
 
   return (
-    <ThemedView style={styles.container}>
+    <View style={styles.container}>
       <NavBack
         title={t("settings")}
         onBack={onBack || (() => {})}
@@ -67,20 +65,20 @@ export default function SettingsModule({
               <Feather name="info" size={16} color="#6b7280" />
             </View>
             <View>
-              <ThemedText style={styles.categoryItemTitle}>
+              <Text style={styles.categoryItemTitle}>
                 {t("about")}
-              </ThemedText>
-              <ThemedText style={styles.categoryItemDescription}>
+              </Text>
+              <Text style={styles.categoryItemDescription}>
                 App version and information
-              </ThemedText>
+              </Text>
             </View>
           </View>
           <View style={styles.badge}>
-            <ThemedText style={styles.badgeText}>Soon</ThemedText>
+            <Text style={styles.badgeText}>Soon</Text>
           </View>
         </TouchableOpacity>
       </ScrollView>
-    </ThemedView>
+    </View>
   );
 }
 

@@ -2,7 +2,7 @@ import { Feather } from '@expo/vector-icons';
 import React, { useMemo } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { useTheme } from '@/hooks/ThemeContext';
-import { ThemedText } from '../ThemedText';
+import { Text } from 'react-native';
 import { createStyles } from './styles';
 import { SettingsCategoryProps } from './types';
 
@@ -13,7 +13,7 @@ export default function SettingsCategory({ categories }: SettingsCategoryProps) 
     <>
       {categories.map((category, categoryIndex) => (
         <View key={categoryIndex}>
-          <ThemedText style={styles.categoryTitle}>{category.title}</ThemedText>
+          <Text style={styles.categoryTitle}>{category.title}</Text>
           
           {category.items.map((item) => (
             <TouchableOpacity
@@ -30,15 +30,15 @@ export default function SettingsCategory({ categories }: SettingsCategoryProps) 
                   <Feather name={item.icon as any} size={16} color="#6b7280" />
                 </View>
                 <View>
-                  <ThemedText style={styles.categoryItemTitle}>{item.title}</ThemedText>
-                  <ThemedText style={styles.categoryItemDescription}>{item.description}</ThemedText>
+                  <Text style={styles.categoryItemTitle}>{item.title}</Text>
+                  <Text style={styles.categoryItemDescription}>{item.description}</Text>
                 </View>
               </View>
               {!item.disabled ? (
                 <Feather name="chevron-right" size={16} color="#6b7280" />
               ) : (
                 <View style={styles.badge}>
-                  <ThemedText style={styles.badgeText}>Soon</ThemedText>
+                  <Text style={styles.badgeText}>Soon</Text>
                 </View>
               )}
             </TouchableOpacity>

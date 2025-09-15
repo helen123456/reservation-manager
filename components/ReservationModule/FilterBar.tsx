@@ -3,8 +3,7 @@ import dayjs from 'dayjs';
 import React, { useMemo } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { useTheme } from '@/hooks/ThemeContext';
-import { ThemedText } from '../ThemedText';
-import { ThemedView } from '../ThemedView';
+import { Text, View } from 'react-native';
 import { createStyles } from './styles';
 
 interface FilterBarProps {
@@ -23,14 +22,14 @@ export function FilterBar({ searchQuery, selectedDate, onClearSearch, onClearDat
   }
 
   return (
-    <ThemedView style={styles.filterBarContainer}>
-      <ThemedText style={styles.filterLabel}>Filters:</ThemedText>
-      <ThemedView style={styles.filterBadgesContainer}>
+    <View style={styles.filterBarContainer}>
+      <Text style={styles.filterLabel}>Filters:</Text>
+      <View style={styles.filterBadgesContainer}>
         {searchQuery && (
-          <ThemedView style={styles.filterBadge}>
-            <ThemedText style={styles.filterBadgeText}>
+          <View style={styles.filterBadge}>
+            <Text style={styles.filterBadgeText}>
                 Search: "{searchQuery}"
-              </ThemedText>
+              </Text>
             <TouchableOpacity
               onPress={onClearSearch}
               style={styles.filterClearButton}
@@ -38,13 +37,13 @@ export function FilterBar({ searchQuery, selectedDate, onClearSearch, onClearDat
             >
               <Feather name="x" size={12} color="#6b7280" />
             </TouchableOpacity>
-          </ThemedView>
+          </View>
         )}
         {selectedDate && (
-          <ThemedView style={styles.filterBadge}>
-            <ThemedText style={styles.filterBadgeText}>
+          <View style={styles.filterBadge}>
+            <Text style={styles.filterBadgeText}>
                 Date: {dayjs(selectedDate).format('MMM DD')}
-              </ThemedText>
+              </Text>
             <TouchableOpacity
               onPress={onClearDate}
               style={styles.filterClearButton}
@@ -52,9 +51,9 @@ export function FilterBar({ searchQuery, selectedDate, onClearSearch, onClearDat
             >
               <Feather name="x" size={12} color="#6b7280" />
             </TouchableOpacity>
-          </ThemedView>
+          </View>
         )}
-      </ThemedView>
-    </ThemedView>
+      </View>
+    </View>
   );
 }

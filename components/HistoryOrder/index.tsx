@@ -5,8 +5,7 @@ import {
     formatDateHeader,
     getFlatData,
 } from "@/components/ReservationModule/utils";
-import { Toast } from "@/components/ui";
-import { IconSymbol } from "@/components/ui/IconSymbol";
+import { Icon, Toast } from "@/components/ui";
 import { useTheme } from "@/hooks/ThemeContext";
 import { useTranslation } from "@/hooks/useTranslation";
 import { getReservations } from "@/services/api/reservationService";
@@ -256,7 +255,7 @@ const HistoryOrder = ({ onBack }: { onBack: any }) => {
           removeClippedSubviews={false}
           ListEmptyComponent={
             <View style={styles.emptyContainer}>
-              <IconSymbol
+              <Icon
                 library="Feather"
                 size={26}
                 name="calendar"

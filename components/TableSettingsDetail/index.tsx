@@ -18,8 +18,6 @@ import {
 } from "react-native";
 import { useTranslation } from "../../hooks/useTranslation";
 import { getReservationSettingInfo, getReservationSettingUpdate } from "../../services/api/reservationService";
-import { ThemedText } from "../ThemedText";
-import { ThemedView } from "../ThemedView";
 import { createStyles } from "./styles";
 import {
   IntervalOption,
@@ -208,7 +206,7 @@ export default function TableSettingsDetail({
 
 
   return (
-    <ThemedView style={styles.container}>
+    <View style={styles.container}>
       {/* Header */}
       <NavBack
         title={t("reservationSettings")}
@@ -234,12 +232,12 @@ export default function TableSettingsDetail({
         <View style={styles.card}>
           <View style={styles.cardRow}>
             <View style={styles.cardContent}>
-              <ThemedText style={styles.cardTitle}>
+              <Text style={styles.cardTitle}>
                 {t("acceptReservations")}
-              </ThemedText>
-              <ThemedText style={styles.cardSubtitle}>
+              </Text>
+              <Text style={styles.cardSubtitle}>
                 {t("allowCustomersBookOnline")}
-              </ThemedText>
+              </Text>
             </View>
             <Switch
               value={settings.acceptReservations}
@@ -252,10 +250,10 @@ export default function TableSettingsDetail({
 
         {/* Business Hours */}
         <View style={styles.card}>
-          <ThemedText style={styles.cardTitle}>{t("businessHours")}</ThemedText>
+          <Text style={styles.cardTitle}>{t("businessHours")}</Text>
           <View style={styles.row}>
             <View style={styles.inputGroup}>
-              <ThemedText style={styles.label}>{t("openingTime")}</ThemedText>
+              <Text style={styles.label}>{t("openingTime")}</Text>
               <TextInput
                 inputMode="numeric"
                 style={styles.timeInput}
@@ -270,7 +268,7 @@ export default function TableSettingsDetail({
               />
             </View>
             <View style={styles.inputGroup}>
-              <ThemedText style={styles.label}>{t("closingTime")}</ThemedText>
+              <Text style={styles.label}>{t("closingTime")}</Text>
               <TextInput
                 inputMode="numeric"
                 style={styles.timeInput}
@@ -289,7 +287,7 @@ export default function TableSettingsDetail({
 
         {/* Time Interval */}
         <View style={styles.card}>
-          <ThemedText style={styles.cardTitle}>{t("timeInterval")}</ThemedText>
+          <Text style={styles.cardTitle}>{t("timeInterval")}</Text>
           <View style={styles.intervalRow}>
             {intervalOptions.map(({ value, label }) => (
               <TouchableOpacity
@@ -317,12 +315,12 @@ export default function TableSettingsDetail({
 
         {/* Max Reservations per Slot */}
         <View style={styles.card}>
-          <ThemedText style={styles.cardTitle}>
+          <Text style={styles.cardTitle}>
             {t("maxReservationsPerSlot")}
-          </ThemedText>
-          <ThemedText style={styles.cardSubtitle}>
+          </Text>
+          <Text style={styles.cardSubtitle}>
             {t("maxReservationsDescription")}
-          </ThemedText>
+          </Text>
           <View style={styles.counterRow}>
             <TouchableOpacity
               style={[
@@ -344,12 +342,12 @@ export default function TableSettingsDetail({
               />
             </TouchableOpacity>
             <View style={styles.counterContent}>
-              <ThemedText style={styles.counterValue}>
+              <Text style={styles.counterValue}>
                 {settings.maxReservationsPerSlot}
-              </ThemedText>
-              <ThemedText style={styles.counterLabel}>
+              </Text>
+              <Text style={styles.counterLabel}>
                 {t("reservations")}
-              </ThemedText>
+              </Text>
             </View>
             <TouchableOpacity
               style={styles.counterButton}
@@ -369,9 +367,9 @@ export default function TableSettingsDetail({
           <View style={styles.cardRow}>
             <View style={styles.slotsHeader}>
               <Ionicons name="time" size={18} color="#000" />
-              <ThemedText style={styles.cardTitle}>
+              <Text style={styles.cardTitle}>
                 {t("availableTimeSlots")}
-              </ThemedText>
+              </Text>
             </View>
             <View style={styles.badge}>
               <Text style={styles.badgeText}>
@@ -409,13 +407,13 @@ export default function TableSettingsDetail({
 
         {/* Party Size Limits */}
         <View style={styles.card}>
-          <ThemedText style={styles.cardTitle}>
+          <Text style={styles.cardTitle}>
             {t("partySizeLimits")}
-          </ThemedText>
+          </Text>
 
           <View style={styles.row}>
             <View style={styles.guestGroup}>
-              <ThemedText style={styles.label}>{t("minimumGuests")}</ThemedText>
+              <Text style={styles.label}>{t("minimumGuests")}</Text>
               <View style={styles.guestCounter}>
                 <TouchableOpacity
                   style={[
@@ -446,7 +444,7 @@ export default function TableSettingsDetail({
             </View>
 
             <View style={styles.guestGroup}>
-              <ThemedText style={styles.label}>{t("maximumGuests")}</ThemedText>
+              <Text style={styles.label}>{t("maximumGuests")}</Text>
               <View style={styles.guestCounter}>
                 <TouchableOpacity
                   style={[
@@ -481,6 +479,6 @@ export default function TableSettingsDetail({
           </View>
         </View>
       </ScrollView>
-    </ThemedView>
+    </View>
   );
 }

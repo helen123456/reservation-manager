@@ -50,7 +50,7 @@ export const ThemeProvider = ({ children }) => {
       setUserChosenTheme(true); // 用户主动选择了主题
       try {
         // 保存用户选择
-        await AsyncStorage.setItem("userTheme", newThemeName);
+        await storage.setItem("userTheme", newThemeName);
       } catch (error) {
         console.error("Failed to save theme", error);
       }

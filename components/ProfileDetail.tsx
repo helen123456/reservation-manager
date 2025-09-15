@@ -13,8 +13,6 @@ import z from "zod";
 import { useTranslation } from "../hooks/useTranslation";
 import { languages } from "../utils/i18n";
 import { NavBack } from "./NavBack";
-import { ThemedText } from "./ThemedText";
-import { ThemedView } from "./ThemedView";
 
 interface ProfileDetailProps {
   onBack: () => void;
@@ -84,7 +82,7 @@ export default function ProfileDetail({ onBack }: ProfileDetailProps) {
   );
 
   return (
-    <ThemedView style={styles.container}>
+    <View style={styles.container}>
       <NavBack
         title={t("profileTitle")}
         onBack={onBack}
@@ -95,9 +93,9 @@ export default function ProfileDetail({ onBack }: ProfileDetailProps) {
         <View style={styles.card}>
           <View style={styles.cardHeader}>
             <Feather name="user" size={18} color="#111827" />
-            <ThemedText style={styles.cardTitle}>
+            <Text style={styles.cardTitle}>
               {t("personalInformation")}
-            </ThemedText>
+            </Text>
           </View>
           <FormProvider {...methods}>
            
@@ -139,10 +137,10 @@ export default function ProfileDetail({ onBack }: ProfileDetailProps) {
         <View style={styles.card}>
           <View style={styles.cardHeader}>
             <Feather name="globe" size={18} color="#111827" />
-            <ThemedText style={styles.cardTitle}>{t("preferences")}</ThemedText>
+            <Text style={styles.cardTitle}>{t("preferences")}</Text>
           </View>
 
-          <ThemedText style={styles.label}>{t("language")}</ThemedText>
+          <Text style={styles.label}>{t("language")}</Text>
           <TouchableOpacity
             style={styles.selectButton}
             onPress={() => setShowLanguageSelector(true)}
@@ -182,7 +180,7 @@ export default function ProfileDetail({ onBack }: ProfileDetailProps) {
               ))}
       </Modal>
      
-    </ThemedView>
+    </View>
   );
 }
 const styles = {

@@ -6,7 +6,7 @@ import ProfileDetail from "@/components/ProfileDetail";
 import ReservationModule from "@/components/ReservationModule";
 import SettingsModule from "@/components/SettingsModule";
 import TableSettingsDetail from "@/components/TableSettingsDetail";
-import { ThemedView } from "@/components/ThemedView";
+import { useTheme } from "@/hooks/ThemeContext";
 import { logout } from "@/services/api/authService";
 import storage from "@/utils/storage";
 import { Ionicons } from "@expo/vector-icons";
@@ -18,6 +18,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { theme } = useTheme();
   const [currentView, setCurrentView] = useState<
     "main" | "settings" | "profile" | "help" | "notifications"|"history"
   >("main");
@@ -155,7 +156,7 @@ export default function App() {
   }
 
   return (
-    <ThemedView style={styles.container}>
+    <View style={[styles.container,{backgroundColor:theme.background}]}>
       {/* Header */}
       <Header
         onSettingsClick={handleSettingsClick}
@@ -171,11 +172,11 @@ export default function App() {
       {/* <ParallaxScrollView
           headerBackgroundColor={{ light: "#D0D0D0", dark: "#353636" }}
         > */}
-      <SafeAreaView edges={["bottom"]} style={{ flex: 1 }}>
+      <SafeAreaView edges={["bottom"]} style={{ flex: 1}}>
         {renderContent()}
       </SafeAreaView>
       {/* </ParallaxScrollView> */}
-    </ThemedView>
+    </View>
   );
 }
 

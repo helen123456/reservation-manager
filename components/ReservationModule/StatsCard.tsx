@@ -1,9 +1,8 @@
+import { useTheme } from '@/hooks/ThemeContext';
 import { Feather } from '@expo/vector-icons';
 import React, { useMemo } from 'react';
-import { useTheme } from '@/hooks/ThemeContext';
+import { Text, View } from 'react-native';
 import { useTranslation } from '../../hooks/useTranslation';
-import { ThemedText } from '../ThemedText';
-import { ThemedView } from '../ThemedView';
 import { createStyles } from './styles';
 
 interface StatsCardProps {
@@ -24,40 +23,40 @@ export const StatsCard: React.FC<StatsCardProps> = ({
   const styles = useMemo(() => createStyles(theme), [theme]);
 
   return (
-    <ThemedView style={styles.statsCard}>
-      <ThemedView style={styles.statsGrid}>
-        <ThemedView style={styles.statItem}>
-          <ThemedView style={styles.statIconContainer}>
+     <View style={styles.statsCard}>
+      <View style={styles.statsGrid}>
+        <View style={styles.statItem}>
+          <View style={styles.statIconContainer}>
             <Feather name="calendar" size={14} color="#6b7280" />
-            <ThemedText style={styles.statLabel}>Today</ThemedText>
-          </ThemedView>
-          <ThemedText style={styles.statValue}>{todayReservations}</ThemedText>
-        </ThemedView>
+            <Text style={styles.statLabel}>Today</Text>
+          </View>
+          <Text style={styles.statValue}>{todayReservations}</Text>
+        </View>
         
-        <ThemedView style={styles.statItem}>
-          <ThemedView style={styles.statIconContainer}>
+        <View style={styles.statItem}>
+          <View style={styles.statIconContainer}>
             <Feather name="alert-circle" size={14} color="#6b7280" />
-            <ThemedText style={styles.statLabel}>{t('pending')}</ThemedText>
-          </ThemedView>
-          <ThemedText style={styles.statValue}>{pendingCount}</ThemedText>
-        </ThemedView>
+            <Text style={styles.statLabel}>{t('pending')}</Text>
+          </View>
+          <Text style={styles.statValue}>{pendingCount}</Text>
+        </View>
         
-        <ThemedView style={styles.statItem}>
-          <ThemedView style={styles.statIconContainer}>
+        <View style={styles.statItem}>
+          <View style={styles.statIconContainer}>
             <Feather name="check-circle" size={14} color="#6b7280" />
-            <ThemedText style={styles.statLabel}>{t('confirmed')}</ThemedText>
-          </ThemedView>
-          <ThemedText style={styles.statValue}>{confirmedCount}</ThemedText>
-        </ThemedView>
+            <Text style={styles.statLabel}>{t('confirmed')}</Text>
+          </View>
+          <Text style={styles.statValue}>{confirmedCount}</Text>
+        </View>
         
-        <ThemedView style={styles.statItem}>
-          <ThemedView style={styles.statIconContainer}>
+        <View style={styles.statItem}>
+          <View style={styles.statIconContainer}>
             <Feather name="users" size={14} color="#6b7280" />
-            <ThemedText style={styles.statLabel}>{t('guests')}</ThemedText>
-          </ThemedView>
-          <ThemedText style={styles.statValue}>{totalGuests}</ThemedText>
-        </ThemedView>
-      </ThemedView>
-    </ThemedView>
+            <Text style={styles.statLabel}>{t('guests')}</Text>
+          </View>
+          <Text style={styles.statValue}>{totalGuests}</Text>
+        </View>
+      </View>
+    </View>
   );
 };

@@ -3,9 +3,8 @@ import React from 'react';
 import { Platform } from 'react-native';
 
 import { HapticTab } from '@/components/HapticTab';
-import { IconSymbol } from '@/components/ui/IconSymbol';
-import TabBarBackground from '@/components/ui/TabBarBackground';
-import { useTheme } from '@/hooks/ThemeContext';
+import { Icon } from '@/components/ui';
+import { useTheme } from "@/hooks/ThemeContext";
 
 export default function TabLayout() {
   const {theme} = useTheme();
@@ -16,7 +15,6 @@ export default function TabLayout() {
         tabBarActiveTintColor: theme.tint,
         headerShown: false,
         tabBarButton: HapticTab,
-        tabBarBackground: TabBarBackground,
         tabBarStyle: Platform.select({
           ios: {
             // Use a transparent background on iOS to show the blur effect
@@ -36,7 +34,7 @@ export default function TabLayout() {
         name="index"
         options={{
           title: '预订管理',
-          tabBarIcon: ({ color }) => <IconSymbol library='Feather' size={26} name="calendar" color={color} />,
+          tabBarIcon: ({ color }) => <Icon library='Feather' size={26} name="calendar" color={color} />,
         }}
       />
     </Tabs>

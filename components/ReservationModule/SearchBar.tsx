@@ -6,8 +6,7 @@ import { TouchableOpacity } from "react-native";
 import Popover from "react-native-popover-view";
 import DateTimePicker, { useDefaultStyles } from "react-native-ui-datepicker";
 import { useTheme } from '@/hooks/ThemeContext';
-import { ThemedText } from "../ThemedText";
-import { ThemedView } from "../ThemedView";
+import { Text, View } from 'react-native';
 import { createStyles } from "./styles";
 
 interface SearchBarProps {
@@ -42,7 +41,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   };
 
   return (
-    <ThemedView style={styles.searchContainer}>
+    <View style={styles.searchContainer}>
      
         <Input
           containerStyle={{marginBottom:0,flex:1}}
@@ -74,10 +73,10 @@ export const SearchBar: React.FC<SearchBarProps> = ({
           </TouchableOpacity>
         }
       >
-        <ThemedView style={styles.popoverContent}>
-          <ThemedText style={{ fontSize: 14, fontWeight: '500' }}>
+        <View style={styles.popoverContent}>
+          <Text style={{ fontSize: 14, fontWeight: '500' }}>
             Filter by date
-          </ThemedText>
+          </Text>
           <DateTimePicker
             mode="single"
             date={selectedDate ?? undefined}
@@ -90,8 +89,8 @@ export const SearchBar: React.FC<SearchBarProps> = ({
               selected_label: { color: "white" }, // Highlight the selected day label
             }}
           />
-        </ThemedView>
+        </View>
       </Popover>
-    </ThemedView>
+    </View>
   );
 };

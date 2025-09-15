@@ -2,7 +2,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import React, { useMemo } from 'react';
 import { Animated, TouchableOpacity, View } from 'react-native';
 import { useTheme } from '@/hooks/ThemeContext';
-import { ThemedText } from '../ThemedText';
+import { Text } from 'react-native';
 import { useMessageContext } from './MessageContext';
 import { createStyles } from './styles';
 import { MessageType } from './types';
@@ -64,9 +64,9 @@ export const GlobalMessage: React.FC = () => {
                 color={color} 
                 style={styles.messageIcon}
               />
-              <ThemedText style={styles.messageText}>
+              <Text style={styles.messageText}>
                 {message.content}
-              </ThemedText>
+              </Text>
             </View>
             <TouchableOpacity
               onPress={() => close(message.id)}

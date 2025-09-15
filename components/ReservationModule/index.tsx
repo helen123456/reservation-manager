@@ -1,3 +1,4 @@
+import { Icon } from "@/components/ui";
 import { useTheme } from "@/hooks/ThemeContext";
 import { useTranslation } from "@/hooks/useTranslation";
 import { getReservations } from "@/services/api/reservationService";
@@ -14,9 +15,6 @@ import {
   View
 } from "react-native";
 import { NavBack } from "../NavBack";
-import { ThemedText } from "../ThemedText";
-import { ThemedView } from "../ThemedView";
-import { IconSymbol } from "../ui/IconSymbol";
 import { FilterBar } from "./FilterBar";
 import { ReservationDetail } from "./ReservationDetail";
 import { ReservationItem } from "./ReservationItem";
@@ -201,28 +199,28 @@ export default function ReservationModule() {
   const renderItem = ({ item }: { item: FlatDataItem }) => {
     if (item.type === "header") {
       return (
-        <ThemedView style={styles.dateHeader}>
-          <ThemedText style={styles.dateHeaderText}>
+        <View style={styles.dateHeader}>
+          <Text style={styles.dateHeaderText}>
             {formatDateHeader(item.date)}
-          </ThemedText>
-          <ThemedView style={{ flexDirection: "row", gap: 8 }}>
-            <ThemedView style={[styles.countBadge]}>
-              <ThemedText style={styles.countBadgeText}>
+          </Text>
+          <View style={{ flexDirection: "row", gap: 8 }}>
+            <View style={[styles.countBadge]}>
+              <Text style={styles.countBadgeText}>
                 {item.count}
-              </ThemedText>
-              <ThemedText style={styles.countBadgeText}>
+              </Text>
+              <Text style={styles.countBadgeText}>
                 {item.count === 1 ? "reservation" : "reservations"}
-              </ThemedText>
-            </ThemedView>
+              </Text>
+            </View>
             {!!item.pendingCount && item.pendingCount > 0 && (
-              <ThemedView style={[styles.countBadge]}>
-                <ThemedText style={[styles.countBadgeText]}>
+              <View style={[styles.countBadge]}>
+                <Text style={[styles.countBadgeText]}>
                   {item.pendingCount} {t("pending")}
-                </ThemedText>
-              </ThemedView>
+                </Text>
+              </View>
             )}
-          </ThemedView>
-        </ThemedView>
+          </View>
+        </View>
       );
     }
 
@@ -252,8 +250,8 @@ export default function ReservationModule() {
   }
 
   return (
-    <ThemedView style={styles.container}>
-      <ThemedView>
+    <View style={styles.container}>
+      <View>
         <NavBack
           title={t("reservations")}
           subtitle="Manage your restaurant reservations"
@@ -281,12 +279,12 @@ export default function ReservationModule() {
           onClearSearch={handleClearSearch}
           onClearDate={handleClearDate}
         />
-      </ThemedView>
+      </View>
 
       {error && (
-        <ThemedView style={{ padding: 16, backgroundColor: "#ffebee" }}>
-          <ThemedText style={{ color: "#c62828" }}>{error}</ThemedText>
-        </ThemedView>
+        <View style={{ padding: 16, backgroundColor: "#ffebee" }}>
+          <Text style={{ color: "#c62828" }}>{error}</Text>
+        </View>
       )}
 
       <FlatList
@@ -306,7 +304,7 @@ export default function ReservationModule() {
         removeClippedSubviews={false}
         ListEmptyComponent={
           <View style={styles.emptyContainer}>
-            <IconSymbol
+            <Icon
               library="Feather"
               size={26}
               name="calendar"
@@ -317,21 +315,21 @@ export default function ReservationModule() {
         }
         ListFooterComponent={
           flatData.length === 0 ? null : isLoading && currentPage > 1 ? (
-            <ThemedView style={{ padding: 20, alignItems: "center" }}>
+            <View style={{ padding: 20, alignItems: "center" }}>
               <ActivityIndicator size="small" />
-              <ThemedText style={{ marginTop: 8, opacity: 0.6 }}>
+              <Text style={{ marginTop: 8, opacity: 0.6 }}>
                 Loading reservations...
-              </ThemedText>
-            </ThemedView>
+              </Text>
+            </View>
           ) : (
-            <ThemedView style={{ padding: 20, alignItems: "center" }}>
-              <ThemedText style={{ opacity: 0.6 }}>
+            <View style={{ padding: 20, alignItems: "center" }}>
+              <Text style={{ opacity: 0.6 }}>
                 No more reservations
-              </ThemedText>
-            </ThemedView>
+              </Text>
+            </View>
           )
         }
       />
-    </ThemedView>
+    </View>
   );
 }

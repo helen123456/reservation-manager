@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { useTranslation } from "../hooks/useTranslation";
 import NavBack from "./NavBack";
-import { ThemedView } from "./ThemedView";
+
 
 interface HelpSupportProps {
   onBack: () => void;
@@ -48,7 +48,7 @@ export default function HelpSupport({ onBack }: HelpSupportProps) {
   ];
 
   return (
-    <ThemedView style={styles.container}>
+    <View style={styles.container}>
       {/* Header */}
       <NavBack 
         title={t('helpSupport')}
@@ -178,7 +178,7 @@ export default function HelpSupport({ onBack }: HelpSupportProps) {
           </View>
         </View>
       </ScrollView>
-    </ThemedView>
+    </View>
   );
 }
 

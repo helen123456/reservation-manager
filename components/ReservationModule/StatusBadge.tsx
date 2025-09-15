@@ -1,8 +1,7 @@
 import React, { useMemo } from 'react';
 import { useTheme } from '@/hooks/ThemeContext';
 import { useTranslation } from '../../hooks/useTranslation';
-import { ThemedText } from '../ThemedText';
-import { ThemedView } from '../ThemedView';
+import { Text, View } from 'react-native';
 import { createStyles } from './styles';
 
 interface StatusBadgeProps {
@@ -46,10 +45,10 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
   };
 
   return (
-    <ThemedView style={[styles.badge, getBadgeStyle()]}>
-      <ThemedText style={[styles.badgeText, { color: getTextColor() }]}>
-        {getStatusText()}
-      </ThemedText>
-    </ThemedView>
+    <View style={[styles.badge, getBadgeStyle()]}>
+        <Text style={[styles.badgeText, { color: getTextColor() }]}>
+          {getStatusText()}
+        </Text>
+      </View>
   );
 };

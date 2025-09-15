@@ -1,23 +1,23 @@
 // Fallback for using MaterialIcons on Android and web.
 
-import { 
-  Ionicons, 
-  MaterialIcons, 
-  FontAwesome, 
-  FontAwesome5, 
-  AntDesign, 
-  Entypo, 
-  EvilIcons, 
-  Feather, 
-  Foundation, 
-  MaterialCommunityIcons, 
-  Octicons, 
-  SimpleLineIcons, 
-  Zocial 
+import {
+    AntDesign,
+    Entypo,
+    EvilIcons,
+    Feather,
+    FontAwesome,
+    FontAwesome5,
+    Foundation,
+    Ionicons,
+    MaterialCommunityIcons,
+    MaterialIcons,
+    Octicons,
+    SimpleLineIcons,
+    Zocial
 } from '@expo/vector-icons';
 import { SymbolWeight } from 'expo-symbols';
-import { OpaqueColorValue, type StyleProp, type TextStyle } from 'react-native';
 import { ComponentProps } from 'react';
+import { OpaqueColorValue, type StyleProp, type TextStyle } from 'react-native';
 
 // 定义支持的图标库类型
 type IconLibrary = 
@@ -69,7 +69,7 @@ const IconComponents = {
   Zocial,
 };
 
-export function IconSymbol<T extends IconLibrary>({
+export default function IconSymbol<T extends IconLibrary>({
   library = 'Ionicons' as T,
   name,
   size = 24,

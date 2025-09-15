@@ -3,8 +3,7 @@ import dayjs from 'dayjs';
 import React, { useMemo } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { useTheme } from '@/hooks/ThemeContext';
-import { ThemedText } from '../ThemedText';
-import { ThemedView } from '../ThemedView';
+import { Text, View } from 'react-native';
 import { StatusBadge } from './StatusBadge';
 import { createStyles } from './styles';
 import { Reservation } from './types';
@@ -26,40 +25,40 @@ export const ReservationItem: React.FC<ReservationItemProps> = ({ reservation, o
       style={styles.reservationItem}
       onPress={() => onPress(reservation)}
     >
-      <ThemedView style={[styles.reservationContent, { backgroundColor: '#fff' }]}>
-        <ThemedView style={styles.reservationLeft}>
-          <ThemedView style={styles.smallAvatar}>
-            <ThemedText style={styles.smallAvatarText}>
+      <View style={[styles.reservationContent, { backgroundColor: '#fff' }]}>
+        <View style={styles.reservationLeft}>
+          <View style={styles.smallAvatar}>
+            <Text style={styles.smallAvatarText}>
               {getInitials(reservation.contactName)}
-            </ThemedText>
-          </ThemedView>
+            </Text>
+          </View>
           
-          <ThemedView style={styles.reservationInfo}>
-            <ThemedView style={styles.reservationHeader}>
-              <ThemedText style={styles.customerNameSmall}>
+          <View style={styles.reservationInfo}>
+            <View style={styles.reservationHeader}>
+              <Text style={styles.customerNameSmall}>
                 {reservation.contactName}
-              </ThemedText>
+              </Text>
               <StatusBadge status={reservation.status} />
-            </ThemedView>
+            </View>
             
-            <ThemedView style={styles.reservationDetails}>
-              <ThemedView style={styles.detailRow}>
+            <View style={styles.reservationDetails}>
+              <View style={styles.detailRow}>
                 <Feather name="clock" size={12} color="#6b7280" />
-                <ThemedText style={styles.detailTextSmall}>
+                <Text style={styles.detailTextSmall}>
                   {dayjs(reservation.reserveTime).format('HH:mm')}
-                </ThemedText>
-              </ThemedView>
+                </Text>
+              </View>
               
-              <ThemedView style={styles.detailRow}>
+              <View style={styles.detailRow}>
                 <Feather name="users" size={12} color="#6b7280" />
-                <ThemedText style={styles.detailTextSmall}>
+                <Text style={styles.detailTextSmall}>
                   {reservation.guests}
-                </ThemedText>
-              </ThemedView>
-            </ThemedView>
-          </ThemedView>
-        </ThemedView>
-      </ThemedView>
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
     </TouchableOpacity>
   );
 };

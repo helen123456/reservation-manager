@@ -1,17 +1,16 @@
 import Modal from "@/components/Modal";
 import { updateReservation } from "@/services/api/reservationService";
-import { Feather } from "@expo/vector-icons";
+import { Feather, Ionicons } from "@expo/vector-icons";
 import dayjs from "dayjs";
 import React, { useMemo, useState } from "react";
 import {
   ScrollView,
   Text,
-  TouchableOpacity
+  TouchableOpacity,
+  View
 } from "react-native";
 import { useTheme } from '@/hooks/ThemeContext';
 import { useTranslation } from "../../hooks/useTranslation";
-import { ThemedText } from "../ThemedText";
-import { ThemedView } from "../ThemedView";
 import { StatusBadge } from "./StatusBadge";
 import { createStyles } from "./styles";
 import { Reservation } from "./types";
@@ -71,84 +70,84 @@ export const ReservationDetail: React.FC<ReservationDetailProps> = ({
   };
 
   return (
-    <ThemedView style={styles.container}>
-      <ThemedView style={styles.backButtonContainer}>
-        <TouchableOpacity onPress={onBack} style={styles.backButton}>
-          <Feather name="arrow-left" size={24} color="#111827" />
-        </TouchableOpacity>
-        <ThemedText style={styles.detailTitle}>Reservation Details</ThemedText>
-      </ThemedView>
+    <View style={styles.container}>
+        <View style={styles.backButtonContainer}>
+          <TouchableOpacity onPress={onBack} style={styles.backButton}>
+            <Ionicons name="arrow-back" size={24} color="#007AFF" />
+          </TouchableOpacity>
+          <Text style={styles.detailTitle}>Reservation Details</Text>
+        </View>
 
       <ScrollView style={styles.container}>
-        <ThemedView style={styles.statusContainer}>
+        <View style={styles.statusContainer}>
           <StatusBadge status={reservation.status} />
-        </ThemedView>
+        </View>
 
-        <ThemedView style={styles.card}>
-          <ThemedView style={styles.customerInfo}>
-            <ThemedView style={styles.avatar}>
-              <ThemedText style={styles.avatarText}>
+        <View style={styles.card}>
+          <View style={styles.customerInfo}>
+            <View style={styles.avatar}>
+              <Text style={styles.avatarText}>
                 {getInitials(reservation.contactName)}
-              </ThemedText>
-            </ThemedView>
-            <ThemedText style={styles.contactName}>
+              </Text>
+            </View>
+            <Text style={styles.contactName}>
               {reservation.contactName}
-            </ThemedText>
-            <ThemedView style={styles.phoneContainer}>
+            </Text>
+            <View style={styles.phoneContainer}>
               <Feather name="phone" size={16} color="#6b7280" />
-              <ThemedText style={styles.phoneText}>
+              <Text style={styles.phoneText}>
                 {reservation.contactPhone}
-              </ThemedText>
-            </ThemedView>
-          </ThemedView>
-        </ThemedView>
+              </Text>
+            </View>
+          </View>
+        </View>
 
-        <ThemedView style={styles.card}>
-          <ThemedText style={styles.cardTitle}>Reservation Details</ThemedText>
-          <ThemedView style={styles.detailsGrid}>
-            <ThemedView style={styles.detailItem}>
-              <ThemedView style={styles.detailHeader}>
+        <View style={styles.card}>
+          <Text style={styles.cardTitle}>Reservation Details</Text>
+          <View style={styles.detailsGrid}>
+            <View style={styles.detailItem}>
+              <View style={styles.detailHeader}>
                 <Feather name="calendar" size={16} color="#6b7280" />
-                <ThemedText style={styles.detailLabel}>Date</ThemedText>
-              </ThemedView>
-              <ThemedText style={styles.detailValue}>
+                <Text style={styles.detailLabel}>Date</Text>
+              </View>
+              <Text style={styles.detailValue}>
                 {formatDate(reservation.reserveTime)}
-              </ThemedText>
-            </ThemedView>
+              </Text>
+            </View>
 
-            <ThemedView style={styles.detailItem}>
-              <ThemedView style={styles.detailHeader}>
+            <View style={styles.detailItem}>
+              <View style={styles.detailHeader}>
                 <Feather name="clock" size={16} color="#6b7280" />
-                <ThemedText style={styles.detailLabel}>Time</ThemedText>
-              </ThemedView>
-              <ThemedText style={styles.detailValue}>
+                <Text style={styles.detailLabel}>Time</Text>
+              </View>
+              <Text style={styles.detailValue}>
                 {dayjs(reservation.reserveTime).format("HH:mm")}
-              </ThemedText>
-            </ThemedView>
+              </Text>
+            </View>
 
-            <ThemedView style={styles.detailItem}>
-              <ThemedView style={styles.detailHeader}>
+            <View style={styles.detailItem}>
+              <View style={styles.detailHeader}>
                 <Feather name="users" size={16} color="#6b7280" />
-                <ThemedText style={styles.detailLabel}>
+                <Text style={styles.detailLabel}>
                   {t("guests")}
-                </ThemedText>
-              </ThemedView>
-              <ThemedText style={styles.detailValue}>
+                </Text>
+              </View>
+              <Text style={styles.detailValue}>
                 {reservation.guests}
-              </ThemedText>
-            </ThemedView>
-          </ThemedView>
-        </ThemedView>
+              </Text>
+            </View>
+          </View>
+        </View>
         {reservation.status === 0 && (
-          <ThemedView style={styles.actionsContainer}>
+          <View style={styles.actionsContainer}>
             <TouchableOpacity
               style={[styles.actionButton, styles.rejectButton]}
               onPress={() => handleReject()}
             >
               <Feather name="x" size={20} color={theme.text} />
-              <ThemedText style={styles.actionButtonText}>
+              <Text style={styles.actionButtonText}>
                 {t("decline")}
-              </ThemedText>
+              </Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -160,11 +159,11 @@ export const ReservationDetail: React.FC<ReservationDetailProps> = ({
                 size={20}
                 color={theme.primaryForeground}
               />
-              <ThemedText style={styles.rejectButtonText}>
+              <Text style={styles.rejectButtonText}>
                 {t("accept")}
-              </ThemedText>
+              </Text>
             </TouchableOpacity>
-          </ThemedView>
+          </View>
         )}
       </ScrollView>
 
@@ -176,6 +175,6 @@ export const ReservationDetail: React.FC<ReservationDetailProps> = ({
       >
         <Text>{tipsText}</Text>
       </Modal>
-    </ThemedView>
+    </View>
   );
 };

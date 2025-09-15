@@ -1,4 +1,3 @@
-import { ThemedView } from "@/components/ThemedView";
 import { useTheme } from "@/hooks/ThemeContext";
 import {
   clearMessage,
@@ -64,7 +63,7 @@ export default function NotificationsModule({
   const unreadCount = notifications.filter((n) => !n.isRead).length;
 
   return (
-    <ThemedView style={styles.container}>
+    <View style={styles.container}>
       <NotificationHeader
         notifications={notifications}
         unreadCount={unreadCount}
@@ -105,6 +104,6 @@ export default function NotificationsModule({
           )}
         </View>
       </ScrollView>
-    </ThemedView>
+    </View>
   );
 }

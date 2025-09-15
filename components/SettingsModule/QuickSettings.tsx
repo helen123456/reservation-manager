@@ -3,7 +3,7 @@ import React, { useMemo } from 'react';
 import { Switch, View } from 'react-native';
 import { useTheme } from '@/hooks/ThemeContext';
 import { useTranslation } from '../../hooks/useTranslation';
-import { ThemedText } from '../ThemedText';
+import { Text } from 'react-native';
 import { createStyles } from './styles';
 import { QuickSettingsProps } from './types';
 
@@ -14,12 +14,12 @@ export default function QuickSettings({ settings, onSettingChange }: QuickSettin
 
   return (
     <View style={styles.card}>
-      <ThemedText style={styles.cardTitle}>Quick Settings</ThemedText>
+      <Text style={styles.cardTitle}>Quick Settings</Text>
       
       <View style={styles.settingItem}>
         <View style={styles.settingLeft}>
-          <ThemedText style={styles.settingTitle}>{t('acceptReservations')}</ThemedText>
-          <ThemedText style={styles.settingDescription}>Allow new bookings</ThemedText>
+          <Text style={styles.settingTitle}>{t('acceptReservations')}</Text>
+        <Text style={styles.settingDescription}>Allow new bookings</Text>
         </View>
         <Switch
           value={settings.acceptReservations}
@@ -29,8 +29,8 @@ export default function QuickSettings({ settings, onSettingChange }: QuickSettin
 
       <View style={styles.settingItem}>
         <View style={styles.settingLeft}>
-          <ThemedText style={styles.settingTitle}>Auto-confirm Reservations</ThemedText>
-          <ThemedText style={styles.settingDescription}>Automatically confirm new bookings</ThemedText>
+          <Text style={styles.settingTitle}>Auto-confirm Reservations</Text>
+        <Text style={styles.settingDescription}>Automatically confirm new bookings</Text>
         </View>
         <Switch
           value={settings.autoConfirm}
@@ -44,8 +44,8 @@ export default function QuickSettings({ settings, onSettingChange }: QuickSettin
             <Feather name={settings.darkMode ? "moon" : "sun"} size={16} color="#6b7280" />
           </View>
           <View style={{ marginLeft: -44, paddingLeft: 44 }}>
-            <ThemedText style={styles.settingTitle}>Dark Mode</ThemedText>
-            <ThemedText style={styles.settingDescription}>Switch between light and dark theme</ThemedText>
+            <Text style={styles.settingTitle}>Dark Mode</Text>
+        <Text style={styles.settingDescription}>Switch between light and dark theme</Text>
           </View>
         </View>
         <Switch

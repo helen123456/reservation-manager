@@ -1,7 +1,7 @@
 import { Feather } from '@expo/vector-icons';
 import React from 'react';
 import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
-import { ThemedText } from './ThemedText';
+import { Text } from 'react-native';
 
 interface NavBackProps {
   title: string;
@@ -33,12 +33,12 @@ export default function NavBack({
           </TouchableOpacity>
         )}
         <View style={styles.titleContainer}>
-          <ThemedText style={[styles.title, titleStyle]}>{title}</ThemedText>
-          {subtitle && (
-            <ThemedText style={[styles.subtitle, subtitleStyle]}>
-              {subtitle}
-            </ThemedText>
-          )}
+          <Text style={[styles.title, titleStyle]}>{title}</Text>
+        {subtitle && (
+          <Text style={[styles.subtitle, subtitleStyle]}>
+            {subtitle}
+          </Text>
+        )}
         </View>
       </View>
       {rightComponent && (
