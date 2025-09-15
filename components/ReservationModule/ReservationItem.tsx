@@ -1,9 +1,8 @@
+import { useTheme } from '@/hooks/ThemeContext';
 import { Feather } from '@expo/vector-icons';
 import dayjs from 'dayjs';
 import React, { useMemo } from 'react';
-import { TouchableOpacity } from 'react-native';
-import { useTheme } from '@/hooks/ThemeContext';
-import { Text, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import { StatusBadge } from './StatusBadge';
 import { createStyles } from './styles';
 import { Reservation } from './types';
@@ -25,7 +24,7 @@ export const ReservationItem: React.FC<ReservationItemProps> = ({ reservation, o
       style={styles.reservationItem}
       onPress={() => onPress(reservation)}
     >
-      <View style={[styles.reservationContent, { backgroundColor: '#fff' }]}>
+      <View style={[styles.reservationContent, { backgroundColor: theme.background }]}>
         <View style={styles.reservationLeft}>
           <View style={styles.smallAvatar}>
             <Text style={styles.smallAvatarText}>

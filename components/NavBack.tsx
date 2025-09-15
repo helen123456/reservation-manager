@@ -2,6 +2,7 @@ import { Feather } from '@expo/vector-icons';
 import React from 'react';
 import { TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { Text } from 'react-native';
+import { useTheme } from '../hooks/ThemeContext';
 
 interface NavBackProps {
   title: string;
@@ -24,12 +25,15 @@ export default function NavBack({
   titleStyle,
   subtitleStyle,
 }: NavBackProps) {
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
+
   return (
     <View style={[styles.header, headerStyle]}>
       <View style={styles.headerLeft}>
         {showBackButton && (
           <TouchableOpacity onPress={onBack} style={styles.backButton}>
-            <Feather name="arrow-left" size={20} color="#111827" />
+            <Feather name="arrow-left" size={20} color={theme.text} />
           </TouchableOpacity>
         )}
         <View style={styles.titleContainer}>
@@ -50,15 +54,14 @@ export default function NavBack({
   );
 }
 
-const styles = {
+const createStyles = (theme: any) => ({
   header: {
     flexDirection: 'row' as const,
     alignItems: 'center' as const,
     justifyContent: 'space-between' as const,
     paddingHorizontal: 16,
     paddingVertical: 12,
-    backgroundColor: '#fff',
-    
+    backgroundColor: theme.background,
   },
   headerLeft: {
     flexDirection: 'row' as const,
@@ -71,7 +74,7 @@ const styles = {
   },
   backButton: {
     padding: 8,
-    paddingLeft:0,
+    paddingLeft: 0,
     marginRight: 8
   },
   titleContainer: {
@@ -80,14 +83,14 @@ const styles = {
   title: {
     fontSize: 18,
     fontWeight: '600' as const,
-    color: '#111827',
+    color: theme.text,
   },
   subtitle: {
     fontSize: 14,
-    color: '#6b7280',
+    color: theme.mutedForeground,
     marginTop: 2,
   },
-};
+});
 
 export { NavBack };
 export type { NavBackProps };

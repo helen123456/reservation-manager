@@ -30,6 +30,7 @@ export default function Header({
   const { t } = useTranslation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { theme } = useTheme();
+  const styles = createStyles(theme);
 
   const menuItems = [
     {
@@ -103,7 +104,7 @@ export default function Header({
               style={styles.actionButton}
               onPress={onNotificationsClick}
             >
-              <Ionicons name="notifications-outline" size={20} color="white" />
+              <Ionicons name="notifications-outline" size={20} color={theme.primaryForeground} />
               {notificationCount > 0 && (
                 <View style={styles.badge}>
                   <Text style={styles.badgeText}>
@@ -121,7 +122,7 @@ export default function Header({
               <Ionicons 
                 name={isMenuOpen ? "close" : "menu"} 
                 size={20} 
-                color="white" 
+                color={theme.primaryForeground} 
               />
               {menuCount > 0 && !isMenuOpen && (
                 <View style={[styles.badge, styles.primaryBadge]}>
@@ -152,7 +153,7 @@ export default function Header({
               {/* User Info */}
               <View style={styles.userInfo}>
                 <View style={styles.userAvatar}>
-                  <Ionicons name="person" size={20} color="#666" />
+                  <Ionicons name="person" size={20} color={theme.mutedForeground} />
                 </View>
                 <View style={styles.userDetails}>
                   <Text style={styles.userName}>Restaurant Owner</Text>
@@ -175,7 +176,7 @@ export default function Header({
                       <Ionicons 
                         name={item.icon} 
                         size={20} 
-                        color={item.variant === 'destructive' ? '#ef4444' : '#333'} 
+                        color={item.variant === 'destructive' ? theme.destructive : theme.text} 
                       />
                       {item.hasNotification && (
                         <View style={styles.notificationDot} />
@@ -203,15 +204,15 @@ export default function Header({
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   header: {
-    backgroundColor: '#000',
+    backgroundColor: theme.primary,
     borderBottomWidth: 1,
-    borderBottomColor: '#374151',
+    borderBottomColor: theme.border,
     paddingTop: 30, // Account for status bar
   },
   headerContent: {
-    backgroundColor: '#000000',
+    backgroundColor: theme.primary,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -219,15 +220,15 @@ const styles = StyleSheet.create({
     height: 64,
   },
   titleContainer:{
-    backgroundColor: '#000000',
+    backgroundColor: theme.primary,
   },
   title: {
     fontSize: 18,
     fontWeight: '500',
-    color: 'white',
+    color: theme.primaryForeground,
   },
   actions: {
-    backgroundColor: '#000000',
+    backgroundColor: theme.primary,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
@@ -243,16 +244,16 @@ const styles = StyleSheet.create({
     right: -4,
     width: 20,
     height: 20,
-    backgroundColor: '#ef4444',
+    backgroundColor: theme.destructive,
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
   },
   primaryBadge: {
-    backgroundColor: '#3b82f6',
+    backgroundColor: theme.primary,
   },
   badgeText: {
-    color: 'white',
+    color: theme.primaryForeground,
     fontSize: 10,
     fontWeight: '500',
   },
@@ -267,7 +268,7 @@ const styles = StyleSheet.create({
   menuPanel: {
     width: Math.min(288, width - 32),
     borderRadius: 8,
-    shadowColor: '#000',
+    shadowColor: theme.text,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -281,12 +282,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '#e5e7eb',
+    borderBottomColor: theme.border,
   },
   userAvatar: {
     width: 40,
     height: 40,
-    backgroundColor: '#f3f4f6',
+    backgroundColor: theme.muted,
     borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
@@ -298,15 +299,14 @@ const styles = StyleSheet.create({
   userName: {
     fontSize: 16,
     fontWeight: '500',
-    color: '#111827',
+    color: theme.text,
   },
   userEmail: {
     fontSize: 14,
-    color: '#6b7280',
+    color: theme.mutedForeground,
   },
   menuItems: {
     padding: 8,
-   
   },
   menuItem: {
     flexDirection: 'row',
@@ -327,7 +327,7 @@ const styles = StyleSheet.create({
     right: -2,
     width: 8,
     height: 8,
-    backgroundColor: '#ef4444',
+    backgroundColor: theme.destructive,
     borderRadius: 4,
   },
   menuItemContent: {
@@ -336,14 +336,14 @@ const styles = StyleSheet.create({
   menuItemTitle: {
     fontSize: 16,
     fontWeight: '500',
-    color: '#111827',
+    color: theme.text,
   },
   destructiveText: {
-    color: '#ef4444',
+    color: theme.destructive,
   },
   menuItemDescription: {
     fontSize: 12,
-    color: '#6b7280',
+    color: theme.mutedForeground,
     marginTop: 2,
   },
 });
