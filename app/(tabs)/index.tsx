@@ -1,12 +1,12 @@
-import Header from "@/components/Header";
-import HelpSupport from "@/components/HelpSupport";
-import HistoryOrder from "@/components/HistoryOrder";
-import NotificationsPage from "@/components/NotificationsPage";
-import ProfileDetail from "@/components/ProfileDetail";
-import ReservationModule from "@/components/ReservationModule";
-import SettingsModule from "@/components/SettingsModule";
-import TableSettingsDetail from "@/components/TableSettingsDetail";
+import { Header } from "@/components";
 import { useTheme } from "@/hooks/ThemeContext";
+import HelpSupport from "@/page/HelpSupport";
+import HistoryOrder from "@/page/HistoryOrder";
+import NotificationsPage from "@/page/NotificationsModule";
+import ProfileDetail from "@/page/ProfileModule";
+import ReservationModule from "@/page/ReservationModule";
+import SettingsModule from "@/page/SettingsModule";
+import TableSettingsDetail from "@/page/TableSettingsDetail";
 import { logout } from "@/services/api/authService";
 import storage from "@/utils/storage";
 import { Ionicons } from "@expo/vector-icons";
@@ -183,6 +183,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    fontFamily: 'Roboto_400Regular'
   },
   loadingContainer: {
     justifyContent: "center",

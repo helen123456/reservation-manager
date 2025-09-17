@@ -16,7 +16,9 @@ export const updateMessage = async (msgId?:any) => {
     const response = await request.post('/user/messages/mark-all-read',{uid,msgId});
     return response;
   } catch (error) {
+   
     console.error("更新用户消息失败:", error);
+     throw error;
   }
 };
 export const clearMessage = async () => {
@@ -26,5 +28,6 @@ export const clearMessage = async () => {
     return response;
   } catch (error) {
     console.error("更新用户消息失败:", error);
+     throw error;
   }
 };

@@ -15,7 +15,7 @@ export const getReservations = async (data?: {
   queryType?: number
 }) => {
   try {
-    const response = await request.post("/record/page", data);
+    const response = await request.post("/record/page", {...data,restaurantId});
     return response;
   } catch (error) {
     console.error("获取预订列表失败:", error);
@@ -61,6 +61,7 @@ export const getReservationSettingInfo = async (id: number) => {
     return response.data || {};
   } catch (error) {
     console.error("获取预订设置信息失败:", error);
+     throw error;
   }
 };
 
@@ -70,6 +71,6 @@ export const getReservationSettingUpdate = async (data: any) => {
     const response = await request.post("/reservation/setting/update", data);
     return response;
   } catch (error) {
-    console.error("更新预订设置信息失败:", error);
+    console.error("更新预订设置信息失败:", error); throw error;
   }
 };

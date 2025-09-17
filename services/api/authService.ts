@@ -8,13 +8,11 @@ import storage from "@/utils/storage";
 export async function login(data: { password: string; email: string }) {
   try {
     const response: any = await request.post("/auth/login", data);
-    if (response?.code === 200) {
-      const { token, user, restaurantId } = response.data || {};
-      storage.setItem("token", token);
-      storage.setItem("user", JSON.stringify(user));
-      storage.setItem("uid", user?.id);
-      storage.setItem("restaurantId", restaurantId);
-    }
+    const { token, user, restaurantId } = response.data || {};
+    storage.setItem("token", token);
+    storage.setItem("user", JSON.stringify(user));
+    storage.setItem("uid", user?.id);
+    storage.setItem("restaurantId", restaurantId);
     return response;
   } catch (error) {
     console.error("获取用户列表失败:", error);
@@ -23,8 +21,8 @@ export async function login(data: { password: string; email: string }) {
 
 export async function logout(): Promise<void> {
   try {
-    const res:any = await request.post("/auth/logout");
-    return res
+    const res: any = await request.post("/auth/logout");
+    return res;
   } finally {
     storage.removeItem("token");
     storage.removeItem("user");
@@ -32,3 +30,31 @@ export async function logout(): Promise<void> {
     storage.removeItem("restaurantId");
   }
 }
+export async function sendResetPwdEmail(data: { email: string }): Promise<void> {
+  try {
+    const res: any = await request.post("/user/sendResetPwdEmail", data);
+    return res;
+  } catch (error) {
+    console.error("发送重置密码邮件失败:", error);
+    throw error;
+  } 
+}
+export async function verifyResetPwdCode(data: { email: string ,code: string }): Promise<void> {
+  try {
+    const res: any = await request.post("/user/verifyResetPwdCode", data);
+    return res;
+  } catch (error) {
+    console.error("验证重置密码验证码失败:", error);
+     throw error;
+  } 
+}
+export async function resetPwd(data: { email: string,pwd: string }): Promise<void> {
+  try {
+    const res: any = await request.post("/user/resetPwd", data);
+    return res;
+  } catch (error) {
+    console.error("重置密码验证码失败:", error);
+     throw error;
+  } 
+}
+

@@ -1,4 +1,4 @@
-import { MessageConfig } from '@/components/GlobalMessage/types';
+import { MessageConfig } from '@/components/feedback/GlobalMessage/types';
 
 // 全局message实例
 class MessageInstance {
