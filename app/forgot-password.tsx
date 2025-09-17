@@ -1,5 +1,6 @@
-import { CountdownModal, Input, Text, Toast } from "@/components";
+import { Input, Modal, Text, Toast } from "@/components";
 import { useTheme } from "@/hooks/ThemeContext";
+import { useCountdown } from "@/hooks/useCountdown";
 import { useTranslation } from "@/hooks/useTranslation";
 import {
   resetPwd,
@@ -44,6 +45,14 @@ const ForgotPasswordScreen: React.FC = () => {
   const [countdown, setCountdown] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [showCountdownModal, setShowCountdownModal] = useState(false);
+  
+  const { count, start, reset } = useCountdown({
+    initialCount: 5,
+    onComplete: () => {
+      setShowCountdownModal(false);
+      router.push("/login");
+    }
+  });
    
 
   // Email form
@@ -123,7 +132,9 @@ const ForgotPasswordScreen: React.FC = () => {
 
       // setCurrentStep("success");
       // 显示倒计时弹窗
+      reset(5);
       setShowCountdownModal(true);
+      start();
     } catch (error) {
       Toast.fail(t("passwordResetFailed"));
     } finally {
@@ -380,15 +391,20 @@ const ForgotPasswordScreen: React.FC = () => {
         </ScrollView>
       </KeyboardAvoidingView>
       
-      <CountdownModal
-         visible={showCountdownModal}
-         message={t("passwordResetSuccessMessage")}
-         initialCount={5}
-         onComplete={() => {
-           setShowCountdownModal(false);
-           router.push("/login");
-         }}
-       />
+      <Modal
+        visible={showCountdownModal}
+        footer={false}
+        onBackdropPress={() => {}}
+      >
+        <View style={{ alignItems: 'center', paddingVertical: 24, paddingHorizontal: 20 }}>
+          <Text style={{ textAlign: 'center', marginBottom: 16, fontSize: 16, lineHeight: 24 }}>
+            {t("passwordResetSuccessMessage")}
+          </Text>
+          <Text style={{ fontSize: 24, fontWeight: 'bold', color: theme.primary }}>
+            {count}s
+          </Text>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 };
