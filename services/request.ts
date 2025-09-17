@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { router } from "expo-router";
-import { message } from '../utils/message';
+import { Toast } from '../components';
 import storage from '../utils/storage';
 import { getBaseURL } from './config';
 
@@ -38,12 +38,12 @@ request.interceptors.request.use(
 // 响应拦截器
 request.interceptors.response.use(
   (response: any) => {
-    // 检查业务状态码
-    const showError = response.config?.showError !== false; // 默认显示错误
-    if (response.data.code !== 200 && showError) {
-      message.error(response.data.msg || '请求失败');
+    if (response?.data?.code === 200) {
+      return response.data;
+    } else {
+      Toast.fail(response.message);
+      return Promise.reject(response.message);
     }
-    return response.data;
   },
   
   async(error: any) => {
@@ -54,6 +54,8 @@ request.interceptors.response.use(
       // 可以在这里跳转到登录页
       router.push('/login');
     }
+   
+    Toast.fail(error.response.message||'请求失败');
     return Promise.reject(error.response?.data || error.message);
   }
 );

@@ -1,31 +1,29 @@
-import Input from "@/components/Input";
-import { Text, View } from 'react-native';
+import { Input } from "@/components";
 import { useTheme } from "@/hooks/ThemeContext";
 import { login } from "@/services/api/authService";
 import createStyles from "@/styles/login.style";
-import { registerSchema } from "@/types/login.type";
+import { getRegisterSchema } from "@/types/login.type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { router } from "expo-router";
 import React, { useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import {
   ActivityIndicator,
-  Alert,
   KeyboardAvoidingView,
   Platform,
-  ScrollView,
-  TouchableOpacity,
-} from "react-native";
+  ScrollView, Text, TouchableOpacity, View
+} from 'react-native';
 import { z } from "zod";
 import { useAsyncDebounce } from "../hooks/useDebounce";
 import { useTranslation } from "../hooks/useTranslation";
-
-type RegisterFormData = z.infer<typeof registerSchema>;
 
 export default function Login() {
   const { t } = useTranslation();
   const { theme } = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
+
+  const registerSchema = useMemo(() => getRegisterSchema(t), [t]);
+  type RegisterFormData = z.infer<typeof registerSchema>;
 
   const methods = useForm({
     resolver: zodResolver(registerSchema),
@@ -52,11 +50,7 @@ export default function Login() {
 
   //忘记密码
   const handleForgotPassword = () => {
-    Alert.alert(
-      t("forgotPassword"),
-      "Password reset functionality would be implemented here.",
-      [{ text: "OK", style: "default" }]
-    );
+    router.push("/forgot-password");
   };
 
   return (

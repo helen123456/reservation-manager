@@ -23,5 +23,6 @@ export const updateUserInfo = async (params?: {
     return response.data || {};
   } catch (error) {
     console.error("更新用户信息失败:", error);
+     throw error;
   }
 };

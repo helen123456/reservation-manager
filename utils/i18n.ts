@@ -94,6 +94,7 @@ export const translations = {
 
     // Navigation
     reservations: "Reservations",
+    reservationsText: "reservations",
 
     // Settings Module
     settingsModule: "Settings",
@@ -213,14 +214,88 @@ export const translations = {
     demoCredentials: "Demo Credentials:",
     signOut: "Sign Out",
     signOutDescription: "Sign out of your account",
+    
+    // Forgot Password
+    forgotPasswordTitle: "Forgot Password",
+    forgotPasswordSubtitle: "Enter your email address and we'll send you a verification code to reset your password",
+    sendVerificationCode: "Send Verification Code",
+    verificationCodeTitle: "Enter Verification Code",
+    verificationCodeSubtitle: "We've sent a 6-digit verification code to",
+    enterVerificationCode: "Enter verification code",
+    resendCode: "Resend Code",
+    resendCodeIn: "Resend code in",
+    seconds: "seconds",
+    verifyCode: "Verify Code",
+    resetPasswordTitle: "Reset Password",
+    resetPasswordSubtitle: "Create a new password for your account",
+    newPassword: "New Password",
+    confirmNewPassword: "Confirm New Password",
+    resetPassword: "Reset Password",
+    passwordResetSuccess: "Password Reset Successful",
+    passwordResetSuccessMessage: "Your password has been successfully reset. You can now sign in with your new password.",
+    backToSignIn: "Back to Sign In",
+    codeExpired: "Verification code has expired",
+    invalidCode: "Invalid verification code",
+    emailNotFound: "Email address not found",
+    passwordResetFailed: "Password reset failed. Please try again.",
 
     // Success messages
     settingsSaved: "Settings saved successfully!",
     profileUpdated: "Profile updated successfully!",
-    success: "",
+    success: "Success",
+    error: "Error",
     // Model
     modelCancel: "Cancel",
     modelOk: "OK",
+    
+    // SearchBar
+    searchReservations: "Search reservations...",
+    filterByDate: "Filter by date",
+    
+    // Common UI text
+    reservationManagement: "Reservation Management",
+    setOpeningClosingTimes: "Set opening and closing times",
+    currentlyOpen: "Currently Open",
+    manageProfilePreferences: "Manage your profile and preferences",
+    manageRestaurantSettings: "Manage your restaurant settings",
+    getHelpContactSupport: "Get help and contact support",
+    autoConfirm: "Auto Confirm",
+    darkMode: "Dark Mode",
+    
+    // Time and date
+    today: "Today",
+    tomorrow: "Tomorrow",
+    
+    // Reservation details
+    reservation: "reservation",
+    
+    // Status and actions
+    open: "Open",
+    close: "Close",
+    
+    // Validation messages
+    languageRequired: "Language is required",
+    emailRequired: "Please enter a valid email",
+    passwordMinLength: "Password must be at least 6 characters",
+    passwordMaxLength: "Password cannot exceed 20 characters",
+    passwordMustContainLetter: "Password must contain letters",
+    passwordMustContainNumber: "Password must contain numbers",
+    passwordMustContainSpecialChar: "Password must contain special characters",
+    codeMinLength: "Verification code must be at least 6 digits",
+    codeMaxLength: "Verification code cannot exceed 6 digits",
+    passwordMismatch: "Passwords do not match",
+    
+    // Date formats
+    manageRestaurantReservations: "Manage your restaurant reservations",
+    
+    // Header menu descriptions
+    profileDescription: "Manage your profile and preferences",
+    settingsDescription: "Manage your restaurant settings",
+    helpDescription: "Get help and contact support",
+    historyOrderDescription: "View your order history",
+    
+    // Settings status
+    currentStatus: "Currently Open",
   },
   fr: {
     // Header
@@ -246,6 +321,7 @@ export const translations = {
 
     // Navigation
     reservations: "Réservations",
+    reservationsText: "réservation",
 
     // Settings Module
     settingsModule: "Paramètres",
@@ -259,7 +335,7 @@ export const translations = {
     personalInformation: "Informations Personnelles",
     restaurantName: "Nom du Restaurant",
     userName: "Nom d'utilisateur",
-    email: "Email",
+    email: "Courriel",
     phone: "Téléphone",
     address: "Adresse",
     language: "Langue",
@@ -271,7 +347,6 @@ export const translations = {
     phoneRequired:"Le téléphone est requis",
     phoneInvalid:"Le téléphone est invalide",
     addressRequired:"L'adresse est requise",
-    languageRequired:"La langue est requise",
 
     // Reservation Settings
     reservationSettings: "Paramètres de Réservation",
@@ -306,9 +381,9 @@ export const translations = {
     accept: "Accepter",
     decline: "Refuser",
     guests: "invités",
-    acceptTip:"Are you sure you want to confirm this reservation?",
-    rejectTip:"Are you sure you want to reject this reservation?",
-    tip:"Tip",
+    acceptTip:"Êtes-vous sûr de vouloir confirmer cette réservation ?",
+    rejectTip:"Êtes-vous sûr de vouloir rejeter cette réservation ?",
+    tip:"Conseil",
 
     // Help & Support
     helpSupport: "Aide et Support",
@@ -354,7 +429,7 @@ export const translations = {
     // Login & Authentication
     signIn: "Connexion",
     signInDescription: "Bienvenue sur NEO",
-    loginEmail: "Email",
+    loginEmail: "Courriel",
     emailPlaceholder: "Entrez votre adresse email",
     password: "Mot de passe",
     passwordPlaceholder: "Entrez votre mot de passe",
@@ -367,14 +442,88 @@ export const translations = {
     demoCredentials: "Identifiants de démonstration :",
     signOut: "Déconnexion",
     signOutDescription: "Se déconnecter de votre compte",
+    
+    // Forgot Password
+    forgotPasswordTitle: "Mot de passe oublié",
+    forgotPasswordSubtitle: "Entrez votre adresse email et nous vous enverrons un code de vérification pour réinitialiser votre mot de passe",
+    sendVerificationCode: "Envoyer le code de vérification",
+    verificationCodeTitle: "Entrer le code de vérification",
+    verificationCodeSubtitle: "Nous avons envoyé un code de vérification à 6 chiffres à",
+    enterVerificationCode: "Entrer le code de vérification",
+    resendCode: "Renvoyer le code",
+    resendCodeIn: "Renvoyer le code dans",
+    seconds: "secondes",
+    verifyCode: "Vérifier le code",
+    resetPasswordTitle: "Réinitialiser le mot de passe",
+    resetPasswordSubtitle: "Créez un nouveau mot de passe pour votre compte",
+    newPassword: "Nouveau mot de passe",
+    confirmNewPassword: "Confirmer le nouveau mot de passe",
+    resetPassword: "Réinitialiser le mot de passe",
+    passwordResetSuccess: "Réinitialisation du mot de passe réussie",
+    passwordResetSuccessMessage: "Votre mot de passe a été réinitialisé avec succès. Vous pouvez maintenant vous connecter avec votre nouveau mot de passe.",
+    backToSignIn: "Retour à la connexion",
+    codeExpired: "Le code de vérification a expiré",
+    invalidCode: "Code de vérification invalide",
+    emailNotFound: "Adresse email introuvable",
+    passwordResetFailed: "Échec de la réinitialisation du mot de passe. Veuillez réessayer.",
 
     // Success messages
     settingsSaved: "Paramètres sauvegardés avec succès !",
     profileUpdated: "Profil mis à jour avec succès !",
-    success: "",
+    success: "Succès",
+    error: "Erreur",
     // Model
     modelCancel: "Annuler",
     modelOk: "OK",
+    
+    // SearchBar
+    searchReservations: "Rechercher des réservations...",
+    filterByDate: "Filtrer par date",
+    
+    // Common UI text
+    reservationManagement: "Gestion des Réservations",
+    setOpeningClosingTimes: "Définir les heures d'ouverture et de fermeture",
+    currentlyOpen: "Actuellement Ouvert",
+    manageProfilePreferences: "Gérer votre profil et préférences",
+    manageRestaurantSettings: "Gérer les paramètres de votre restaurant",
+    getHelpContactSupport: "Obtenir de l'aide et contacter le support",
+    autoConfirm: "Confirmation Automatique",
+    darkMode: "Mode Sombre",
+    
+    // Time and date
+    today: "Aujourd'hui",
+    tomorrow: "Demain",
+    
+    // Reservation details
+    reservation: "réservation",
+    
+    // Status and actions
+    open: "Ouvert",
+    close: "Fermé",
+    
+    // Validation messages
+    languageRequired: "La langue est requise",
+    emailRequired: "Veuillez saisir un email valide",
+    passwordMinLength: "Le mot de passe doit contenir au moins 6 caractères",
+    passwordMaxLength: "Le mot de passe ne peut pas dépasser 20 caractères",
+    passwordMustContainLetter: "Le mot de passe doit contenir des lettres",
+    passwordMustContainNumber: "Le mot de passe doit contenir des chiffres",
+    passwordMustContainSpecialChar: "Le mot de passe doit contenir des caractères spéciaux",
+    codeMinLength: "Le code de vérification doit contenir au moins 6 chiffres",
+    codeMaxLength: "Le code de vérification ne peut pas dépasser 6 chiffres",
+    passwordMismatch: "Les mots de passe ne correspondent pas",
+    
+    // Date formats
+    manageRestaurantReservations: "Gérer les réservations de votre restaurant",
+    
+    // Header menu descriptions
+    profileDescription: "Gérer votre profil et préférences",
+    settingsDescription: "Gérer les paramètres de votre restaurant",
+    helpDescription: "Obtenir de l'aide et contacter le support",
+    historyOrderDescription: "Voir l'historique de vos commandes",
+    
+    // Settings status
+    currentStatus: "Actuellement Ouvert",
   },
 };
 
