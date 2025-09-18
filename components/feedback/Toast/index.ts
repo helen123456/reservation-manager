@@ -11,6 +11,7 @@ const styles={
   container: {
     marginHorizontal: 30,
     padding:20,
+    zIndex:9999,
   },
   content:{
     fontSize:15,

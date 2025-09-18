@@ -1,5 +1,5 @@
-import { NavBack, Toast } from "@/components";
-import { useTheme } from '@/hooks/ThemeContext';
+import { NavBack, TimePicker, Toast } from "@/components";
+import { useTheme } from "@/hooks/ThemeContext";
 import storage from "@/utils/storage";
 import { Ionicons } from "@expo/vector-icons";
 import dayjs from "dayjs";
@@ -7,16 +7,12 @@ import includes from "lodash/includes";
 import isEmpty from "lodash/isEmpty";
 import times from "lodash/times";
 import React, { useEffect, useMemo, useState } from "react";
-import {
-  ScrollView,
-  Switch,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View
-} from "react-native";
+import { ScrollView, Switch, Text, TouchableOpacity, View } from "react-native";
 import { useTranslation } from "../../hooks/useTranslation";
-import { getReservationSettingInfo, getReservationSettingUpdate } from "../../services/api/reservationService";
+import {
+  getReservationSettingInfo,
+  getReservationSettingUpdate,
+} from "../../services/api/reservationService";
 import { createStyles } from "./styles";
 import {
   IntervalOption,
@@ -29,9 +25,8 @@ export default function TableSettingsDetail({
   onBack,
 }: TableSettingsDetailProps) {
   const { t } = useTranslation();
-  const {theme} = useTheme();
+  const { theme } = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
-
   const [settings, setSettings] = useState<TableSettings>({
     acceptReservations: true,
     maxGuests: 8,
@@ -47,6 +42,11 @@ export default function TableSettingsDetail({
     restaurantId: 1,
   });
 
+  // TimePicker 状态管理
+  const [showStartTimePicker, setShowStartTimePicker] = useState(false);
+  const [showEndTimePicker, setShowEndTimePicker] = useState(false);
+  const [timeValidationError, setTimeValidationError] = useState<string>("");
+
   // Generate time slots based on business hours and interval
   const generateTimeSlots = (
     startTime: string,
@@ -56,11 +56,12 @@ export default function TableSettingsDetail({
   ): TimeSlot[] => {
     const start = dayjs(`2000-01-01 ${startTime}`);
     const end = dayjs(`2000-01-01 ${endTime}`);
-    const totalMinutes = end.diff(start, 'minute');
+    const totalMinutes = end.diff(start, "minute");
     const slotCount = Math.floor(totalMinutes / intervalMinutes);
     return times(slotCount, (i) => {
-      const time = start.add(i * intervalMinutes, 'minute').format('HH:mm');
-      const enabled = isEmpty(activeTimeSlots) || includes(activeTimeSlots, time);
+      const time = start.add(i * intervalMinutes, "minute").format("HH:mm");
+      const enabled =
+        isEmpty(activeTimeSlots) || includes(activeTimeSlots, time);
       return { time, enabled };
     });
   };
@@ -69,7 +70,7 @@ export default function TableSettingsDetail({
   useEffect(() => {
     const fetchReservationSettings = async () => {
       try {
-        const restaurantId:any = await  storage.getItem('restaurantId')
+        const restaurantId: any = await storage.getItem("restaurantId");
         const data: any = await getReservationSettingInfo(restaurantId);
         // 根据接口数据生成时间段
         const newSlots = generateTimeSlots(
@@ -91,7 +92,7 @@ export default function TableSettingsDetail({
           timeSlots: newSlots,
         }));
       } catch (error) {
-        console.error('Failed to fetch reservation settings:', error);
+        console.error("Failed to fetch reservation settings:", error);
         // 如果接口失败，使用默认值
         const defaultSlots = generateTimeSlots("09:00", "23:00", 60, []);
         setSettings((prev) => ({
@@ -129,27 +130,21 @@ export default function TableSettingsDetail({
     }));
   };
 
-  const handleBusinessHoursChange = (field: "start" | "end", value: string,onlyUpdate:boolean) => {
-    // 限制只能输入数字和冒号，格式为 HH:MM
-    const timeRegex = /^[0-9:]*$/;
-    if (!timeRegex.test(value)) {
-      return; // 如果输入不符合格式，直接返回不更新
-    }
-    
-    if(onlyUpdate){
-      setSettings((prev) => ({
-        ...prev,
-        businessHours: { ...prev.businessHours, [field]: value },
-      }));
-      return
+  // 处理开始时间选择
+  const handleStartTimeSelect = (time: string) => {
+    const currentTime = dayjs(`2000-01-01 ${time}`);
+    const endTime = dayjs(`2000-01-01 ${settings.businessHours.end}`);
+    if (currentTime.isAfter(endTime)) {
+      Toast.fail(t("startTimeAfterEndTime"));
+      return;
     }
     setSettings((prev) => {
-      const newBusinessHours = { ...prev.businessHours, [field]: value };
+      const newBusinessHours = { ...prev.businessHours, start: time };
       // 获取当前启用的时间段
       const currentActiveSlots = prev.timeSlots
-        .filter(slot => slot.enabled)
-        .map(slot => slot.time)
-      
+        .filter((slot) => slot.enabled)
+        .map((slot) => slot.time);
+
       // 根据新的营业时间重新生成时间段
       const newSlots = generateTimeSlots(
         newBusinessHours.start,
@@ -164,6 +159,39 @@ export default function TableSettingsDetail({
         timeSlots: newSlots,
       };
     });
+    setShowStartTimePicker(false);
+  };
+
+  // 处理结束时间选择
+  const handleEndTimeSelect = (time: string) => {
+    const currentTime = dayjs(`2000-01-01 ${time}`);
+    const startTime = dayjs(`2000-01-01 ${settings.businessHours.start}`);
+    if (currentTime.isBefore(startTime)) {
+      Toast.fail(t("endTimeBeforeStartTime"));
+      return;
+    }
+    setSettings((prev) => {
+      const newBusinessHours = { ...prev.businessHours, end: time };
+      // 获取当前启用的时间段
+      const currentActiveSlots = prev.timeSlots
+        .filter((slot) => slot.enabled)
+        .map((slot) => slot.time);
+
+      // 根据新的营业时间重新生成时间段
+      const newSlots = generateTimeSlots(
+        newBusinessHours.start,
+        newBusinessHours.end,
+        prev.timeInterval,
+        currentActiveSlots
+      );
+
+      return {
+        ...prev,
+        businessHours: newBusinessHours,
+        timeSlots: newSlots,
+      };
+    });
+    setShowEndTimePicker(false);
   };
 
   const handleTimeIntervalChange = (intervalMinutes: number) => {
@@ -184,13 +212,19 @@ export default function TableSettingsDetail({
     });
   };
 
-  const handleSave = async() => {
-    const {timeSlots,...rest} = settings
-    const selectTime = timeSlots.filter(slot => slot.enabled).map(slot=>slot.time)
-    const restaurantId = await  storage.getItem('restaurantId')
-    const response:any = await getReservationSettingUpdate({...rest,timeSlots:selectTime,restaurantId});
-    if(response.code === 200){
-     Toast.success(t('saveSuccess'))
+  const handleSave = async () => {
+    const { timeSlots, ...rest } = settings;
+    const selectTime = timeSlots
+      .filter((slot) => slot.enabled)
+      .map((slot) => slot.time);
+    const restaurantId = await storage.getItem("restaurantId");
+    const response: any = await getReservationSettingUpdate({
+      ...rest,
+      timeSlots: selectTime,
+      restaurantId,
+    });
+    if (response.code === 200) {
+      Toast.success(t("saveSuccess"));
     }
   };
 
@@ -199,11 +233,10 @@ export default function TableSettingsDetail({
   ).length;
 
   const intervalOptions: IntervalOption[] = [
-    { value: 60, label: "1h"},
+    { value: 60, label: "1h" },
     { value: 30, label: "30min" },
-    { value: 15, label: "15min"},
+    { value: 15, label: "15min" },
   ];
-
 
   return (
     <View style={styles.container}>
@@ -232,9 +265,7 @@ export default function TableSettingsDetail({
         <View style={styles.card}>
           <View style={styles.cardRow}>
             <View style={styles.cardContent}>
-              <Text style={styles.cardTitle}>
-                {t("acceptReservations")}
-              </Text>
+              <Text style={styles.cardTitle}>{t("acceptReservations")}</Text>
               <Text style={styles.cardSubtitle}>
                 {t("allowCustomersBookOnline")}
               </Text>
@@ -254,33 +285,27 @@ export default function TableSettingsDetail({
           <View style={styles.row}>
             <View style={styles.inputGroup}>
               <Text style={styles.label}>{t("openingTime")}</Text>
-              <TextInput
-                inputMode="numeric"
+              <TouchableOpacity
                 style={styles.timeInput}
-                value={settings.businessHours.start}
-                onChangeText={(value) =>
-                  handleBusinessHoursChange("start", value,true)
-                }
-                onBlur={(e) => {
-                  handleBusinessHoursChange("start", e.nativeEvent.text, false)
-                }}
-                placeholder="09:00"
-              />
+                onPress={() => setShowStartTimePicker(true)}
+              >
+                <Text style={styles.timeInputText}>
+                  {settings.businessHours.start}
+                </Text>
+                <Ionicons name="time" size={16} color={theme.textSecondary} />
+              </TouchableOpacity>
             </View>
             <View style={styles.inputGroup}>
               <Text style={styles.label}>{t("closingTime")}</Text>
-              <TextInput
-                inputMode="numeric"
+              <TouchableOpacity
                 style={styles.timeInput}
-                value={settings.businessHours.end}
-                onChangeText={(value) =>
-                  handleBusinessHoursChange("end", value,true)
-                }
-                 onBlur={(e) => {
-                  handleBusinessHoursChange("end", e.nativeEvent.text,false)
-                }}
-                placeholder="23:00"
-              />
+                onPress={() => setShowEndTimePicker(true)}
+              >
+                <Text style={styles.timeInputText}>
+                  {settings.businessHours.end}
+                </Text>
+                <Ionicons name="time" size={16} color={theme.textSecondary} />
+              </TouchableOpacity>
             </View>
           </View>
         </View>
@@ -315,9 +340,7 @@ export default function TableSettingsDetail({
 
         {/* Max Reservations per Slot */}
         <View style={styles.card}>
-          <Text style={styles.cardTitle}>
-            {t("maxReservationsPerSlot")}
-          </Text>
+          <Text style={styles.cardTitle}>{t("maxReservationsPerSlot")}</Text>
           <Text style={styles.cardSubtitle}>
             {t("maxReservationsDescription")}
           </Text>
@@ -345,9 +368,7 @@ export default function TableSettingsDetail({
               <Text style={styles.counterValue}>
                 {settings.maxReservationsPerSlot}
               </Text>
-              <Text style={styles.counterLabel}>
-                {t("reservations")}
-              </Text>
+              <Text style={styles.counterLabel}>{t("reservations")}</Text>
             </View>
             <TouchableOpacity
               style={styles.counterButton}
@@ -367,9 +388,7 @@ export default function TableSettingsDetail({
           <View style={styles.cardRow}>
             <View style={styles.slotsHeader}>
               <Ionicons name="time" size={18} color="#000" />
-              <Text style={styles.cardTitle}>
-                {t("availableTimeSlots")}
-              </Text>
+              <Text style={styles.cardTitle}>{t("availableTimeSlots")}</Text>
             </View>
             <View style={styles.badge}>
               <Text style={styles.badgeText}>
@@ -407,9 +426,7 @@ export default function TableSettingsDetail({
 
         {/* Party Size Limits */}
         <View style={styles.card}>
-          <Text style={styles.cardTitle}>
-            {t("partySizeLimits")}
-          </Text>
+          <Text style={styles.cardTitle}>{t("partySizeLimits")}</Text>
 
           <View style={styles.row}>
             <View style={styles.guestGroup}>
@@ -479,6 +496,30 @@ export default function TableSettingsDetail({
           </View>
         </View>
       </ScrollView>
+
+      {/* 时间验证错误提示 */}
+      {timeValidationError && (
+        <View>
+          <Text>{timeValidationError}</Text>
+        </View>
+      )}
+     
+      <TimePicker
+        visible={showStartTimePicker}
+        value={settings.businessHours.start}
+        flag="start"
+        endTime={settings.businessHours.end}
+        onConfirm={handleStartTimeSelect}
+        onCancel={() => setShowStartTimePicker(false)}
+      />
+      <TimePicker
+        flag="end"
+        visible={showEndTimePicker}
+        value={settings.businessHours.end}
+        startTime={settings.businessHours.start}
+        onConfirm={handleEndTimeSelect}
+        onCancel={() => setShowEndTimePicker(false)}
+      />
     </View>
   );
 }

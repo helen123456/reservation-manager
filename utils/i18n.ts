@@ -142,6 +142,8 @@ export const translations = {
     maxAdvanceBookingDays: "Max advance booking (days)",
     minAdvanceNoticeHours: "Min advance notice (hours)",
     saveSuccess:'Save success',
+    startTimeAfterEndTime:'Start time must be before end time',
+    endTimeBeforeStartTime:'End time must be after start time',
 
     // Reservation Module
     todaysReservations: "Today's Reservations",
@@ -285,6 +287,10 @@ export const translations = {
     codeMaxLength: "Verification code cannot exceed 6 digits",
     passwordMismatch: "Passwords do not match",
     
+    // Time Picker
+    selectTime: "Select Time",
+    selectedTime: "Selected Time",
+    
     // Date formats
     manageRestaurantReservations: "Manage your restaurant reservations",
     
@@ -370,6 +376,8 @@ export const translations = {
     maxAdvanceBookingDays: "Réservation à l'avance max (jours)",
     minAdvanceNoticeHours: "Préavis minimum (heures)",
     saveSuccess:'économiser le succès',
+    startTimeAfterEndTime:'Heure de début doit être avant l\'heure de fermeture',
+    endTimeBeforeStartTime:'Heure de fin doit être après l\'heure d\'ouverture',
 
     // Reservation Module
     todaysReservations: "Réservations d'Aujourd'hui",
@@ -512,6 +520,10 @@ export const translations = {
     codeMinLength: "Le code de vérification doit contenir au moins 6 chiffres",
     codeMaxLength: "Le code de vérification ne peut pas dépasser 6 chiffres",
     passwordMismatch: "Les mots de passe ne correspondent pas",
+    
+    // Time Picker
+    selectTime: "Sélectionner l'heure",
+    selectedTime: "Heure sélectionnée",
     
     // Date formats
     manageRestaurantReservations: "Gérer les réservations de votre restaurant",

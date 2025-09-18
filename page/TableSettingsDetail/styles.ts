@@ -96,8 +96,13 @@ export const createStyles = (theme: any) => {
       borderRadius: 6,
       paddingHorizontal: 12,
       paddingVertical: 10,
-      fontSize: 16,
       backgroundColor: theme.inputBackground,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
+    timeInputText: {
+      fontSize: 16,
       color: theme.text,
     },
     numberInput: {
