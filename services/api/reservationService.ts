@@ -3,6 +3,7 @@
  */
 
 import request from "@/services/request";
+import storage from "@/utils/storage";
 import { Reservation } from "../types";
 
 // 获取预订列表
@@ -14,6 +15,7 @@ export const getReservations = async (data?: {
   search?: string;
   queryType?: number
 }) => {
+  const restaurantId = await storage.getItem("restaurantId");
   try {
     const response = await request.post("/record/page", {...data,restaurantId});
     return response;
@@ -61,7 +63,6 @@ export const getReservationSettingInfo = async (id: number) => {
     return response.data || {};
   } catch (error) {
     console.error("获取预订设置信息失败:", error);
-     throw error;
   }
 };
 
@@ -71,6 +72,6 @@ export const getReservationSettingUpdate = async (data: any) => {
     const response = await request.post("/reservation/setting/update", data);
     return response;
   } catch (error) {
-    console.error("更新预订设置信息失败:", error); throw error;
+    console.error("更新预订设置信息失败:", error);
   }
 };
