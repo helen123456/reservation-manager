@@ -125,7 +125,7 @@ export const translations = {
     reservationSettings: "Reservation Settings",
     acceptReservations: "Accept Reservations",
     allowCustomersBookOnline: "Allow customers to book tables online",
-    businessHours: "Business Hours",
+    businessHours: "Available Hours",
     openingTime: "Opening Time",
     closingTime: "Closing Time",
     timeInterval: "Time Interval",
@@ -353,7 +353,7 @@ export const translations = {
     acceptReservations: "Accepter les Réservations",
     allowCustomersBookOnline:
       "Permettre aux clients de réserver des tables en ligne",
-    businessHours: "Heures d'Ouverture",
+    businessHours: "Horaires d'Ouverture",
     openingTime: "Heure d'Ouverture",
     closingTime: "Heure de Fermeture",
     timeInterval: "Intervalle de Temps",

@@ -1,9 +1,7 @@
-import { Feather } from '@expo/vector-icons';
-import React, { useMemo } from 'react';
-import { Switch, View } from 'react-native';
 import { useTheme } from '@/hooks/ThemeContext';
+import React, { useMemo } from 'react';
+import { Switch, Text, View } from 'react-native';
 import { useTranslation } from '../../hooks/useTranslation';
-import { Text } from 'react-native';
 import { createStyles } from './styles';
 import { QuickSettingsProps } from './types';
 
@@ -38,21 +36,7 @@ export default function QuickSettings({ settings, onSettingChange }: QuickSettin
         />
       </View>
 
-      <View style={styles.settingItem}>
-        <View style={styles.settingLeft}>
-          <View style={styles.iconContainer}>
-            <Feather name={settings.darkMode ? "moon" : "sun"} size={16} color="#6b7280" />
-          </View>
-          <View style={{ marginLeft: -44, paddingLeft: 44 }}>
-            <Text style={styles.settingTitle}>Dark Mode</Text>
-        <Text style={styles.settingDescription}>Switch between light and dark theme</Text>
-          </View>
-        </View>
-        <Switch
-          value={settings.darkMode}
-          onValueChange={(value) => onSettingChange('darkMode', value)}
-        />
-      </View>
+      
     </View>
   );
 }
