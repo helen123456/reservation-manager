@@ -291,6 +291,10 @@ export const translations = {
     selectTime: "Select Time",
     selectedTime: "Selected Time",
     
+    // Guest Count Validation
+    minGuestsCannotExceedMaxGuests: "Minimum guests cannot exceed maximum guests",
+    maxGuestsCannotBeLessThanMinGuests: "Maximum guests cannot be less than minimum guests",
+    
     // Date formats
     manageRestaurantReservations: "Manage your restaurant reservations",
     
@@ -524,6 +528,10 @@ export const translations = {
     // Time Picker
     selectTime: "Sélectionner l'heure",
     selectedTime: "Heure sélectionnée",
+    
+    // Guest Count Validation
+    minGuestsCannotExceedMaxGuests: "Le nombre minimum d'invités ne peut pas dépasser le maximum",
+    maxGuestsCannotBeLessThanMinGuests: "Le nombre maximum d'invités ne peut pas être inférieur au minimum",
     
     // Date formats
     manageRestaurantReservations: "Gérer les réservations de votre restaurant",

@@ -7,12 +7,21 @@ import includes from "lodash/includes";
 import isEmpty from "lodash/isEmpty";
 import times from "lodash/times";
 import React, { useEffect, useMemo, useState } from "react";
-import { ScrollView, Switch, Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useTranslation } from "../../hooks/useTranslation";
 import {
   getReservationSettingInfo,
   getReservationSettingUpdate,
 } from "../../services/api/reservationService";
+import {
+  AcceptReservations,
+  AvailableTimeSlots,
+  BusinessHours,
+  MaxReservationsPerSlot,
+  PartySizeLimits,
+  TimeInterval,
+} from "./components";
 import { createStyles } from "./styles";
 import {
   IntervalOption,
@@ -115,12 +124,37 @@ export default function TableSettingsDetail({
 
   const updateGuestCount = (
     field: "maxGuests" | "minGuests",
-    value: number
+    value: any
   ) => {
-    setSettings((prev) => ({
-      ...prev,
-      [field]: Math.max(1, value),
-    }));
+    setSettings((prev: any) => {
+      // 验证逻辑：确保 minGuests 不大于 maxGuests
+      if (value && field === "minGuests" && value > prev.maxGuests) {
+        Toast.fail(t("minGuestsCannotExceedMaxGuests"));
+        return prev;
+      }
+
+      if (value && field === "maxGuests" && value < prev.minGuests) {
+        Toast.fail(t("maxGuestsCannotBeLessThanMinGuests"));
+        return prev;
+      }
+
+      return {
+        ...prev,
+        [field]: value,
+      };
+    });
+  };
+
+  // 处理输入框输入
+  const handleGuestInputChange = (
+    field: "maxGuests" | "minGuests",
+    text: string
+  ) => {
+    // 只允许数字输入
+    const numericValue = text.replace(/[^0-9]/g, "");
+  
+    const value = numericValue ? Number(numericValue) : numericValue;
+    updateGuestCount(field, value);
   };
 
   const updateMaxReservationsPerSlot = (value: number) => {
@@ -240,286 +274,99 @@ export default function TableSettingsDetail({
 
   return (
     <View style={styles.container}>
-      {/* Header */}
-      <NavBack
-        title={t("reservationSettings")}
-        onBack={onBack}
-        rightComponent={
-          <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-            <Ionicons
-              name="save"
-              size={14}
-              color={theme.primaryForeground}
-              style={styles.saveIcon}
-            />
-            <Text style={styles.saveText}>{t("save")}</Text>
-          </TouchableOpacity>
-        }
-      />
-
-      <ScrollView
-        style={styles.scrollView}
-        showsVerticalScrollIndicator={false}
+      <KeyboardAwareScrollView
+        contentContainerStyle={{ flexGrow: 1 }} // 确保内容容器可扩展
+        enableOnAndroid={true} // 确保在Android上也启用
+        extraScrollHeight={200} // 可额外多滚动一点高度，使输入框更突出据需要调整
       >
-        {/* Accept Reservations */}
-        <View style={styles.card}>
-          <View style={styles.cardRow}>
-            <View style={styles.cardContent}>
-              <Text style={styles.cardTitle}>{t("acceptReservations")}</Text>
-              <Text style={styles.cardSubtitle}>
-                {t("allowCustomersBookOnline")}
-              </Text>
-            </View>
-            <Switch
-              value={settings.acceptReservations}
-              onValueChange={(value) =>
-                setSettings((prev) => ({ ...prev, acceptReservations: value }))
-              }
-            />
-          </View>
-        </View>
-
-        {/* Business Hours */}
-        <View style={styles.card}>
-          <Text style={styles.cardTitle}>{t("businessHours")}</Text>
-          <View style={styles.row}>
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>{t("openingTime")}</Text>
-              <TouchableOpacity
-                style={styles.timeInput}
-                onPress={() => setShowStartTimePicker(true)}
-              >
-                <Text style={styles.timeInputText}>
-                  {settings.businessHours.start}
-                </Text>
-                <Ionicons name="time" size={16} color={theme.textSecondary} />
-              </TouchableOpacity>
-            </View>
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>{t("closingTime")}</Text>
-              <TouchableOpacity
-                style={styles.timeInput}
-                onPress={() => setShowEndTimePicker(true)}
-              >
-                <Text style={styles.timeInputText}>
-                  {settings.businessHours.end}
-                </Text>
-                <Ionicons name="time" size={16} color={theme.textSecondary} />
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-
-        {/* Time Interval */}
-        <View style={styles.card}>
-          <Text style={styles.cardTitle}>{t("timeInterval")}</Text>
-          <View style={styles.intervalRow}>
-            {intervalOptions.map(({ value, label }) => (
-              <TouchableOpacity
-                key={value}
-                onPress={() => handleTimeIntervalChange(value)}
-                style={[
-                  styles.intervalButton,
-                  settings.timeInterval === value &&
-                    styles.intervalButtonActive,
-                ]}
-              >
-                <Text
-                  style={[
-                    styles.intervalButtonText,
-                    settings.timeInterval === value &&
-                      styles.intervalButtonTextActive,
-                  ]}
-                >
-                  {label}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-        </View>
-
-        {/* Max Reservations per Slot */}
-        <View style={styles.card}>
-          <Text style={styles.cardTitle}>{t("maxReservationsPerSlot")}</Text>
-          <Text style={styles.cardSubtitle}>
-            {t("maxReservationsDescription")}
-          </Text>
-          <View style={styles.counterRow}>
-            <TouchableOpacity
-              style={[
-                styles.counterButton,
-                settings.maxReservationsPerSlot <= 1 &&
-                  styles.counterButtonDisabled,
-              ]}
-              onPress={() =>
-                updateMaxReservationsPerSlot(
-                  settings.maxReservationsPerSlot - 1
-                )
-              }
-              disabled={settings.maxReservationsPerSlot <= 1}
-            >
+        {/* Header */}
+        <NavBack
+          title={t("reservationSettings")}
+          onBack={onBack}
+          rightComponent={
+            <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
               <Ionicons
-                name="remove"
+                name="save"
                 size={14}
-                color={settings.maxReservationsPerSlot <= 1 ? "#ccc" : "#000"}
+                color={theme.primaryForeground}
+                style={styles.saveIcon}
               />
+              <Text style={styles.saveText}>{t("save")}</Text>
             </TouchableOpacity>
-            <View style={styles.counterContent}>
-              <Text style={styles.counterValue}>
-                {settings.maxReservationsPerSlot}
-              </Text>
-              <Text style={styles.counterLabel}>{t("reservations")}</Text>
-            </View>
-            <TouchableOpacity
-              style={styles.counterButton}
-              onPress={() =>
-                updateMaxReservationsPerSlot(
-                  settings.maxReservationsPerSlot + 1
-                )
-              }
-            >
-              <Ionicons name="add" size={14} color={theme.primary} />
-            </TouchableOpacity>
-          </View>
-        </View>
+          }
+        />
 
-        {/* Available Time Slots */}
-        <View style={styles.card}>
-          <View style={styles.cardRow}>
-            <View style={styles.slotsHeader}>
-              <Ionicons name="time" size={18} color="#000" />
-              <Text style={styles.cardTitle}>{t("availableTimeSlots")}</Text>
-            </View>
-            <View style={styles.badge}>
-              <Text style={styles.badgeText}>
-                {enabledSlotsCount} {t("active")}
-              </Text>
-            </View>
-          </View>
+        <ScrollView
+          style={styles.scrollView}
+          showsVerticalScrollIndicator={false}
+        >
+          {/* Accept Reservations */}
+          <AcceptReservations
+            acceptReservations={settings.acceptReservations}
+            onToggle={(value) =>
+              setSettings({ ...settings, acceptReservations: value })
+            }
+            styles={styles}
+          />
 
-          <View style={styles.slotsGrid}>
-            {settings.timeSlots.map((slot, index) => (
-              <TouchableOpacity
-                key={`${slot.time}-${settings.timeInterval}`}
-                onPress={() => toggleTimeSlot(index)}
-                style={[
-                  styles.slotButton,
-                  slot.enabled
-                    ? styles.slotButtonActive
-                    : styles.slotButtonInactive,
-                ]}
-              >
-                <Text
-                  style={[
-                    styles.slotButtonText,
-                    slot.enabled
-                      ? styles.slotButtonTextActive
-                      : styles.slotButtonTextInactive,
-                  ]}
-                >
-                  {slot.time}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-        </View>
+          {/* Business Hours */}
+          <BusinessHours
+            startTime={settings.businessHours.start}
+            endTime={settings.businessHours.end}
+            onStartTimePress={() => setShowStartTimePicker(true)}
+            onEndTimePress={() => setShowEndTimePicker(true)}
+            styles={styles}
+          />
 
-        {/* Party Size Limits */}
-        <View style={styles.card}>
-          <Text style={styles.cardTitle}>{t("partySizeLimits")}</Text>
+          {/* Time Interval */}
+          <TimeInterval
+            currentInterval={settings.timeInterval}
+            onIntervalChange={handleTimeIntervalChange}
+            styles={styles}
+          />
 
-          <View style={styles.row}>
-            <View style={styles.guestGroup}>
-              <Text style={styles.label}>{t("minimumGuests")}</Text>
-              <View style={styles.guestCounter}>
-                <TouchableOpacity
-                  style={[
-                    styles.guestButton,
-                    settings.minGuests <= 1 && styles.guestButtonDisabled,
-                  ]}
-                  onPress={() =>
-                    updateGuestCount("minGuests", settings.minGuests - 1)
-                  }
-                  disabled={settings.minGuests <= 1}
-                >
-                  <Ionicons
-                    name="remove"
-                    size={14}
-                    color={settings.minGuests <= 1 ? "#ccc" : "#000"}
-                  />
-                </TouchableOpacity>
-                <Text style={styles.guestValue}>{settings.minGuests}</Text>
-                <TouchableOpacity
-                  style={styles.guestButton}
-                  onPress={() =>
-                    updateGuestCount("minGuests", settings.minGuests + 1)
-                  }
-                >
-                  <Ionicons name="add" size={14} color="#000" />
-                </TouchableOpacity>
-              </View>
-            </View>
+          {/* Max Reservations per Slot */}
+          <MaxReservationsPerSlot
+            maxReservationsPerSlot={settings.maxReservationsPerSlot}
+            onUpdate={updateMaxReservationsPerSlot}
+            styles={styles}
+          />
 
-            <View style={styles.guestGroup}>
-              <Text style={styles.label}>{t("maximumGuests")}</Text>
-              <View style={styles.guestCounter}>
-                <TouchableOpacity
-                  style={[
-                    styles.guestButton,
-                    settings.maxGuests <= settings.minGuests &&
-                      styles.guestButtonDisabled,
-                  ]}
-                  onPress={() =>
-                    updateGuestCount("maxGuests", settings.maxGuests - 1)
-                  }
-                  disabled={settings.maxGuests <= settings.minGuests}
-                >
-                  <Ionicons
-                    name="remove"
-                    size={14}
-                    color={
-                      settings.maxGuests <= settings.minGuests ? "#ccc" : "#000"
-                    }
-                  />
-                </TouchableOpacity>
-                <Text style={styles.guestValue}>{settings.maxGuests}</Text>
-                <TouchableOpacity
-                  style={styles.guestButton}
-                  onPress={() =>
-                    updateGuestCount("maxGuests", settings.maxGuests + 1)
-                  }
-                >
-                  <Ionicons name="add" size={14} color="#000" />
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-        </View>
-      </ScrollView>
+          {/* Available Time Slots */}
+          <AvailableTimeSlots
+            timeSlots={settings.timeSlots}
+            onToggleSlot={toggleTimeSlot}
+            timeInterval={settings.timeInterval}
+            styles={styles}
+          />
 
-      {/* 时间验证错误提示 */}
-      {timeValidationError && (
-        <View>
-          <Text>{timeValidationError}</Text>
-        </View>
-      )}
-     
-      <TimePicker
-        visible={showStartTimePicker}
-        value={settings.businessHours.start}
-        flag="start"
-        endTime={settings.businessHours.end}
-        onConfirm={handleStartTimeSelect}
-        onCancel={() => setShowStartTimePicker(false)}
-      />
-      <TimePicker
-        flag="end"
-        visible={showEndTimePicker}
-        value={settings.businessHours.end}
-        startTime={settings.businessHours.start}
-        onConfirm={handleEndTimeSelect}
-        onCancel={() => setShowEndTimePicker(false)}
-      />
+          {/* Party Size Limits */}
+          <PartySizeLimits
+            minGuests={settings.minGuests}
+            maxGuests={settings.maxGuests}
+            onUpdateGuestCount={updateGuestCount}
+            onGuestInputChange={handleGuestInputChange}
+            styles={styles}
+          />
+        </ScrollView>
+
+        <TimePicker
+          visible={showStartTimePicker}
+          value={settings.businessHours.start}
+          flag="start"
+          endTime={settings.businessHours.end}
+          onConfirm={handleStartTimeSelect}
+          onCancel={() => setShowStartTimePicker(false)}
+        />
+        <TimePicker
+          flag="end"
+          visible={showEndTimePicker}
+          value={settings.businessHours.end}
+          startTime={settings.businessHours.start}
+          onConfirm={handleEndTimeSelect}
+          onCancel={() => setShowEndTimePicker(false)}
+        />
+      </KeyboardAwareScrollView>
     </View>
   );
 }

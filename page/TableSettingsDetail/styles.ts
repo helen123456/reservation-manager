@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 export const createStyles = (theme: any) => {
   return StyleSheet.create({
     container: {
-      flex: 1
+      flex: 1,
     },
     header: {
       flexDirection: "row",
@@ -55,6 +55,9 @@ export const createStyles = (theme: any) => {
       marginTop: 16,
       borderWidth: 1,
       borderColor: theme.border,
+    },
+    partyLimitsContainer:{
+marginBottom:60
     },
     lastCard: {
       marginBottom: 20,
@@ -250,6 +253,22 @@ export const createStyles = (theme: any) => {
       minWidth: 24,
       textAlign: "center",
       color: theme.text,
+    },
+    guestInput: {
+      fontSize: 14,
+      fontWeight: "500",
+      minWidth: 40,
+      height:32,
+      lineHeight:16,
+      textAlign: "center",
+      textAlignVertical: 'center',
+      color: theme.text,
+      borderWidth: 1,
+      borderColor: theme.border,
+      borderRadius: 4,
+      // backgroundColor: theme.inputBackground,
+      paddingHorizontal: 8,
+      paddingVertical:0
     },
   });
 };
