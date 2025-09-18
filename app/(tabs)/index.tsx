@@ -1,4 +1,4 @@
-import { Header } from "@/components";
+import { Header, Toast } from "@/components";
 import { useTheme } from "@/hooks/ThemeContext";
 import HelpSupport from "@/page/HelpSupport";
 import HistoryOrder from "@/page/HistoryOrder";
@@ -13,7 +13,7 @@ import { Ionicons } from "@expo/vector-icons";
 import * as Font from "expo-font";
 import { router } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { BackHandler, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function App() {
@@ -26,6 +26,9 @@ export default function App() {
     string | null
   >(null);
   const [fontsLoaded, setFontsLoaded] = useState(false);
+  const [exitApp, setExitApp] = useState(false);
+  const backPressCount = React.useRef(0);
+  const backPressTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Load fonts and check authentication status on app load
   useEffect(() => {
@@ -52,6 +55,68 @@ export default function App() {
     };
     initializeApp();
   }, []);
+
+  // Handle Android back button
+  useEffect(() => {
+    const backAction = () => {
+      // If we're in a settings section, go back to settings
+      if (currentSettingsSection) {
+        setCurrentSettingsSection(null);
+        return true;
+      }
+      
+      // If we're not on main view, go back to main
+      if (currentView !== "main") {
+        setCurrentView("main");
+        setCurrentSettingsSection(null);
+        return true;
+      }
+      
+      // If we're on main view, handle back press within time window to exit
+      if (backPressCount.current === 0) {
+        backPressCount.current = 1;
+        setExitApp(true);
+        
+        // Show toast message
+        Toast.info('再按一次退出应用', {
+          position: 'bottom',
+          duration: 2
+        });
+        
+        // Reset after 2 seconds
+        backPressTimer.current = setTimeout(() => {
+          backPressCount.current = 0;
+          setExitApp(false);
+        }, 2000);
+        
+        return true; // Prevent default back action
+      } else if (backPressCount.current === 1) {
+        // Second press within 2 seconds, exit app
+        if (backPressTimer.current) {
+          clearTimeout(backPressTimer.current);
+        }
+        backPressCount.current = 0;
+        setExitApp(false);
+        BackHandler.exitApp(); // Exit the app
+        return true;
+      }
+      
+      // Default case - should not reach here, but prevent default action
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => {
+      backHandler.remove();
+      if (backPressTimer.current) {
+        clearTimeout(backPressTimer.current);
+      }
+    };
+  }, [currentView, currentSettingsSection]);
 
   const handleSettingsClick = () => {
     setCurrentView("settings");
