@@ -101,7 +101,6 @@ export default function TableSettingsDetail({
           timeSlots: newSlots,
         }));
       } catch (error) {
-        console.error("Failed to fetch reservation settings:", error);
         // 如果接口失败，使用默认值
         const defaultSlots = generateTimeSlots("09:00", "23:00", 60, []);
         setSettings((prev) => ({
