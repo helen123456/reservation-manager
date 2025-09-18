@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 export const createStyles = (theme: any) => {
   return StyleSheet.create({
     container: {
-      flex: 1
+      flex: 1,
     },
     header: {
       flexDirection: "row",
@@ -56,6 +56,9 @@ export const createStyles = (theme: any) => {
       borderWidth: 1,
       borderColor: theme.border,
     },
+    partyLimitsContainer:{
+marginBottom:60
+    },
     lastCard: {
       marginBottom: 20,
     },
@@ -96,8 +99,13 @@ export const createStyles = (theme: any) => {
       borderRadius: 6,
       paddingHorizontal: 12,
       paddingVertical: 10,
-      fontSize: 16,
       backgroundColor: theme.inputBackground,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
+    timeInputText: {
+      fontSize: 16,
       color: theme.text,
     },
     numberInput: {
@@ -245,6 +253,22 @@ export const createStyles = (theme: any) => {
       minWidth: 24,
       textAlign: "center",
       color: theme.text,
+    },
+    guestInput: {
+      fontSize: 14,
+      fontWeight: "500",
+      minWidth: 40,
+      height:32,
+      lineHeight:16,
+      textAlign: "center",
+      textAlignVertical: 'center',
+      color: theme.text,
+      borderWidth: 1,
+      borderColor: theme.border,
+      borderRadius: 4,
+      // backgroundColor: theme.inputBackground,
+      paddingHorizontal: 8,
+      paddingVertical:0
     },
   });
 };

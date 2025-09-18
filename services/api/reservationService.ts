@@ -17,10 +17,12 @@ export const getReservations = async (data?: {
 }) => {
   const restaurantId = await storage.getItem("restaurantId");
   try {
+    const restaurantId = await storage.getItem("restaurantId");
     const response = await request.post("/record/page", {...data,restaurantId});
     return response;
   } catch (error) {
     console.error("获取预订列表失败:", error);
+     return Promise.reject(error);
   }
 };
 // 确认/取消预订
@@ -33,6 +35,7 @@ export const updateReservation = async (data?: {
     return response;
   } catch (error) {
     console.error("更新预订失败:", error);
+     return Promise.reject(error);
   }
 };
 
@@ -62,7 +65,7 @@ export const getReservationSettingInfo = async (id: number) => {
     );
     return response.data || {};
   } catch (error) {
-    console.error("获取预订设置信息失败:", error);
+     return Promise.reject(error);
   }
 };
 
@@ -72,6 +75,6 @@ export const getReservationSettingUpdate = async (data: any) => {
     const response = await request.post("/reservation/setting/update", data);
     return response;
   } catch (error) {
-    console.error("更新预订设置信息失败:", error);
+     return Promise.reject(error);
   }
 };

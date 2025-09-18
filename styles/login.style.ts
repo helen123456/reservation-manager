@@ -11,6 +11,7 @@ const createStyles = (theme: any) => {
       flex: 1,
       justifyContent: "center",
       padding: 16,
+      backgroundColor: theme.background,
     },
     
     header: {

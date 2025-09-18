@@ -125,7 +125,7 @@ export const translations = {
     reservationSettings: "Reservation Settings",
     acceptReservations: "Accept Reservations",
     allowCustomersBookOnline: "Allow customers to book tables online",
-    businessHours: "Business Hours",
+    businessHours: "Available Hours",
     openingTime: "Opening Time",
     closingTime: "Closing Time",
     timeInterval: "Time Interval",
@@ -142,6 +142,8 @@ export const translations = {
     maxAdvanceBookingDays: "Max advance booking (days)",
     minAdvanceNoticeHours: "Min advance notice (hours)",
     saveSuccess:'Save success',
+    startTimeAfterEndTime:'Start time must be before end time',
+    endTimeBeforeStartTime:'End time must be after start time',
 
     // Reservation Module
     todaysReservations: "Today's Reservations",
@@ -285,6 +287,14 @@ export const translations = {
     codeMaxLength: "Verification code cannot exceed 6 digits",
     passwordMismatch: "Passwords do not match",
     
+    // Time Picker
+    selectTime: "Select Time",
+    selectedTime: "Selected Time",
+    
+    // Guest Count Validation
+    minGuestsCannotExceedMaxGuests: "Minimum guests cannot exceed maximum guests",
+    maxGuestsCannotBeLessThanMinGuests: "Maximum guests cannot be less than minimum guests",
+    
     // Date formats
     manageRestaurantReservations: "Manage your restaurant reservations",
     
@@ -353,7 +363,7 @@ export const translations = {
     acceptReservations: "Accepter les Réservations",
     allowCustomersBookOnline:
       "Permettre aux clients de réserver des tables en ligne",
-    businessHours: "Heures d'Ouverture",
+    businessHours: "Horaires d'Ouverture",
     openingTime: "Heure d'Ouverture",
     closingTime: "Heure de Fermeture",
     timeInterval: "Intervalle de Temps",
@@ -370,6 +380,8 @@ export const translations = {
     maxAdvanceBookingDays: "Réservation à l'avance max (jours)",
     minAdvanceNoticeHours: "Préavis minimum (heures)",
     saveSuccess:'économiser le succès',
+    startTimeAfterEndTime:'Heure de début doit être avant l\'heure de fermeture',
+    endTimeBeforeStartTime:'Heure de fin doit être après l\'heure d\'ouverture',
 
     // Reservation Module
     todaysReservations: "Réservations d'Aujourd'hui",
@@ -512,6 +524,14 @@ export const translations = {
     codeMinLength: "Le code de vérification doit contenir au moins 6 chiffres",
     codeMaxLength: "Le code de vérification ne peut pas dépasser 6 chiffres",
     passwordMismatch: "Les mots de passe ne correspondent pas",
+    
+    // Time Picker
+    selectTime: "Sélectionner l'heure",
+    selectedTime: "Heure sélectionnée",
+    
+    // Guest Count Validation
+    minGuestsCannotExceedMaxGuests: "Le nombre minimum d'invités ne peut pas dépasser le maximum",
+    maxGuestsCannotBeLessThanMinGuests: "Le nombre maximum d'invités ne peut pas être inférieur au minimum",
     
     // Date formats
     manageRestaurantReservations: "Gérer les réservations de votre restaurant",
