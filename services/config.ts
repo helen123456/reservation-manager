@@ -14,7 +14,7 @@ export const API_CONFIG = {
   // 基础URL配置
   BASE_URL: {
     dev: 'https://m1.apifoxmock.com/m1/7045660-6765697-default/api',
-    // dev:  'http://127.0.0.1:2025/neo/api',
+    // test:  'http://101.35.113.65:2025/neo/api',
     prod: 'https://api.yourapp.com/api',
   },
   

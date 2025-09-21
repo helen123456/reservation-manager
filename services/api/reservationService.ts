@@ -15,7 +15,6 @@ export const getReservations = async (data?: {
   search?: string;
   queryType?: number
 }) => {
-  const restaurantId = await storage.getItem("restaurantId");
   try {
     const restaurantId = await storage.getItem("restaurantId");
     const response = await request.post("/record/page", {...data,restaurantId});
