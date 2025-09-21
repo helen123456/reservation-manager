@@ -6,7 +6,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { useTheme } from '@/hooks/ThemeContext';
+import { useTheme } from '@/contexts/ThemeContext';
 import { useTranslation } from '@/hooks/useTranslation';
 import { createStyles } from "./styles";
 import { ModalProps } from "./types";

@@ -1,4 +1,4 @@
-import { useTheme } from '@/hooks/ThemeContext';
+import { useTheme } from '@/contexts/ThemeContext';
 import React, { useMemo } from 'react';
 import { Text, View } from 'react-native';
 import { createStyles } from './styles';

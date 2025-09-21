@@ -1,5 +1,8 @@
 import { Input } from "@/components";
-import { useTheme } from "@/hooks/ThemeContext";
+import { useAuth } from "@/contexts/AuthContext";
+import { useTheme } from "@/contexts/ThemeContext";
+import { useAsyncDebounce } from "@/hooks/useDebounce";
+import { useTranslation } from "@/hooks/useTranslation";
 import { login } from "@/services/api/authService";
 import createStyles from "@/styles/login.style";
 import { getRegisterSchema } from "@/types/login.type";
@@ -11,13 +14,15 @@ import {
   ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
-  ScrollView, Text, TouchableOpacity, View
-} from 'react-native';
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { z } from "zod";
-import { useAsyncDebounce } from "../hooks/useDebounce";
-import { useTranslation } from "../hooks/useTranslation";
 
 export default function Login() {
+   const { onLogin } = useAuth();
   const { t } = useTranslation();
   const { theme } = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
@@ -41,11 +46,10 @@ export default function Login() {
 
   // 带防抖的登录提交函数
   const onSubmit = useAsyncDebounce(async (data: RegisterFormData) => {
-    const res = await login(data);
-
-    if (res.code === 200) {
-      router.push("/(tabs)");
-    }
+    await login(data).then(async () => {
+      await onLogin();
+      router.push("/reservation");
+    });
   }, 300);
 
   //忘记密码
@@ -66,9 +70,7 @@ export default function Login() {
           {/* Header */}
           <View style={styles.header}>
             <Text style={styles.title}>{t("signIn")}</Text>
-            <Text style={styles.subtitle}>
-              {t("signInDescription")}
-            </Text>
+            <Text style={styles.subtitle}>{t("signInDescription")}</Text>
           </View>
 
           {/* Login Form */}
@@ -83,7 +85,6 @@ export default function Login() {
                 placeholder={t("emailPlaceholder")}
                 leftIcon="mail-outline"
                 required
-                helperText="用户名将作为您的登录凭证"
               />
               <Input
                 labelStyle={{ color: theme.primary }}
@@ -93,7 +94,6 @@ export default function Login() {
                 placeholder={t("passwordPlaceholder")}
                 leftIcon="lock-closed-outline"
                 required
-                helperText="用户名将作为您的登录凭证"
               />
 
               {/* Forgot Password */}
@@ -117,9 +117,7 @@ export default function Login() {
                 {isSubmitting ? (
                   <ActivityIndicator color="white" />
                 ) : (
-                  <Text style={styles.signInButtonText}>
-                    {t("signIn")}
-                  </Text>
+                  <Text style={styles.signInButtonText}>{t("signIn")}</Text>
                 )}
               </TouchableOpacity>
             </View>

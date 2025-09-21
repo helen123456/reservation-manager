@@ -1,5 +1,5 @@
 import { Input, Modal, Text, Toast } from "@/components";
-import { useTheme } from "@/hooks/ThemeContext";
+import { useTheme } from "@/contexts/ThemeContext";
 import { useCountdown } from "@/hooks/useCountdown";
 import { useTranslation } from "@/hooks/useTranslation";
 import {
@@ -7,6 +7,13 @@ import {
   sendResetPwdEmail,
   verifyResetPwdCode,
 } from "@/services/api/authService";
+import createStyles from "@/styles/forgotPassword.style";
+import {
+  ForgotPasswordForm,
+  ResetPasswordForm,
+  getForgotPasswordSchema,
+  getResetPasswordSchema,
+} from "@/types/login.type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { router } from "expo-router";
 import React, { useEffect, useMemo, useState } from "react";
@@ -20,13 +27,6 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import createStyles from "../styles/forgotPassword.style";
-import {
-  ForgotPasswordForm,
-  ResetPasswordForm,
-  getForgotPasswordSchema,
-  getResetPasswordSchema,
-} from "../types/login.type";
 
 type Step = "email" | "verification" | "reset" | "success";
 const COUNT_DOWN = 10;

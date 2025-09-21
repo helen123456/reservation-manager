@@ -1,5 +1,6 @@
 import storage from "@/utils/storage";
 import React, { createContext, useContext, useEffect, useState } from "react";
+import { View } from "react-native";
 import { Colors } from "../constants/Colors";
 const colorSchemes = { light: Colors.light, dark: Colors.dark };
 
@@ -37,7 +38,6 @@ export const ThemeProvider = ({ children }) => {
 
   // 5. 监听系统主题变化（如果用户没有手动选择过主题）
   useEffect(() => {
-    debugger;
     if (!userChosenTheme) {
       setTheme(colorSchemes[systemColorScheme]);
     }
@@ -60,7 +60,9 @@ export const ThemeProvider = ({ children }) => {
   // 通过 Context 提供 theme 和 toggleTheme
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      {children}
+      <View style={{ flex: 1, backgroundColor: theme.background }}>
+        {children}
+      </View>
     </ThemeContext.Provider>
   );
 };

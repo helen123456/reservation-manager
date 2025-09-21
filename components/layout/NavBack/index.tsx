@@ -1,11 +1,12 @@
-import { useTheme } from '@/hooks/ThemeContext';
+import { useTheme } from '@/contexts/ThemeContext';
 import { Feather } from '@expo/vector-icons';
+import { router } from 'expo-router';
 import React from 'react';
 import { Text, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 
 interface NavBackProps {
-  title: string;
-  onBack: () => void;
+  title?: string;
+  onBack?: () => void;
   rightComponent?: React.ReactNode;
   subtitle?: string;
   showBackButton?: boolean;
@@ -26,12 +27,16 @@ export default function NavBack({
 }: NavBackProps) {
   const { theme } = useTheme();
   const styles = createStyles(theme);
+const handleBack=()=>{
+  router.back()
+  onBack?.();
+}
 
   return (
     <View style={[styles.header, headerStyle]}>
       <View style={styles.headerLeft}>
         {showBackButton && (
-          <TouchableOpacity onPress={onBack} style={styles.backButton}>
+          <TouchableOpacity onPress={handleBack} style={styles.backButton}>
             <Feather name="arrow-left" size={20} color={theme.text} />
           </TouchableOpacity>
         )}

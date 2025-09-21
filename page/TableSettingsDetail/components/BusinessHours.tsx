@@ -1,8 +1,8 @@
+import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { useTheme } from "@/contexts/ThemeContext";
 import { useTranslation } from "../../../hooks/useTranslation";
-import { useTheme } from "../../../hooks/ThemeContext";
 
 interface BusinessHoursProps {
   startTime: string;

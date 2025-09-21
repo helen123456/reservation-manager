@@ -15,7 +15,7 @@ export async function login(data: { password: string; email: string }) {
     storage.setItem("restaurantId", restaurantId);
     return response;
   } catch (error) {
-    console.error("获取用户列表失败:", error);
+    return Promise.reject(error);
   }
 }
 
@@ -30,31 +30,35 @@ export async function logout(): Promise<void> {
     storage.removeItem("restaurantId");
   }
 }
-export async function sendResetPwdEmail(data: { email: string }): Promise<void> {
+export async function sendResetPwdEmail(data: {
+  email: string;
+}): Promise<void> {
   try {
     const res: any = await request.post("/user/sendResetPwdEmail", data);
     return res;
   } catch (error) {
-    console.error("发送重置密码邮件失败:", error);
-    throw error;
-  } 
+    return Promise.reject(error);
+  }
 }
-export async function verifyResetPwdCode(data: { email: string ,code: string }): Promise<void> {
+export async function verifyResetPwdCode(data: {
+  email: string;
+  code: string;
+}): Promise<void> {
   try {
     const res: any = await request.post("/user/verifyResetPwdCode", data);
     return res;
   } catch (error) {
-    console.error("验证重置密码验证码失败:", error);
-     throw error;
-  } 
+   return Promise.reject(error);
+  }
 }
-export async function resetPwd(data: { email: string,pwd: string }): Promise<void> {
+export async function resetPwd(data: {
+  email: string;
+  pwd: string;
+}): Promise<void> {
   try {
     const res: any = await request.post("/user/resetPwd", data);
     return res;
   } catch (error) {
-    console.error("重置密码验证码失败:", error);
-     throw error;
-  } 
+    return Promise.reject(error);
+  }
 }
-

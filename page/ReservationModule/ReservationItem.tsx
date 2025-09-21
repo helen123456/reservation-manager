@@ -1,4 +1,4 @@
-import { useTheme } from '@/hooks/ThemeContext';
+import { useTheme } from '@/contexts/ThemeContext';
 import { Feather } from '@expo/vector-icons';
 import dayjs from 'dayjs';
 import React, { useMemo } from 'react';

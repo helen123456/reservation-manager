@@ -1,11 +1,10 @@
 import { NavBack } from "@/components";
-import { useTheme } from '@/hooks/ThemeContext';
+import { useTheme } from '@/contexts/ThemeContext';
 import { Feather } from "@expo/vector-icons";
 import React, { useMemo, useState } from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { useTranslation } from "../../hooks/useTranslation";
 import QuickSettings from "./QuickSettings";
-import RestaurantStatus from "./RestaurantStatus";
 import SettingsCategory from "./SettingsCategory";
 import { createStyles } from "./styles";
 import { QuickSettingsState, SettingsModuleProps } from "./types";
@@ -53,7 +52,7 @@ export default function SettingsModule({
         <SettingsCategory categories={settingsCategories} />
 
         {/* Restaurant Status */}
-        <RestaurantStatus status={restaurantStatus} />
+        {/* <RestaurantStatus status={restaurantStatus} /> */}
 
         {/* About */}
         <TouchableOpacity

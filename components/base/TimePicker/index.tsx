@@ -1,5 +1,5 @@
 import { Text } from '@/components';
-import { useTheme } from "@/hooks/ThemeContext";
+import { useTheme } from "@/contexts/ThemeContext";
 import { useTranslation } from "@/hooks/useTranslation";
 import { PickerView } from "@ant-design/react-native";
 import dayjs from "dayjs";

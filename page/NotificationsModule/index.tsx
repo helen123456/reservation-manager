@@ -1,4 +1,4 @@
-import { useTheme } from "@/hooks/ThemeContext";
+import { useTheme } from "@/contexts/ThemeContext";
 import {
   clearMessage,
   getMessage,
@@ -11,12 +11,10 @@ import { useTranslation } from "../../hooks/useTranslation";
 import { NotificationHeader } from "./NotificationHeader";
 import { NotificationItem } from "./NotificationItem";
 import { createStyles } from "./styles";
-import { Notification, NotificationsPageProps } from "./types";
+import { Notification } from "./types";
 import { generateMockNotifications } from "./utils";
 
-export default function NotificationsModule({
-  onBack,
-}: NotificationsPageProps) {
+export default function NotificationsModule() {
   const { t } = useTranslation();
   const { theme } = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
@@ -30,7 +28,7 @@ export default function NotificationsModule({
   }, []);
 
   const markAsRead = async (id: string) => {
-    const res:any = await updateMessage(id);
+    const res: any = await updateMessage(id);
     if (res.code === 200) {
       setNotifications((prev) =>
         prev.map((notification) =>
@@ -41,7 +39,7 @@ export default function NotificationsModule({
   };
 
   const markAllAsRead = async () => {
-    const res:any = await updateMessage();
+    const res: any = await updateMessage();
     if (res.code === 200) {
       setNotifications((prev) =>
         prev.map((notification) => ({ ...notification, isRead: 1 }))
@@ -50,7 +48,7 @@ export default function NotificationsModule({
   };
 
   const clearAllNotifications = async () => {
-    const res:any = await clearMessage();
+    const res: any = await clearMessage();
     if (res.code === 200) {
       setNotifications([]);
     }
@@ -67,7 +65,6 @@ export default function NotificationsModule({
       <NotificationHeader
         notifications={notifications}
         unreadCount={unreadCount}
-        onBack={onBack}
         onMarkAllAsRead={markAllAsRead}
         onClearAll={clearAllNotifications}
       />

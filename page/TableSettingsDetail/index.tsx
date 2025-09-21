@@ -1,8 +1,9 @@
 import { NavBack, TimePicker, Toast } from "@/components";
-import { useTheme } from "@/hooks/ThemeContext";
+import { useTheme } from "@/contexts/ThemeContext";
 import storage from "@/utils/storage";
 import { Ionicons } from "@expo/vector-icons";
 import dayjs from "dayjs";
+import { router } from 'expo-router';
 import includes from "lodash/includes";
 import isEmpty from "lodash/isEmpty";
 import times from "lodash/times";
@@ -26,13 +27,10 @@ import { createStyles } from "./styles";
 import {
   IntervalOption,
   TableSettings,
-  TableSettingsDetailProps,
-  TimeSlot,
+  TimeSlot
 } from "./types";
 
-export default function TableSettingsDetail({
-  onBack,
-}: TableSettingsDetailProps) {
+export default function TableSettingsDetail() {
   const { t } = useTranslation();
   const { theme } = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
@@ -270,6 +268,9 @@ export default function TableSettingsDetail({
     { value: 30, label: "30min" },
     { value: 15, label: "15min" },
   ];
+  const onBack=()=>{
+    router.back();
+  }
 
   return (
     <View style={styles.container}>

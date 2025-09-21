@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { useTheme } from '@/hooks/ThemeContext';
+import { useTheme } from '@/contexts/ThemeContext';
 import { useTranslation } from '../../hooks/useTranslation';
 import { Text, View } from 'react-native';
 import { createStyles } from './styles';

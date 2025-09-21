@@ -1,5 +1,5 @@
 import Modal from "@/components/base/Modal";
-import { useTheme } from '@/hooks/ThemeContext';
+import { useTheme } from '@/contexts/ThemeContext';
 import { updateReservation } from "@/services/api/reservationService";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import dayjs from "dayjs";

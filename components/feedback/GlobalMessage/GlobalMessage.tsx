@@ -1,7 +1,7 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import React, { useMemo } from 'react';
 import { Animated, TouchableOpacity, View } from 'react-native';
-import { useTheme } from '@/hooks/ThemeContext';
+import { useTheme } from '@/contexts/ThemeContext';
 import { Text } from 'react-native';
 import { useMessageContext } from './MessageContext';
 import { createStyles } from './styles';

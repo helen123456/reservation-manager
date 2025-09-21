@@ -1,5 +1,5 @@
-import { RestaurantStatus, SettingsCategory } from './types';
 import { i18n } from "../../utils/i18n";
+import { RestaurantStatus, SettingsCategory } from './types';
 
 const t = i18n.t.bind(i18n);
 
@@ -12,6 +12,18 @@ export const getSettingsCategories = (
   onNavigate: (section: string) => void
 ): SettingsCategory[] => [
   {
+    title: 'Future Features',
+    items: [
+      {
+        id: 'delivery',
+        title: 'Restaurant Management',
+        description: 'Set restaurant information',
+        icon: 'package',
+        action: () => {}
+      }
+    ]
+  },
+  {
     title: t('reservationManagement'),
     items: [
       {
@@ -23,27 +35,7 @@ export const getSettingsCategories = (
       }
     ]
   },
-  // {
-  //   title: 'Future Features',
-  //   items: [
-  //     {
-  //       id: 'delivery',
-  //       title: 'Delivery Settings',
-  //       description: 'Coming soon',
-  //       icon: 'package',
-  //       disabled: true,
-  //       action: () => {}
-  //     },
-  //     {
-  //       id: 'takeaway',
-  //       title: 'Takeaway Settings',
-  //       description: 'Coming soon',
-  //       icon: 'shopping-bag',
-  //       disabled: true,
-  //       action: () => {}
-  //     }
-  //   ]
-  // }
+  
 ];
 
 /**

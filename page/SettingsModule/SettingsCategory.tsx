@@ -1,8 +1,7 @@
+import { useTheme } from '@/contexts/ThemeContext';
 import { Feather } from '@expo/vector-icons';
 import React, { useMemo } from 'react';
-import { TouchableOpacity, View } from 'react-native';
-import { useTheme } from '@/hooks/ThemeContext';
-import { Text } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import { createStyles } from './styles';
 import { SettingsCategoryProps } from './types';
 
@@ -13,7 +12,7 @@ export default function SettingsCategory({ categories }: SettingsCategoryProps) 
     <>
       {categories.map((category, categoryIndex) => (
         <View key={categoryIndex}>
-          <Text style={styles.categoryTitle}>{category.title}</Text>
+          {/* <Text style={styles.categoryTitle}>{category.title}</Text> */}
           
           {category.items.map((item) => (
             <TouchableOpacity

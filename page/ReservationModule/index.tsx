@@ -1,9 +1,9 @@
-import { Icon, NavBack, Text } from "@/components";
-import { useTheme } from "@/hooks/ThemeContext";
+import { Icon, NavBack, Text, Toast } from "@/components";
+import { useTheme } from "@/contexts/ThemeContext";
 import { useTranslation } from "@/hooks/useTranslation";
 import { getReservations } from "@/services/api/reservationService";
 import { Reservation } from "@/services/types";
-import { message } from "@/utils/message";
+
 import dayjs from "dayjs";
 import groupBy from "lodash/groupBy";
 import merge from "lodash/merge";
@@ -104,10 +104,10 @@ export default function ReservationModule() {
           const hasMore = page * params.pageSize < response.total;
           setHasNextPage(hasMore);
         } else {
-          message.error(response.msg || "获取预订列表失败");
+          Toast.fail(response.msg || "获取预订列表失败");
         }
       } catch (error) {
-        message.error("网络错误，请稍后重试");
+        Toast.fail("网络错误，请稍后重试");
       } finally {
         setIsLoading(false);
       }
@@ -279,8 +279,8 @@ export default function ReservationModule() {
       </View>
 
       {error && (
-        <View style={{ padding: 16, backgroundColor: "#ffebee" }}>
-          <Text style={{ color: "#c62828" }}>{error}</Text>
+        <View style={{ padding: 16, backgroundColor: theme.destructive }}>
+          <Text style={{ color: theme.destructiveForeground }}>{error}</Text>
         </View>
       )}
 

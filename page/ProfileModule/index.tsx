@@ -1,7 +1,6 @@
-import { Input, NavBack } from "@/components";
+import { Input, NavBack, Toast } from "@/components";
 import { Modal } from '@/components/base/Modal';
-import { useMessage } from '@/components/feedback/GlobalMessage';
-import { useTheme } from '@/hooks/ThemeContext';
+import { useTheme } from '@/contexts/ThemeContext';
 import { useTranslation } from "@/hooks/useTranslation";
 import { getUserInfo, updateUserInfo } from '@/services/api/userService';
 import { languages } from "@/utils/i18n";
@@ -13,13 +12,11 @@ import { FormProvider, useForm } from "react-hook-form";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import z from "zod";
 
-interface ProfileDetailProps {
-  onBack: () => void;
-}
 
-export default function ProfileDetail({ onBack }: ProfileDetailProps) {
+
+export default function ProfileDetail() {
   const { t, currentLanguage, changeLanguage } = useTranslation();
-  const message = useMessage();
+
   const [modalVisible, setModalVisible] = useState(false);
   const [singleButtonModal, setSingleButtonModal] = useState(true);
   const { theme } = useTheme();
@@ -57,7 +54,7 @@ export default function ProfileDetail({ onBack }: ProfileDetailProps) {
     if (!isValid) return;
     const uid = await AsyncStorage.getItem('uid')
     await updateUserInfo({...data,lang:currentLanguage,uid:uid||'1'})
-     message.success('保存成功！', 3);
+     Toast.success('保存成功！');
   };
 
   const handleLanguageChange = (newLanguage: string) => {
@@ -86,7 +83,6 @@ export default function ProfileDetail({ onBack }: ProfileDetailProps) {
     <View style={styles.container}>
       <NavBack
         title={t("profileTitle")}
-        onBack={onBack}
         rightComponent={saveButton}
       />
       <ScrollView style={styles.scrollContent}>

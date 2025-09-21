@@ -1,6 +1,7 @@
 import { NavBack } from "@/components";
-import { useTheme } from '@/hooks/ThemeContext';
+import { useTheme } from '@/contexts/ThemeContext';
 import { Feather } from "@expo/vector-icons";
+import { router } from 'expo-router';
 import React, { useMemo } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { useTranslation } from "../../hooks/useTranslation";
@@ -10,7 +11,6 @@ import { Notification } from "./types";
 interface NotificationHeaderProps {
   notifications: Notification[];
   unreadCount: number;
-  onBack: () => void;
   onMarkAllAsRead: () => void;
   onClearAll: () => void;
 }
@@ -18,14 +18,15 @@ interface NotificationHeaderProps {
 export function NotificationHeader({
   notifications,
   unreadCount,
-  onBack,
   onMarkAllAsRead,
   onClearAll,
 }: NotificationHeaderProps) {
   const { t } = useTranslation();
   const {theme} = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
-
+  const onBack=()=>{
+    router.back()
+  }
   const badgeComponent = unreadCount > 0 ? (
     <View style={styles.badge}>
       <Text style={styles.badgeText}>{unreadCount}</Text>
