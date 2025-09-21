@@ -32,9 +32,10 @@ export default function NavBack({
 const handleBack = () => {
   // 获取当前路由段
   const currentSegments = segments.join('/');
+  console.log('当前路由:', currentSegments);
   
   // 需要跳转到 reservation 页面的路由配置
-  const redirectToReservationRoutes = ['profile','setting','help','history', 'notifications'];
+  const redirectToReservationRoutes = ['profile','settings','help','history', 'notifications'];
   
   // 检查当前路由是否在配置数组中
   const shouldRedirectToReservation = redirectToReservationRoutes.some(route => 
