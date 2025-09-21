@@ -3,7 +3,6 @@ import { useTheme } from "@/contexts/ThemeContext";
 import { useTranslation } from "@/hooks/useTranslation";
 import { getReservations } from "@/services/api/reservationService";
 import { Reservation } from "@/services/types";
-
 import dayjs from "dayjs";
 import groupBy from "lodash/groupBy";
 import merge from "lodash/merge";
@@ -14,7 +13,6 @@ import {
   View
 } from "react-native";
 import { FilterBar } from "./FilterBar";
-import { ReservationDetail } from "./ReservationDetail";
 import { ReservationItem } from "./ReservationItem";
 import { SearchBar } from "./SearchBar";
 import { StatsCard } from "./StatsCard";
@@ -26,8 +24,6 @@ export default function ReservationModule() {
   const { t } = useTranslation();
   const {theme} = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
-  const [selectedReservation, setSelectedReservation] =
-    useState<Reservation | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [allReservations, setAllReservations] = useState<Reservation[]>([]);
@@ -170,19 +166,10 @@ export default function ReservationModule() {
     return getFlatData(allReservations);
   }, [allReservations]);
 
-  const handleReservationPress = (reservation: Reservation) => {
-    setSelectedReservation(reservation);
-  };
-
-  const handleBack = () => {
-    setSelectedReservation(null);
-  };
-
   const handleUpdateReservation = (reservation: Reservation) => {
     setAllReservations((prev) =>
       prev.map((r) => (r.id === reservation.id ? reservation : r))
     );
-    setSelectedReservation(null);
   };
 
   const handleClearSearch = () => {
@@ -225,7 +212,6 @@ export default function ReservationModule() {
       return (
         <ReservationItem
           reservation={item.reservation}
-          onPress={handleReservationPress}
         />
       );
     }
@@ -235,16 +221,6 @@ export default function ReservationModule() {
   const onDateChange = (date: Date | undefined) => {
     setSelectedDate(date);
   };
-  if (selectedReservation) {
-    return (
-      <ReservationDetail
-        reservation={selectedReservation}
-        onBack={handleBack}
-        onAccept={handleUpdateReservation}
-        onReject={handleUpdateReservation}
-      />
-    );
-  }
 
   return (
     <View style={styles.container}>

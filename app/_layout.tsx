@@ -13,6 +13,7 @@ import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 import { ActivityIndicator, View } from "react-native";
 import "react-native-reanimated";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 function AppContent() {
   // 获取认证状态和方法
@@ -26,14 +27,14 @@ function AppContent() {
       return;
     }
     const inAuthGroup = segments[0] === "(auth)";
-    if (isLogged) {
-      if (inAuthGroup) {
-        router.replace("/reservation");
-      }
-    } else {
-      if (!inAuthGroup) {
-        router.replace("/login");
-      }
+    const inTabsGroup = segments[0] === "(tabs)";
+    
+    console.log('路由保护检查:', { isLogged, segments, inAuthGroup, inTabsGroup });
+    
+    // 保护需要登录的路由
+    if (!isLogged && !inAuthGroup) {
+      console.log('未登录用户访问受保护路由，重定向到登录页');
+      router.replace("/(auth)/login");
     }
   }, [isLogged, isLoading, segments]); // 当这些依赖变化时，重新执行
 
@@ -46,35 +47,26 @@ function AppContent() {
     );
   }
 
+  // 检查是否在auth页面
+  const inAuthGroup = segments[0] === "(auth)";
+
   return (
-    <Stack>
-      <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen
-        name="help/index"
-        options={{ headerShown: true, header: () => <Header /> }}
-      />
-      <Stack.Screen
-        name="history/index"
-        options={{ headerShown: true, header: () => <Header /> }}
-      />
-      <Stack.Screen
-        name="profile/index"
-        options={{ headerShown: true, header: () => <Header /> }}
-      />
-      <Stack.Screen
-        name="settings/index"
-        options={{ headerShown: true, header: () => <Header /> }}
-      />
-      <Stack.Screen
-        name="reserveTimeSetting/index"
-        options={{ headerShown: true, header: () => <Header /> }}
-      />
-      <Stack.Screen
-        name="notifications/index"
-        options={{ headerShown: true, header: () => <Header /> }}
-      />
-    </Stack>
+    <View style={{ flex: 1 }}>
+      {/* 全局Header，只在非auth页面显示 */}
+      {!inAuthGroup && <Header />}
+      
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="index" />
+        <Stack.Screen name="(auth)" />
+        <Stack.Screen name="(tabs)" />
+        <Stack.Screen name="help/index" />
+        <Stack.Screen name="history/index" />
+        <Stack.Screen name="profile/index" />
+        <Stack.Screen name="settings/index" />
+        <Stack.Screen name="reserveTimeSetting/index" />
+        <Stack.Screen name="notifications/index" />
+      </Stack>
+    </View>
   );
 }
 
@@ -92,13 +84,15 @@ export default function RootLayout() {
   }
 
   return (
-    <AuthProvider>
-      <ThemeProvider>
-        <Provider>
-          <AppContent />
-          <StatusBar style="auto" />
-        </Provider>
-      </ThemeProvider>
-    </AuthProvider>
+    <SafeAreaProvider>
+      <AuthProvider>
+        <ThemeProvider>
+          <Provider>
+            <AppContent />
+            <StatusBar style="light" translucent={true} backgroundColor="transparent" />
+          </Provider>
+        </ThemeProvider>
+      </AuthProvider>
+    </SafeAreaProvider>
   );
 }

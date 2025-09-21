@@ -1,21 +1,45 @@
 import storage from "@/utils/storage";
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState, ReactNode } from "react";
 import { View } from "react-native";
 import { Colors } from "../constants/Colors";
-const colorSchemes = { light: Colors.light, dark: Colors.dark };
+
+// 定义主题类型
+interface Theme {
+  background: string;
+  text: string;
+  primary: string;
+  secondary: string;
+  [key: string]: string;
+}
+
+// 定义Context值的类型
+interface ThemeContextType {
+  theme: Theme;
+  toggleTheme: (newThemeName: string) => Promise<void>;
+}
+
+// 定义Provider props类型
+interface ThemeProviderProps {
+  children: ReactNode;
+}
+
+const colorSchemes: { [key: string]: Theme } = { 
+  light: Colors.light, 
+  dark: Colors.dark 
+};
 
 // 2. 创建 Context
-const ThemeContext = createContext();
+const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 // 3. 创建 ThemeProvider 组件
-export const ThemeProvider = ({ children }) => {
+export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   // 获取系统的颜色方案 ('light' | 'dark')
   // const systemColorScheme = useColorScheme();
   const systemColorScheme = 'light';
   // 状态管理当前主题，默认使用系统主题
-  const [theme, setTheme] = useState(colorSchemes[systemColorScheme]);
+  const [theme, setTheme] = useState<Theme>(colorSchemes[systemColorScheme]);
   // 状态标记用户是否主动选择过主题
-  const [userChosenTheme, setUserChosenTheme] = useState(false);
+  const [userChosenTheme, setUserChosenTheme] = useState<boolean>(false);
 
   // 4. 初始化时从本地存储读取保存的主题
   useEffect(() => {
@@ -44,7 +68,7 @@ export const ThemeProvider = ({ children }) => {
   }, [systemColorScheme, userChosenTheme]);
 
   // 6. 切换主题的函数
-  const toggleTheme = async (newThemeName) => {
+  const toggleTheme = async (newThemeName: string): Promise<void> => {
     if (colorSchemes[newThemeName]) {
       setTheme(colorSchemes[newThemeName]);
       setUserChosenTheme(true); // 用户主动选择了主题
@@ -60,7 +84,7 @@ export const ThemeProvider = ({ children }) => {
   // 通过 Context 提供 theme 和 toggleTheme
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      <View style={{ flex: 1, backgroundColor: theme.background }}>
+      <View style={{ flex: 1 }}>
         {children}
       </View>
     </ThemeContext.Provider>
@@ -68,7 +92,13 @@ export const ThemeProvider = ({ children }) => {
 };
 
 // 7. 创建一个方便使用的自定义 Hook
-export const useTheme = () => useContext(ThemeContext);
+export const useTheme = (): ThemeContextType => {
+  const context = useContext(ThemeContext);
+  if (context === undefined) {
+    throw new Error('useTheme must be used within a ThemeProvider');
+  }
+  return context;
+};
 
 // 默认导出 Context
 export default ThemeContext;

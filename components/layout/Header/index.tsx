@@ -1,3 +1,4 @@
+import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useTranslation } from "@/hooks/useTranslation";
 import { logout } from "@/services/api/authService";
@@ -25,6 +26,7 @@ export function Header({ notificationCount = 3, menuCount = 1 }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { theme } = useTheme();
   const styles = createStyles(theme);
+  const {onLogout} = useAuth();
 
   const menuItems = [
     {
@@ -82,11 +84,7 @@ export function Header({ notificationCount = 3, menuCount = 1 }: HeaderProps) {
   const onSignOut = async () => {
     try {
       const res: any = await logout();
-      console.log('res',res)
-      debugger
-      if (res?.code === 200) {
-        router.replace("/login");
-      }
+     onLogout()
     } catch (error) {
       console.error("Error removing auth status:", error);
       router.replace("/login");

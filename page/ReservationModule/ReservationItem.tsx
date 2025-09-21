@@ -1,6 +1,7 @@
 import { useTheme } from '@/contexts/ThemeContext';
 import { Feather } from '@expo/vector-icons';
 import dayjs from 'dayjs';
+import { useRouter } from 'expo-router';
 import React, { useMemo } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { StatusBadge } from './StatusBadge';
@@ -9,20 +10,29 @@ import { Reservation } from './types';
 
 interface ReservationItemProps {
   reservation: Reservation;
-  onPress: (reservation: Reservation) => void;
 }
 
-export const ReservationItem: React.FC<ReservationItemProps> = ({ reservation, onPress }) => {
+export const ReservationItem: React.FC<ReservationItemProps> = ({ reservation }) => {
+  const router = useRouter();
   const getInitials = (name: string) => {
     return name.split(' ').map(n => n[0]).join('').toUpperCase();
   };
   const {theme} = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
 
+  const handlePress = () => {
+    router.push({
+      pathname: '/(tabs)/reservation/detail',
+      params: {
+        reservation: JSON.stringify(reservation)
+      }
+    });
+  };
+
   return (
     <TouchableOpacity
       style={styles.reservationItem}
-      onPress={() => onPress(reservation)}
+      onPress={handlePress}
     >
       <View style={[styles.reservationContent, { backgroundColor: theme.background }]}>
         <View style={styles.reservationLeft}>

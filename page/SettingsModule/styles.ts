@@ -5,6 +5,7 @@ export const createStyles = (theme: any) => {
   return StyleSheet.create({
     container: {
       flex: 1,
+      backgroundColor:theme.background
     },
     scrollContent: {
       padding: 16,
