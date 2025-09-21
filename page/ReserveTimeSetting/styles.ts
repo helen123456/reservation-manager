@@ -4,6 +4,8 @@ export const createStyles = (theme: any) => {
   return StyleSheet.create({
     container: {
       flex: 1,
+      backgroundColor: theme.background,
+      
     },
     header: {
       flexDirection: "row",

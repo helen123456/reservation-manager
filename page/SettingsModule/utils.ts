@@ -19,7 +19,7 @@ export const getSettingsCategories = (
         title: 'Restaurant Management',
         description: 'Set restaurant information',
         icon: 'package',
-        action: () => {}
+        action: () => onNavigate('restaurant-info-setting')
       }
     ]
   },

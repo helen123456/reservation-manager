@@ -64,6 +64,7 @@ function AppContent() {
         <Stack.Screen name="profile/index" />
         <Stack.Screen name="settings/index" />
         <Stack.Screen name="reserveTimeSetting/index" />
+        <Stack.Screen name="restaurantInfoSetting/index" />
         <Stack.Screen name="notifications/index" />
       </Stack>
     </View>

@@ -76,7 +76,7 @@ export const createStyles = (theme: any) => {
       backgroundColor: theme.card,
       borderRadius: 8,
       padding: 12,
-      marginBottom: 8,
+      marginBottom: 16,
       borderWidth: 1,
       borderColor: theme.border,
       flexDirection: 'row',

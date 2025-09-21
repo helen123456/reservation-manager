@@ -20,7 +20,6 @@ export interface SettingsCategory {
 export interface QuickSettingsState {
   acceptReservations: boolean;
   autoConfirm: boolean;
-  darkMode: boolean;
 }
 
 export interface RestaurantStatus {

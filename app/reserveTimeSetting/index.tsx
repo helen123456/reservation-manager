@@ -1,4 +1,4 @@
-import ReservationTimeSetting from '@/page/TableSettingsDetail';
+import ReservationTimeSetting from '@/page/ReserveTimeSetting';
 import React from 'react';
 
 export default function SettingsScreen() {

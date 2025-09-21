@@ -77,3 +77,23 @@ export const getReservationSettingUpdate = async (data: any) => {
      return Promise.reject(error);
   }
 };
+
+// 切换预订状态
+export const toggleReservationStatus = async () => {
+  try {
+    const restaurantId = await storage.getItem('restaurantId')
+    const response = await request.put(`/reservation/setting/toggle-reservation/${restaurantId}`);
+    return response;
+  } catch (error) {
+     return Promise.reject(error);
+  }
+};
+export const toggleAutoConfirmStatus = async () => {
+  try {
+    const restaurantId = await storage.getItem('restaurantId')
+    const response = await request.put(`/reservation/setting/toggle-auto-confirm/${restaurantId}`);
+    return response;
+  } catch (error) {
+     return Promise.reject(error);
+  }
+}
