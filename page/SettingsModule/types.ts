@@ -1,6 +1,6 @@
 export interface SettingsModuleProps {
   onNavigate: (section: string) => void;
-  onBack?: () => void;
+
 }
 
 export interface SettingItem {

@@ -3,7 +3,6 @@ import { useTheme } from "@/contexts/ThemeContext";
 import storage from "@/utils/storage";
 import { Ionicons } from "@expo/vector-icons";
 import dayjs from "dayjs";
-import { router } from 'expo-router';
 import includes from "lodash/includes";
 import isEmpty from "lodash/isEmpty";
 import times from "lodash/times";
@@ -24,11 +23,7 @@ import {
   TimeInterval,
 } from "./components";
 import { createStyles } from "./styles";
-import {
-  IntervalOption,
-  TableSettings,
-  TimeSlot
-} from "./types";
+import { IntervalOption, TableSettings, TimeSlot } from "./types";
 
 export default function TableSettingsDetail() {
   const { t } = useTranslation();
@@ -46,7 +41,7 @@ export default function TableSettingsDetail() {
     maxReservationsPerSlot: 10, // maximum reservations allowed per time slot
     timeSlots: [] as TimeSlot[],
     minAdvanceHours: 2,
-    restaurantId: 1,
+    restaurantId: "1",
   });
 
   // TimePicker 状态管理
@@ -119,10 +114,7 @@ export default function TableSettingsDetail() {
     }));
   };
 
-  const updateGuestCount = (
-    field: "maxGuests" | "minGuests",
-    value: any
-  ) => {
+  const updateGuestCount = (field: "maxGuests" | "minGuests", value: any) => {
     setSettings((prev: any) => {
       // 验证逻辑：确保 minGuests 不大于 maxGuests
       if (value && field === "minGuests" && value > prev.maxGuests) {
@@ -149,7 +141,7 @@ export default function TableSettingsDetail() {
   ) => {
     // 只允许数字输入
     const numericValue = text.replace(/[^0-9]/g, "");
-  
+
     const value = numericValue ? Number(numericValue) : numericValue;
     updateGuestCount(field, value);
   };
@@ -268,9 +260,6 @@ export default function TableSettingsDetail() {
     { value: 30, label: "30min" },
     { value: 15, label: "15min" },
   ];
-  const onBack=()=>{
-    router.back();
-  }
 
   return (
     <View style={styles.container}>
@@ -282,7 +271,6 @@ export default function TableSettingsDetail() {
         {/* Header */}
         <NavBack
           title={t("reservationSettings")}
-          onBack={onBack}
           rightComponent={
             <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
               <Ionicons

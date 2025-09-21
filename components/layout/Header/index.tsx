@@ -128,11 +128,6 @@ export function Header({ notificationCount = 3, menuCount = 1 }: HeaderProps) {
                 size={20}
                 color={"#fff"}
               />
-              {menuCount > 0 && !isMenuOpen && (
-                <View style={[styles.badge, styles.primaryBadge]}>
-                  <Text style={styles.badgeText}>{menuCount}</Text>
-                </View>
-              )}
             </TouchableOpacity>
           </View>
         </View>
@@ -193,9 +188,7 @@ export function Header({ notificationCount = 3, menuCount = 1 }: HeaderProps) {
                             : theme.text
                         }
                       />
-                      {item.hasNotification && (
-                        <View style={styles.notificationDot} />
-                      )}
+                     
                     </View>
                     <View style={styles.menuItemContent}>
                       <Text

@@ -1,6 +1,7 @@
 import { Icon } from "@/components";
 import { HapticTab } from "@/components/base/HapticTab";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useTranslation } from "@/hooks/useTranslation";
 import { Tabs } from "expo-router";
 import React from "react";
 import { Platform } from "react-native";
@@ -8,6 +9,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function TabLayout() {
   const { theme } = useTheme();
+  const { t } = useTranslation();
   const insets = useSafeAreaInsets();
 
   return (
@@ -40,7 +42,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="reservation"
         options={{
-          title: "预订管理",
+          title: t("reservationManagement"),
           tabBarIcon: ({ color }) => (
             <Icon library="Feather" size={24} name="calendar" color={color} />
           ),

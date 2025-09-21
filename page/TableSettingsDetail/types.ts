@@ -21,7 +21,7 @@ export interface TableSettings {
   maxReservationsPerSlot: number; // maximum reservations allowed per time slot
   timeSlots: TimeSlot[];
   minAdvanceHours: number;
-  restaurantId: number;
+  restaurantId: string;
 }
 
 export interface SettingsHeaderProps {

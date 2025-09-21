@@ -1,6 +1,6 @@
 import { useTheme } from '@/contexts/ThemeContext';
 import { Feather } from '@expo/vector-icons';
-import { router } from 'expo-router';
+import { router, useSegments } from 'expo-router';
 import React from 'react';
 import { Text, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 
@@ -26,9 +26,27 @@ export default function NavBack({
   subtitleStyle,
 }: NavBackProps) {
   const { theme } = useTheme();
+  const segments = useSegments();
   const styles = createStyles(theme);
-const handleBack=()=>{
-  router.back()
+
+const handleBack = () => {
+  // 获取当前路由段
+  const currentSegments = segments.join('/');
+  
+  // 需要跳转到 reservation 页面的路由配置
+  const redirectToReservationRoutes = ['profile','setting','help','history', 'notifications'];
+  
+  // 检查当前路由是否在配置数组中
+  const shouldRedirectToReservation = redirectToReservationRoutes.some(route => 
+    currentSegments.includes(route)
+  );
+  
+  if (shouldRedirectToReservation) {
+    router.push('/(tabs)/reservation');
+  } else {
+    router.back();
+  }
+  
   onBack?.();
 }
 

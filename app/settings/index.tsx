@@ -1,28 +1,24 @@
-import SettingsModule from '@/page/SettingsModule';
-import { router } from 'expo-router';
-import React from 'react';
+import SettingsModule from "@/page/SettingsModule";
+import { router } from "expo-router";
+import React from "react";
 
 export default function SettingsScreen() {
-  const handleBack = () => {
-    router.back();
-  };
-
   const handleNavigate = (section: string) => {
     // 根据section导航到对应页面
     switch (section) {
-      case 'business-hours':
-        router.push('/reserveTimeSetting' as any);
+      case "business-hours":
+        router.push("/reserveTimeSetting" as any);
         break;
-      case 'notifications':
-        router.push('/notifications' as any);
+      case "notifications":
+        router.push("/notifications" as any);
         break;
-      case 'profile':
-        router.push('/profile');
+      case "profile":
+        router.push("/profile");
         break;
       default:
-        console.log('Navigate to:', section);
+        console.log("Navigate to:", section);
     }
   };
 
-  return <SettingsModule onBack={handleBack} onNavigate={handleNavigate} />;
+  return <SettingsModule onNavigate={handleNavigate} />;
 }

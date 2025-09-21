@@ -143,7 +143,7 @@ export interface RestaurantSettings {
 // 更新预订相关类型以匹配API响应
 export interface Reservation {
   id: number;
-  restaurantId: number;
+  restaurantId: string;
   contactName: string;
   contactPhone: string;
   contactEmail: string;

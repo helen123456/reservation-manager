@@ -88,9 +88,9 @@ export default function ReservationDetailPage() {
   if (!reservation) {
     return (
       <View style={styles.container}>
-        <NavBack title="预订详情" />
+        <NavBack title={t("reservationDetails")} />
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <Text style={{ color: theme.text, fontSize: 16 }}>预订信息加载失败</Text>
+          <Text style={{ color: theme.text, fontSize: 16 }}>{t("loadingFailed")}</Text>
         </View>
       </View>
     );
@@ -98,7 +98,7 @@ export default function ReservationDetailPage() {
 
   return (
     <View style={styles.container}>
-      <NavBack title="预订详情" />
+      <NavBack title={t("reservationDetails")} />
 
       <ScrollView style={styles.container}>
         <View style={styles.statusContainer}>
@@ -125,12 +125,12 @@ export default function ReservationDetailPage() {
         </View>
 
         <View style={styles.card}>
-          <Text style={styles.cardTitle}>预订详情</Text>
+          <Text style={styles.cardTitle}>{t("reservationDetails")}</Text>
           <View style={styles.detailsGrid}>
             <View style={styles.detailItem}>
               <View style={styles.detailHeader}>
                 <Feather name="calendar" size={16} color="#6b7280" />
-                <Text style={styles.detailLabel}>日期</Text>
+                <Text style={styles.detailLabel}>{t("date")}</Text>
               </View>
               <Text style={styles.detailValue}>
                 {formatDate(reservation.reserveTime)}
@@ -140,7 +140,7 @@ export default function ReservationDetailPage() {
             <View style={styles.detailItem}>
               <View style={styles.detailHeader}>
                 <Feather name="clock" size={16} color="#6b7280" />
-                <Text style={styles.detailLabel}>时间</Text>
+                <Text style={styles.detailLabel}>{t("time")}</Text>
               </View>
               <Text style={styles.detailValue}>
                 {dayjs(reservation.reserveTime).format("HH:mm")}

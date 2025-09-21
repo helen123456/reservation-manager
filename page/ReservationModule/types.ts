@@ -1,6 +1,6 @@
 export interface Reservation {
   id: number;
-  restaurantId: number;
+  restaurantId: string;
   contactName: string;
   contactPhone: string;
   contactEmail: string;

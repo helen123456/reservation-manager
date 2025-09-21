@@ -12,11 +12,9 @@ import {
 } from "react-native";
 
 
-interface HelpSupportProps {
-  onBack: () => void;
-}
 
-export default function HelpSupport({ onBack }: HelpSupportProps) {
+
+export default function HelpSupport() {
   const { t } = useTranslation();
   const { theme } = useTheme();
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
@@ -56,7 +54,6 @@ export default function HelpSupport({ onBack }: HelpSupportProps) {
       <NavBack 
         title={t('helpSupport')}
         subtitle={t('helpSupportDescription')}
-        onBack={onBack}
       />
       
       <ScrollView style={styles.scrollView}>

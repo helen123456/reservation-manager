@@ -54,11 +54,11 @@ export interface ReservationSettingType {
   timeSlots: string[];
   advanceBookingDays: number;
   minAdvanceHours: number;
-  restaurantId: number;
+  restaurantId: string;
 }
 
 // 获取预订设置信息
-export const getReservationSettingInfo = async (id: number) => {
+export const getReservationSettingInfo = async (id: any) => {
   try {
     const response = await request.get<ReservationSettingType>(
       `/reservation/setting/${id}`

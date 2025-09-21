@@ -158,6 +158,10 @@ export const translations = {
     acceptTip:"Are you sure you want to confirm this reservation?",
     rejectTip:"Are you sure you want to reject this reservation?",
     tip:"Tip",
+    reservationDetails: "Reservation Details",
+    date: "Date",
+    time: "Time",
+    loadingFailed: "Failed to load reservation information",
 
     // Help & Support
     helpSupport: "Help & Support",
@@ -396,6 +400,10 @@ export const translations = {
     acceptTip:"Êtes-vous sûr de vouloir confirmer cette réservation ?",
     rejectTip:"Êtes-vous sûr de vouloir rejeter cette réservation ?",
     tip:"Conseil",
+    reservationDetails: "Détails de la Réservation",
+    date: "Date",
+    time: "Heure",
+    loadingFailed: "Échec du chargement des informations de réservation",
 
     // Help & Support
     helpSupport: "Aide et Support",

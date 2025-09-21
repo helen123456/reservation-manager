@@ -216,11 +216,11 @@ const HistoryOrder = ({ onBack }: { onBack: any }) => {
 
     return null;
   };
+  
   return (
     <View style={styles.container}>
       <NavBack
         title={t("historyOrder")}
-        onBack={onBack || (() => {})}
         showBackButton={!!onBack}
       />
       <SearchBar

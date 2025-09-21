@@ -11,8 +11,7 @@ import { QuickSettingsState, SettingsModuleProps } from "./types";
 import { getRestaurantStatus, getSettingsCategories } from "./utils";
 
 export default function SettingsModule({
-  onNavigate,
-  onBack,
+  onNavigate
 }: SettingsModuleProps) {
   const { t } = useTranslation();
   const {theme} = useTheme();
@@ -33,13 +32,10 @@ export default function SettingsModule({
 
   const settingsCategories = getSettingsCategories(onNavigate);
   const restaurantStatus = getRestaurantStatus();
-
   return (
     <View style={styles.container}>
       <NavBack
         title={t("settings")}
-        onBack={onBack || (() => {})}
-        showBackButton={!!onBack}
       />
       <ScrollView style={styles.scrollContent}>
         {/* Quick Settings */}

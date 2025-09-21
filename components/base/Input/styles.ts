@@ -43,6 +43,7 @@ export const createStyles = (theme: any) => {
       color: theme.text,
       height: '100%',
       backgroundColor:'transparent',
+      paddingHorizontal:12
     },
     inputWithLeftIcon: {
       paddingLeft: 8,

@@ -11,8 +11,8 @@ export async function login(data: { password: string; email: string }) {
     const { token, user, restaurantId } = response.data || {};
     storage.setItem("token", token);
     storage.setItem("user", JSON.stringify(user));
-    storage.setItem("uid", user?.id);
-    storage.setItem("restaurantId", restaurantId);
+    storage.setItem("uid", String(user?.id || ''));
+    storage.setItem("restaurantId", String(restaurantId || ''));
     return response;
   } catch (error) {
     return Promise.reject(error);
