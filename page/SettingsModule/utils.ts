@@ -15,9 +15,9 @@ export const getSettingsCategories = (
     title: 'Future Features',
     items: [
       {
-        id: 'delivery',
-        title: 'Restaurant Management',
-        description: 'Set restaurant information',
+        id: 'restaurant_management',
+        title: t('restaurant_management_title'),
+        description: t('restaurant_management_desc'),
         icon: 'package',
         action: () => onNavigate('restaurant-info-setting')
       }
@@ -27,7 +27,7 @@ export const getSettingsCategories = (
     title: t('reservationManagement'),
     items: [
       {
-        id: 'business-hours',
+        id: 'business_hours',
         title: t('businessHours'),
         description: t('setOpeningClosingTimes'),
         icon: 'clock',

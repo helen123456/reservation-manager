@@ -5,7 +5,8 @@ import { toggleAutoConfirmStatus, toggleReservationStatus } from "@/services/api
 import { getQuickSettingInfoApi } from "@/services/api/restaurantSetting";
 import { Feather } from "@expo/vector-icons";
 import { router } from "expo-router";
-import React, { useEffect, useMemo, useState } from "react";
+import { useFocusEffect } from "@react-navigation/native";
+import React, { useCallback, useMemo, useState } from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import QuickSettings from "./QuickSettings";
 import SettingsCategory from "./SettingsCategory";
@@ -22,12 +23,23 @@ export default function SettingsModule() {
     acceptReservations: true,
     autoConfirm: false
   });
-  useEffect(() => {
-    getQuickSettingInfoApi().then((res) => {
-      const {isAutoConfirm,acceptReservations}:any = res.data
-      setQuickSettings({acceptReservations,autoConfirm:isAutoConfirm});
-    });
-  }, []);
+  
+  // 使用 useFocusEffect 确保每次页面获得焦点时都重新请求数据
+  useFocusEffect(
+    useCallback(() => {
+      const fetchQuickSettings = async () => {
+        try {
+          const res = await getQuickSettingInfoApi();
+          const { isAutoConfirm, acceptReservations }: any = res.data;
+          setQuickSettings({ acceptReservations, autoConfirm: isAutoConfirm });
+        } catch (error) {
+          console.error('Failed to fetch quick settings:', error);
+        }
+      };
+      
+      fetchQuickSettings();
+    }, [])
+  );
 
   const handleSettingChange = (
     key: keyof QuickSettingsState,

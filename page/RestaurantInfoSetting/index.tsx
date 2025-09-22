@@ -44,10 +44,10 @@ export default function TableSettingsDetail() {
   const methods = useForm({
     mode: "onChange",
     defaultValues: {
-      name: "Marie Dubois",
-      email: "marie@lepetitbistro.com",
-      phone: "122",
-      address: "123 Rue de la Paix, Paris, France",
+      name: "",
+      email: "",
+      phone: "",
+      address: "",
     },
     resolver: zodResolver(schema),
   });
@@ -62,17 +62,23 @@ export default function TableSettingsDetail() {
     const fetchReservationSettings = async () => {
       try {
         const res = await getBaseSettingInfoApi();
-        const { businessHours, acceptReservations, ...rest } = res.data || {};
+        const { businessHour, acceptReservations, ...rest } = res.data || {};
         setSettings((prev) => ({
           ...prev,
-          businessHours,
+          businessHours: businessHour || {
+            start: "09:00",
+            end: "23:00",
+          },
+          acceptReservations: acceptReservations === 1,
         }));
         reset(rest);
       } catch (error) {
         console.log(error);
       }
-      fetchReservationSettings();
     };
+    
+    fetchReservationSettings();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // 处理开始时间选择
@@ -117,9 +123,10 @@ export default function TableSettingsDetail() {
     try {
       const restaurantId = await storage.getItem("restaurantId");
       updateBaseSettingInfoApi({
-        ...settings,
         ...data,
         restaurantId,
+        businessHour: settings.businessHours,
+        acceptReservations: settings.acceptReservations ? 1 : 0,
       })
         .then(() => {
           Toast.success(t("saveSuccess"));
