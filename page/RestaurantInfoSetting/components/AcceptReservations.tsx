@@ -16,7 +16,7 @@ export default function AcceptReservations({
   const { t } = useTranslation();
 
   return (
-    <View style={styles.card}>
+    <View style={[styles.card,styles.acceptReservationsCard]}>
       <View style={styles.cardRow}>
         <View style={styles.cardContent}>
           <Text style={styles.cardTitle}>{t("acceptReservations")}</Text>

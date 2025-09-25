@@ -72,7 +72,7 @@ export const languages: Language[] = [
 
 export const translations = {
   en: {
-    name: "name",
+    name: "Name",
     // Header
     notifications: "Notifications",
     settings: "Settings",
@@ -313,7 +313,7 @@ export const translations = {
     currentStatus: "Currently Open",
   },
   fr: {
-    name: "nom",
+    name: "Nom",
     // Header
     notifications: "Notifications",
     settings: "Paramètres",

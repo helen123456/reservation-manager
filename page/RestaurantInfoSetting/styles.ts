@@ -5,7 +5,6 @@ export const createStyles = (theme: any) => {
     container: {
       flex: 1,
       backgroundColor: theme.background,
-      
     },
     header: {
       flexDirection: "row",
@@ -50,6 +49,10 @@ export const createStyles = (theme: any) => {
       flex: 1,
       paddingHorizontal: 16,
     },
+    businessHoursCard: {
+      marginBottom: 20,
+    },
+
     card: {
       backgroundColor: theme.card,
       borderRadius: 8,
@@ -58,8 +61,11 @@ export const createStyles = (theme: any) => {
       borderWidth: 1,
       borderColor: theme.border,
     },
-    partyLimitsContainer:{
-marginBottom:60
+    acceptReservationsCard: {
+      marginTop: 0,
+    },
+    partyLimitsContainer: {
+      marginBottom: 60,
     },
     lastCard: {
       marginBottom: 20,
@@ -102,9 +108,9 @@ marginBottom:60
       paddingHorizontal: 12,
       paddingVertical: 10,
       backgroundColor: theme.inputBackground,
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
     },
     timeInputText: {
       fontSize: 16,
@@ -260,18 +266,17 @@ marginBottom:60
       fontSize: 14,
       fontWeight: "500",
       minWidth: 40,
-      height:32,
-      lineHeight:16,
+      height: 32,
+      lineHeight: 16,
       textAlign: "center",
-      textAlignVertical: 'center',
+      textAlignVertical: "center",
       color: theme.text,
       borderWidth: 1,
       borderColor: theme.border,
       borderRadius: 4,
       // backgroundColor: theme.inputBackground,
       paddingHorizontal: 8,
-      paddingVertical:0
+      paddingVertical: 0,
     },
   });
 };
-  

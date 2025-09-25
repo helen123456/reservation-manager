@@ -1,7 +1,7 @@
+import { useTheme } from "@/contexts/ThemeContext";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
-import { useTheme } from "@/contexts/ThemeContext";
 import { useTranslation } from "../../../hooks/useTranslation";
 
 interface BusinessHoursProps {
@@ -23,7 +23,7 @@ export default function BusinessHours({
   const { theme } = useTheme();
 
   return (
-    <View style={styles.card}>
+    <View style={[styles.card,styles.businessHoursCard]}>
       <Text style={styles.cardTitle}>{t("businessHours")}</Text>
       <View style={styles.row}>
         <View style={styles.inputGroup}>
