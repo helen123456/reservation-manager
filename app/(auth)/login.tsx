@@ -34,7 +34,7 @@ export default function Login() {
     resolver: zodResolver(registerSchema),
     defaultValues: {
       email: "fefe@11.com",
-      password: "fwef@1111",
+      password: "123456a.",
     },
     mode: "onChange", // 实时验证
   });

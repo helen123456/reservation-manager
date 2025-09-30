@@ -30,7 +30,6 @@ export default function ReservationDetailPage() {
   const [reservation, setReservation] = useState<Reservation | null>(null);
 
   useEffect(() => {
-    debugger
     // 从路由参数中获取预订信息
     if (params.reservation) {
       try {

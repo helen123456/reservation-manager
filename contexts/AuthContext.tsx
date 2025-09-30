@@ -46,6 +46,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   
   const onLogin = useCallback(async () => {
     setIsLogged(true);
+    
+    // 登录成功后重新注册推送令牌
+    // try {
+    //   await pushNotificationService.reregisterPushToken();
+    //   console.log('登录后推送令牌重新注册成功');
+    // } catch (error) {
+    //   console.error('登录后推送令牌重新注册失败:', error);
+    // }
   }, []);
   
   const onLogout = useCallback(async () => {

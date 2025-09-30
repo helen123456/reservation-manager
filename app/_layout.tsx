@@ -1,6 +1,7 @@
 import { Header } from "@/components";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
+import { pushNotificationService } from "@/services/pushNotificationService";
 import { Provider } from "@ant-design/react-native";
 import {
   OpenSans_400Regular,
@@ -37,6 +38,32 @@ function AppContent() {
       router.replace("/(auth)/login");
     }
   }, [isLogged, isLoading, segments]); // 当这些依赖变化时，重新执行
+
+  // 推送通知服务初始化
+  useEffect(() => {
+    if (isLoading) {
+      return;
+    }
+    
+    if (isLogged) {
+      // 用户登录后初始化推送通知服务
+      console.log('用户已登录，初始化推送通知服务');
+      pushNotificationService.initialize().catch(error => {
+        console.error('推送通知服务初始化失败:', error);
+      });
+    } else {
+      // 用户登出后清理推送通知服务
+      console.log('用户已登出，清理推送通知服务');
+      pushNotificationService.cleanup();
+    }
+
+    // 组件卸载时清理
+    return () => {
+      if (!isLogged) {
+        pushNotificationService.cleanup();
+      }
+    };
+  }, [isLogged, isLoading]);
 
   // 显示加载指示器
   if (isLoading) {

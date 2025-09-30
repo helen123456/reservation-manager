@@ -3,16 +3,18 @@ import { useTheme } from '@/contexts/ThemeContext';
 import { useTranslation } from "@/hooks/useTranslation";
 import { toggleAutoConfirmStatus, toggleReservationStatus } from "@/services/api/reservationService";
 import { getQuickSettingInfoApi } from "@/services/api/restaurantSetting";
+import { pushNotificationService } from "@/services/pushNotificationService";
 import { Feather } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { useFocusEffect } from "@react-navigation/native";
 import React, { useCallback, useMemo, useState } from "react";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { Alert, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import QuickSettings from "./QuickSettings";
 import SettingsCategory from "./SettingsCategory";
 import { createStyles } from "./styles";
 import { QuickSettingsState } from "./types";
 import { getRestaurantStatus, getSettingsCategories } from "./utils";
+import storage from "@/utils/storage";
 
 export default function SettingsModule() {
   const { t } = useTranslation();
@@ -67,6 +69,30 @@ export default function SettingsModule() {
 
   const settingsCategories = getSettingsCategories(onNavigate);
   const restaurantStatus = getRestaurantStatus();
+
+  // 测试推送通知功能
+  const handleTestNotification = useCallback(async () => {
+    try {
+      let uid = storage.getItem("uid");
+      
+      const pushToken = pushNotificationService.getCurrentPushToken();
+      if (!pushToken) {
+        Alert.alert('提示', '推送令牌未获取，请确保已授权通知权限');
+        return;
+      }
+
+      await pushNotificationService.sendLocalNotification(
+        '测试通知',
+        '这是一条测试推送通知，功能正常工作！',
+        { type: 'test', timestamp: Date.now() }
+      );
+      
+      Alert.alert('成功', '测试通知已发送');
+    } catch (error) {
+      console.error('发送测试通知失败:', error);
+      Alert.alert('错误', '发送测试通知失败');
+    }
+  }, []);
   return (
     <View style={styles.container}>
       <NavBack
@@ -84,6 +110,27 @@ export default function SettingsModule() {
 
         {/* Restaurant Status */}
         {/* <RestaurantStatus status={restaurantStatus} /> */}
+
+        {/* Test Notification */}
+        <TouchableOpacity
+          style={[styles.categoryItem]}
+          onPress={handleTestNotification}
+        >
+          <View style={styles.categoryLeft}>
+            <View style={styles.iconContainer}>
+              <Feather name="bell" size={16} color={theme.primary} />
+            </View>
+            <View>
+              <Text style={styles.categoryItemTitle}>
+                测试推送通知
+              </Text>
+              <Text style={styles.categoryItemDescription}>
+                发送一条测试通知验证功能
+              </Text>
+            </View>
+          </View>
+          <Feather name="chevron-right" size={16} color="#9ca3af" />
+        </TouchableOpacity>
 
         {/* About */}
         <TouchableOpacity

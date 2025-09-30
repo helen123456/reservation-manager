@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "reservation-manager",
-    "slug": "reservation-manager",
+    "slug": "neo",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -21,10 +21,23 @@
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/favicon.png",
+      "notification": {
+        "icon": "./assets/images/icon.png",
+        "color": "#000000",
+        "vapidPublicKey": "BJRCUJU1li8g_jU0huebXFzlIuf60pZQlIVs9V7PdJ_wXP7rlRtjxaiEaBP1Ku1QRuomBBLimPqrrQb38s84n30",
+        "serviceWorkerPath": "./push-sw.js"
+      }
+    },
+    "notification": {
+      "icon": "./assets/images/icon.png",
+      "color": "#000000",
+      "vapidPublicKey": "BJRCUJU1li8g_jU0huebXFzlIuf60pZQlIVs9V7PdJ_wXP7rlRtjxaiEaBP1Ku1QRuomBBLimPqrrQb38s84n30",
+      "serviceWorkerPath": "./push-sw.js"
     },
     "plugins": [
       "expo-router",
+      "expo-notifications",
       [
         "expo-splash-screen",
         {
@@ -37,6 +50,13 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "1fb21636-8e4c-4501-a7d8-7021380daaab"
+      },
+      "router": {}
+    },
+    "owner": "lijunp"
   }
 }
