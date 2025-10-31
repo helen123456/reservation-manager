@@ -5,10 +5,10 @@ import { Feather, Ionicons } from "@expo/vector-icons";
 import dayjs from "dayjs";
 import React, { useMemo, useState } from "react";
 import {
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View
+    ScrollView,
+    Text,
+    TouchableOpacity,
+    View
 } from "react-native";
 import { useTranslation } from "../../hooks/useTranslation";
 import { StatusBadge } from "./StatusBadge";
@@ -87,11 +87,11 @@ export const ReservationDetail: React.FC<ReservationDetailProps> = ({
           <View style={styles.customerInfo}>
             <View style={styles.avatar}>
               <Text style={styles.avatarText}>
-                {getInitials(reservation.contactName)}
+                {getInitials(reservation.firstName)}
               </Text>
             </View>
             <Text style={styles.contactName}>
-              {reservation.contactName}
+              {reservation.firstName}
             </Text>
             <View style={styles.phoneContainer}>
               <Feather name="phone" size={16} color="#6b7280" />

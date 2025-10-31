@@ -4,8 +4,8 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { FilterBar } from "@/page/ReservationModule/FilterBar";
 import { SearchBar } from "@/page/ReservationModule/SearchBar";
 import {
-  formatDateHeader,
-  getFlatData,
+    formatDateHeader,
+    getFlatData,
 } from "@/page/ReservationModule/utils";
 import { getReservations } from "@/services/api/reservationService";
 import { Feather } from "@expo/vector-icons";
@@ -14,10 +14,10 @@ import groupBy from "lodash/groupBy";
 import merge from "lodash/merge";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
-  ActivityIndicator,
-  FlatList,
-  Text,
-  View
+    ActivityIndicator,
+    FlatList,
+    Text,
+    View
 } from "react-native";
 import { createStyles } from "./styles";
 
@@ -189,7 +189,7 @@ const HistoryOrder = ({ onBack }: { onBack: any }) => {
             <View style={styles.reservationInfo}>
               <View style={styles.reservationHeader}>
                 <Text style={styles.customerNameSmall}>
-                  {item.reservation.contactName}
+                  {item.reservation.firstName}
                 </Text>
               </View>
 

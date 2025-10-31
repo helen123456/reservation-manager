@@ -38,14 +38,14 @@ export const ReservationItem: React.FC<ReservationItemProps> = ({ reservation })
         <View style={styles.reservationLeft}>
           <View style={styles.smallAvatar}>
             <Text style={styles.smallAvatarText}>
-              {getInitials(reservation.contactName)}
+              {getInitials(reservation.firstName)}
             </Text>
           </View>
           
           <View style={styles.reservationInfo}>
             <View style={styles.reservationHeader}>
               <Text style={styles.customerNameSmall}>
-                {reservation.contactName}
+                {reservation.firstName}
               </Text>
               <StatusBadge status={reservation.status} />
             </View>

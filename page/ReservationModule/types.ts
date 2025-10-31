@@ -2,6 +2,8 @@ export interface Reservation {
   id: number;
   restaurantId: string;
   contactName: string;
+  firstName: string;
+  lastName: string;
   contactPhone: string;
   contactEmail: string;
   guests: number;
