@@ -2,7 +2,6 @@ import Modal from "@/components/base/Modal";
 import { useTheme } from '@/contexts/ThemeContext';
 import { updateReservation } from "@/services/api/reservationService";
 import { Feather, Ionicons } from "@expo/vector-icons";
-import dayjs from "dayjs";
 import React, { useMemo, useState } from "react";
 import {
     ScrollView,
@@ -14,7 +13,6 @@ import { useTranslation } from "../../hooks/useTranslation";
 import { StatusBadge } from "./StatusBadge";
 import { createStyles } from "./styles";
 import { Reservation } from "./types";
-import { formatDate } from "./utils";
 
 interface ReservationDetailProps {
   reservation: Reservation;
@@ -69,6 +67,19 @@ export const ReservationDetail: React.FC<ReservationDetailProps> = ({
     });
   };
 
+  const getReserveDate = () => {
+    return reservation.reserveDate || "";
+  };
+
+  const getReserveTime = () => {
+    if (!reservation.reserveTimeSlot) return "";
+    const [hours, minutes] = reservation.reserveTimeSlot.split(":");
+    if (hours && minutes !== undefined) {
+      return `${hours}:${minutes}`;
+    }
+    return reservation.reserveTimeSlot;
+  };
+
   return (
     <View style={styles.container}>
         <View style={styles.backButtonContainer}>
@@ -111,7 +122,7 @@ export const ReservationDetail: React.FC<ReservationDetailProps> = ({
                 <Text style={styles.detailLabel}>Date</Text>
               </View>
               <Text style={styles.detailValue}>
-                {formatDate(reservation.reserveTime)}
+                {getReserveDate()}
               </Text>
             </View>
 
@@ -121,7 +132,7 @@ export const ReservationDetail: React.FC<ReservationDetailProps> = ({
                 <Text style={styles.detailLabel}>Time</Text>
               </View>
               <Text style={styles.detailValue}>
-                {dayjs(reservation.reserveTime).format("HH:mm")}
+                {getReserveTime()}
               </Text>
             </View>
 
@@ -134,6 +145,19 @@ export const ReservationDetail: React.FC<ReservationDetailProps> = ({
               </View>
               <Text style={styles.detailValue}>
                 {reservation.guests}
+              </Text>
+            </View>
+          </View>
+          <View style={styles.specialRequests}>
+            <View style={styles.detailHeader}>
+              <Feather name="message-square" size={16} color="#6b7280" />
+              <Text style={styles.detailLabel}>{t("otherRequirements")}</Text>
+            </View>
+            <View style={styles.requestsBox}>
+              <Text style={styles.requestsText}>
+                {reservation.otherRequirements?.trim()
+                  ? reservation.otherRequirements
+                  : t("noAdditionalNotes")}
               </Text>
             </View>
           </View>

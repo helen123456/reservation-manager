@@ -60,7 +60,7 @@ export default function HelpSupport() {
         <View style={styles.content}>
           <View style={styles.sectionsContainer}>
             {/* Quick Actions */}
-            <View style={styles.card}>
+            {/* <View style={styles.card}>
               <Text style={styles.sectionTitle}>{t('quickHelp')}</Text>
               <View style={styles.actionsContainer}>
                 {quickActions.map((action, index) => (
@@ -80,7 +80,7 @@ export default function HelpSupport() {
                   </TouchableOpacity>
                 ))}
               </View>
-            </View>
+            </View> */}
 
             {/* FAQ Section */}
             <View style={styles.card}>
@@ -132,7 +132,7 @@ export default function HelpSupport() {
 
                 <View style={styles.separator} />
 
-                <View style={styles.contactItem}>
+                {/* <View style={styles.contactItem}>
                   <View style={styles.contactInfo}>
                     <Feather name="phone" size={20} color={theme.mutedForeground} />
                     <View style={styles.contactText}>
@@ -144,16 +144,16 @@ export default function HelpSupport() {
                     <Feather name="phone" size={16} color={theme.primary} />
                     <Text style={styles.contactButtonText}>{t('callNow')}</Text>
                   </TouchableOpacity>
-                </View>
+                </View> */}
 
-                <View style={styles.separator} />
+                {/* <View style={styles.separator} /> */}
 
-                <View style={styles.supportHours}>
+                {/* <View style={styles.supportHours}>
                   <Text style={styles.supportHoursText}>
                     <Text style={styles.supportHoursTitle}>{t('supportHours')}</Text>
                     {"\n"}{t('supportHoursDetails')}
                   </Text>
-                </View>
+                </View> */}
               </View>
             </View>
 

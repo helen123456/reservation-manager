@@ -7,7 +7,8 @@ export interface Reservation {
   contactPhone: string;
   contactEmail: string;
   guests: number;
-  reserveTime: string;
+  reserveDate: string;
+  reserveTimeSlot: string;
   otherRequirements: string;
   status: number;
   createTime: string;

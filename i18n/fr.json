@@ -76,6 +76,8 @@
   "rejectTip": "Êtes-vous sûr de vouloir rejeter cette réservation ?",
   "tip": "Conseil",
   "reservationDetails": "Détails de la Réservation",
+  "otherRequirements": "Autres demandes",
+  "noAdditionalNotes": "Aucune note supplémentaire",
   "date": "Date",
   "time": "Heure",
   "loadingFailed": "Échec du chargement des informations de réservation",

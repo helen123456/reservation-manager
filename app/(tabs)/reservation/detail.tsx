@@ -1,12 +1,11 @@
 import { Feather } from "@expo/vector-icons";
-import dayjs from "dayjs";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useEffect, useMemo, useState } from "react";
 import {
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View
+    ScrollView,
+    Text,
+    TouchableOpacity,
+    View
 } from "react-native";
 import Modal from "../../../components/base/Modal";
 import { NavBack } from "../../../components/layout/NavBack";
@@ -15,7 +14,6 @@ import { useTranslation } from "../../../hooks/useTranslation";
 import { StatusBadge } from "../../../page/ReservationModule/StatusBadge";
 import { createStyles } from "../../../page/ReservationModule/styles";
 import { Reservation } from "../../../page/ReservationModule/types";
-import { formatDate } from "../../../page/ReservationModule/utils";
 import { updateReservation } from "../../../services/api/reservationService";
 
 export default function ReservationDetailPage() {
@@ -84,6 +82,18 @@ export default function ReservationDetailPage() {
     });
   };
 
+  const getReserveDate = (date?: string) => {
+    return date || "";
+  };
+  const getReserveTime = (reserveTimeSlot?: string) => {
+    if (!reserveTimeSlot) return "";
+    const [hours, minutes] = reserveTimeSlot.split(":");
+    if (hours && minutes !== undefined) {
+      return `${hours}:${minutes}`;
+    }
+    return reserveTimeSlot;
+  };
+
   if (!reservation) {
     return (
       <View style={styles.container}>
@@ -132,7 +142,7 @@ export default function ReservationDetailPage() {
                 <Text style={styles.detailLabel}>{t("date")}</Text>
               </View>
               <Text style={styles.detailValue}>
-                {formatDate(reservation.reserveTime)}
+                {getReserveDate(reservation.reserveDate)}
               </Text>
             </View>
 
@@ -142,7 +152,7 @@ export default function ReservationDetailPage() {
                 <Text style={styles.detailLabel}>{t("time")}</Text>
               </View>
               <Text style={styles.detailValue}>
-                {dayjs(reservation.reserveTime).format("HH:mm")}
+                {getReserveTime(reservation.reserveTimeSlot)}
               </Text>
             </View>
 
@@ -155,6 +165,19 @@ export default function ReservationDetailPage() {
               </View>
               <Text style={styles.detailValue}>
                 {reservation.guests}
+              </Text>
+            </View>
+          </View>
+          <View style={styles.specialRequests}>
+            <View style={styles.detailHeader}>
+              <Feather name="message-square" size={16} color="#6b7280" />
+              <Text style={styles.detailLabel}>{t("otherRequirements")}</Text>
+            </View>
+            <View style={styles.requestsBox}>
+              <Text style={styles.requestsText}>
+                {reservation.otherRequirements?.trim()
+                  ? reservation.otherRequirements
+                  : t("noAdditionalNotes")}
               </Text>
             </View>
           </View>

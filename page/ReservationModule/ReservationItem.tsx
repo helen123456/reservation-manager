@@ -1,6 +1,5 @@
 import { useTheme } from '@/contexts/ThemeContext';
 import { Feather } from '@expo/vector-icons';
-import dayjs from 'dayjs';
 import { useRouter } from 'expo-router';
 import React, { useMemo } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
@@ -16,6 +15,14 @@ export const ReservationItem: React.FC<ReservationItemProps> = ({ reservation })
   const router = useRouter();
   const getInitials = (name: string) => {
     return name.split(' ').map(n => n[0]).join('').toUpperCase();
+  };
+  const getReserveTime = (reserveTimeSlot: string) => {
+    if (!reserveTimeSlot) return "";
+    const [hours, minutes] = reserveTimeSlot.split(':');
+    if (hours && minutes !== undefined) {
+      return `${hours}:${minutes}`;
+    }
+    return reserveTimeSlot;
   };
   const {theme} = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
@@ -54,7 +61,7 @@ export const ReservationItem: React.FC<ReservationItemProps> = ({ reservation })
               <View style={styles.detailRow}>
                 <Feather name="clock" size={12} color="#6b7280" />
                 <Text style={styles.detailTextSmall}>
-                  {dayjs(reservation.reserveTime).format('HH:mm')}
+                  {getReserveTime(reservation.reserveTimeSlot)}
                 </Text>
               </View>
               

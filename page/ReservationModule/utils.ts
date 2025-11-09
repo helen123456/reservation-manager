@@ -1,17 +1,23 @@
-import dayjs from "dayjs";
 import groupBy from "lodash/groupBy";
 import orderBy from "lodash/orderBy";
-import { FlatDataItem, Reservation } from "./types";
 import { TranslationKey } from "../../utils/i18n";
+import { FlatDataItem, Reservation } from "./types";
 
+const getReservationDate = (reservation: Reservation) => {
+  return reservation.reserveDate || reservation.createTime?.split("T")[0] || "";
+};
 
-
-export const formatDate = (dateStr: string) => {
-  const date = new Date(dateStr);
-  return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+const getTimeSlotValue = (timeSlot?: string) => {
+  if (!timeSlot) return 0;
+  const [hours, minutes, seconds] = timeSlot.split(":");
+  const h = Number(hours) || 0;
+  const m = Number(minutes) || 0;
+  const s = Number(seconds) || 0;
+  return h * 3600 + m * 60 + s;
 };
 
 export const formatDateHeader = (dateStr: string, t: (key: TranslationKey) => string) => {
+    console.log("formaformatDateHeadertDate", dateStr)
   const date = new Date(dateStr);
   const today = new Date();
   const tomorrow = new Date(today);
@@ -49,8 +55,8 @@ export const formatDateHeader = (dateStr: string, t: (key: TranslationKey) => st
 
 export const calculateStats = (allReservations: Reservation[]) => {
   const todayStr = new Date().toISOString().split("T")[0];
-  const todayReservations = allReservations.filter((r) => 
-    r.reserveTime.split(' ')[0] === todayStr
+  const todayReservations = allReservations.filter(
+    (r) => getReservationDate(r) === todayStr
   );
   const pendingCount = allReservations.filter(
     (r) => r.status === 0
@@ -73,19 +79,25 @@ export const getFlatData = (allReservations: Reservation[]): FlatDataItem[] => {
   // 按日期分组预订
   const grouped: { [key: string]: Reservation[] } = groupBy(
     allReservations,
-    (item) => dayjs(item.reserveTime).format("YYYY-MM-DD")
+    (item) => getReservationDate(item)
   );
   
   // 排序并处理分组数据
   const groupedReservations = Object.entries(grouped)
-    .sort(([a], [b]) => new Date(a).getTime() - new Date(b).getTime())
+    .sort(([a], [b]) => {
+      const aTime = new Date(a).getTime();
+      const bTime = new Date(b).getTime();
+      const safeATime = Number.isNaN(aTime) ? 0 : aTime;
+      const safeBTime = Number.isNaN(bTime) ? 0 : bTime;
+      return safeATime - safeBTime;
+    })
     .map(([date, reservations]) => ({
       date,
       reservations: orderBy(
         reservations,
         [
           (item: Reservation) => item.status, // 直接按状态数字排序，0最前，3最后
-          (item: Reservation) => new Date(item.reserveTime).getTime(), // 时间戳
+          (item: Reservation) => getTimeSlotValue(item.reserveTimeSlot), // 时间戳
         ],
         ["asc", "asc"] // 排序方向：两个条件均为升序
       ),
@@ -110,5 +122,3 @@ export const getFlatData = (allReservations: Reservation[]): FlatDataItem[] => {
     ];
   });
 };
-
-

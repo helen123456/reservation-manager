@@ -77,6 +77,8 @@
   "rejectTip": "Are you sure you want to reject this reservation?",
   "tip": "Tip",
   "reservationDetails": "Reservation Details",
+  "otherRequirements": "Special Requests",
+  "noAdditionalNotes": "No additional notes provided",
   "date": "Date",
   "time": "Time",
   "loadingFailed": "Failed to load reservation information",

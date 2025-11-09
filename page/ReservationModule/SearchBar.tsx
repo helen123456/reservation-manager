@@ -85,9 +85,14 @@ export const SearchBar: React.FC<SearchBarProps> = ({
             minDate={dayjs().format("YYYY-MM-DD 00:00:00")}
             styles={{
               ...defaultStyles,
-              today: { backgroundColor: theme.muted }, // Add a border to today's date
-              selected: { backgroundColor: theme.primary }, // Highlight the selected day
-              selected_label: { color: theme.primaryForeground }, // Highlight the selected day label
+              day_label: { color: theme.text },
+              weekday_label: { color: theme.mutedForeground },
+              month_selector_label: { color: theme.text },
+              year_selector_label: { color: theme.text },
+              today: { backgroundColor: theme.muted },
+              today_label: { color: theme.text },
+              selected: { backgroundColor: theme.primary },
+              selected_label: { color: theme.primaryForeground },
             }}
           />
         </View>

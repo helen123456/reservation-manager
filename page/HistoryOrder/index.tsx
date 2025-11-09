@@ -3,6 +3,7 @@ import { useTheme } from "@/contexts/ThemeContext";
 import { useTranslation } from "@/hooks/useTranslation";
 import { FilterBar } from "@/page/ReservationModule/FilterBar";
 import { SearchBar } from "@/page/ReservationModule/SearchBar";
+import { ReservationItem } from "@/page/ReservationModule/ReservationItem";
 import {
     formatDateHeader,
     getFlatData,
@@ -17,6 +18,7 @@ import {
     ActivityIndicator,
     FlatList,
     Text,
+    TouchableOpacity,
     View
 } from "react-native";
 import { createStyles } from "./styles";
@@ -66,13 +68,13 @@ const HistoryOrder = ({ onBack }: { onBack: any }) => {
     (existingReservations: any, newReservations: any) => {
       // 将现有数据按日期分组
       const existingByDate = groupBy(existingReservations, (item) =>
-        dayjs(item.reserveTime).format("YYYY-MM-DD")
+        item.reserveDate || item.createTime?.split("T")[0] || ""
       );
 
       // 将新数据按日期分组
       const newByDate: { [date: string]: any } = groupBy(
         newReservations,
-        (item) => dayjs(item.reserveTime).format("YYYY-MM-DD")
+        (item) => item.reserveDate || item.createTime?.split("T")[0] || ""
       );
 
       // 合并数据：对于相同日期，合并并去重；对于新日期，直接添加
@@ -84,7 +86,13 @@ const HistoryOrder = ({ onBack }: { onBack: any }) => {
       // 将分组数据转换回扁平数组，按日期排序
       const result: any = [];
       Object.keys(mergedByDate)
-        .sort((a, b) => new Date(a).getTime() - new Date(b).getTime())
+        .sort((a, b) => {
+          const aTime = new Date(a).getTime();
+          const bTime = new Date(b).getTime();
+          const safeATime = Number.isNaN(aTime) ? 0 : aTime;
+          const safeBTime = Number.isNaN(bTime) ? 0 : bTime;
+          return safeATime - safeBTime;
+        })
         .forEach((date) => {
           result.push(...mergedByDate[date]);
         });
@@ -163,11 +171,28 @@ const HistoryOrder = ({ onBack }: { onBack: any }) => {
           <Text style={styles.dateHeaderText}>
             {formatDateHeader(item.date, t)}
           </Text>
-          <View style={{ flexDirection: "row", gap: 8 }}>
-            <View style={[styles.countBadge]}>
-              <Text style={styles.countBadgeText}>{item.count}</Text>
-              <Text style={styles.countBadgeText}>
-                {item.count === 1 ? "reservation" : "reservations"}
+          <View style={{ flexDirection: "row", gap: 8, alignItems: "center" }}>
+            <TouchableOpacity
+              onPress={refreshData}
+              disabled={isLoading}
+              style={styles.refreshButton}
+              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+            >
+              <Feather
+                name="refresh-cw"
+                size={16}
+                color={theme.mutedForeground}
+              />
+            </TouchableOpacity>
+            <View style={styles.countBadgePlain}>
+              <Feather
+                name="clipboard"
+                size={14}
+                color={theme.mutedForeground}
+                style={styles.countBadgeIcon}
+              />
+              <Text style={styles.countBadgeNumber}>
+                {item.count}
               </Text>
             </View>
             {!!item.pendingCount && item.pendingCount > 0 && (
@@ -184,33 +209,7 @@ const HistoryOrder = ({ onBack }: { onBack: any }) => {
 
     if (item.type === "reservation") {
       return (
-        <View style={styles.reservationContent}>
-          <View style={styles.reservationLeft}>
-            <View style={styles.reservationInfo}>
-              <View style={styles.reservationHeader}>
-                <Text style={styles.customerNameSmall}>
-                  {item.reservation.firstName}
-                </Text>
-              </View>
-
-              <View style={styles.reservationDetails}>
-                <View style={styles.detailRow}>
-                  <Feather name="clock" size={12} color="#6b7280" />
-                  <Text style={styles.detailTextSmall}>
-                    {dayjs(item.reservation.reserveTime).format("HH:mm")}
-                  </Text>
-                </View>
-
-                <View style={styles.detailRow}>
-                  <Feather name="users" size={12} color="#6b7280" />
-                  <Text style={styles.detailTextSmall}>
-                    {item.reservation.guests}
-                  </Text>
-                </View>
-              </View>
-            </View>
-          </View>
-        </View>
+        <ReservationItem reservation={item.reservation} />
       );
     }
 

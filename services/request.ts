@@ -7,7 +7,7 @@ import { getBaseURL } from "./config";
 const baseURL = getBaseURL();
 
 // 基础配置
-const BASE_URL = baseURL || "http://localhost:3000/api";
+const BASE_URL = baseURL || "http://localhost:2025/api";
 const TIMEOUT = 10000;
 
 // 创建axios实例

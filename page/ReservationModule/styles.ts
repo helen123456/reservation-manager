@@ -166,6 +166,9 @@ export const createStyles = (theme: any) => {
       padding: 2,
       borderRadius: 10,
     },
+    refreshButton: {
+      padding: 8,
+    },
     dateHeaderText: {
       fontSize: 16,
       color: theme.mutedForeground,
@@ -180,10 +183,24 @@ export const createStyles = (theme: any) => {
       borderWidth: 1,
       borderColor: theme.border,
     },
+    countBadgePlain: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingHorizontal: 0,
+      paddingVertical: 0,
+    },
+    countBadgeIcon: {
+      marginRight: 4,
+    },
     countBadgeText: {
       fontSize: 12,
       color: theme.mutedForeground,
        fontFamily: 'Roboto_400Regular',
+    },
+    countBadgeNumber: {
+      fontSize: 16,
+      fontFamily: 'Roboto_500Medium',
+      color: theme.mutedForeground,
     },
     reservationItem: {
       borderRadius: 8,

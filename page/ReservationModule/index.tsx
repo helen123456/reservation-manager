@@ -8,10 +8,12 @@ import groupBy from "lodash/groupBy";
 import merge from "lodash/merge";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
-  ActivityIndicator,
-  FlatList,
-  View
+    ActivityIndicator,
+    FlatList,
+    TouchableOpacity,
+    View
 } from "react-native";
+import { Feather } from "@expo/vector-icons";
 import { FilterBar } from "./FilterBar";
 import { ReservationItem } from "./ReservationItem";
 import { SearchBar } from "./SearchBar";
@@ -38,13 +40,13 @@ export default function ReservationModule() {
     (existingReservations: Reservation[], newReservations: Reservation[]) => {
       // 将现有数据按日期分组
       const existingByDate = groupBy(existingReservations, (item) =>
-        dayjs(item.reserveTime).format("YYYY-MM-DD")
+        item.reserveDate || item.createTime?.split("T")[0] || ""
       );
 
       // 将新数据按日期分组
       const newByDate: { [date: string]: Reservation[] } = groupBy(
         newReservations,
-        (item) => dayjs(item.reserveTime).format("YYYY-MM-DD")
+        (item) => item.reserveDate || item.createTime?.split("T")[0] || ""
       );
 
       // 合并数据：对于相同日期，合并并去重；对于新日期，直接添加
@@ -56,7 +58,13 @@ export default function ReservationModule() {
       // 将分组数据转换回扁平数组，按日期排序
       const result: Reservation[] = [];
       Object.keys(mergedByDate)
-        .sort((a, b) => new Date(a).getTime() - new Date(b).getTime())
+        .sort((a, b) => {
+          const aTime = new Date(a).getTime();
+          const bTime = new Date(b).getTime();
+          const safeATime = Number.isNaN(aTime) ? 0 : aTime;
+          const safeBTime = Number.isNaN(bTime) ? 0 : bTime;
+          return safeATime - safeBTime;
+        })
         .forEach((date) => {
           result.push(...mergedByDate[date]);
         });
@@ -187,13 +195,28 @@ export default function ReservationModule() {
           <Text style={styles.dateHeaderText}>
             {formatDateHeader(item.date, t)}
           </Text>
-          <View style={{ flexDirection: "row", gap: 8 }}>
-            <View style={[styles.countBadge]}>
-              <Text style={styles.countBadgeText}>
-                {item.count} 
-              </Text>
-              <Text style={styles.countBadgeText}>
-                {item.count === 1 ? t("reservationsText"): `${t("reservationsText")}s`}
+          <View style={{ flexDirection: "row", gap: 8, alignItems: "center" }}>
+            <TouchableOpacity
+              onPress={refreshData}
+              disabled={isLoading}
+              style={styles.refreshButton}
+              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+            >
+              <Feather
+                name="refresh-cw"
+                size={16}
+                color={theme.mutedForeground}
+              />
+            </TouchableOpacity>
+            <View style={styles.countBadgePlain}>
+              <Feather
+                name="clipboard"
+                size={14}
+                color={theme.mutedForeground}
+                style={styles.countBadgeIcon}
+              />
+              <Text style={styles.countBadgeNumber}>
+                {item.count}
               </Text>
             </View>
             {!!item.pendingCount && item.pendingCount > 0 && (
