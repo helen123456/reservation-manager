@@ -3,17 +3,16 @@ import { useTheme } from "@/contexts/ThemeContext";
 import { useTranslation } from "@/hooks/useTranslation";
 import { getReservations } from "@/services/api/reservationService";
 import { Reservation } from "@/services/types";
+import { Feather } from "@expo/vector-icons";
 import dayjs from "dayjs";
 import groupBy from "lodash/groupBy";
 import merge from "lodash/merge";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
-    ActivityIndicator,
-    FlatList,
-    TouchableOpacity,
-    View
+  ActivityIndicator,
+  FlatList,
+  View
 } from "react-native";
-import { Feather } from "@expo/vector-icons";
 import { FilterBar } from "./FilterBar";
 import { ReservationItem } from "./ReservationItem";
 import { SearchBar } from "./SearchBar";
@@ -196,18 +195,6 @@ export default function ReservationModule() {
             {formatDateHeader(item.date, t)}
           </Text>
           <View style={{ flexDirection: "row", gap: 8, alignItems: "center" }}>
-            <TouchableOpacity
-              onPress={refreshData}
-              disabled={isLoading}
-              style={styles.refreshButton}
-              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-            >
-              <Feather
-                name="refresh-cw"
-                size={16}
-                color={theme.mutedForeground}
-              />
-            </TouchableOpacity>
             <View style={styles.countBadgePlain}>
               <Feather
                 name="clipboard"
@@ -267,6 +254,8 @@ export default function ReservationModule() {
           onSearchChange={setSearchQuery}
           selectedDate={selectedDate}
           onDateChange={onDateChange}
+          onRefresh={refreshData}
+          isRefreshing={isLoading}
         />
 
         <FilterBar
@@ -306,7 +295,7 @@ export default function ReservationModule() {
               name="calendar"
               color={theme.primary}
             />
-            <Text style={styles.emptyText}>这里还没有内容哦</Text>
+            <Text style={styles.emptyText}>No more reservations</Text>
           </View>
         }
         ListFooterComponent={

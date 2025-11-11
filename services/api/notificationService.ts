@@ -5,7 +5,7 @@ export const getMessage = async () => {
   try {
     const uid = await storage.getItem("uid");
     const response = await request.get(`/user/messages/unread/${uid}`);
-    return response.data || [];
+    return response;
   } catch (error) {
     return Promise.reject(error);
   }

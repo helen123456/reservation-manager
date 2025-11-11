@@ -167,7 +167,18 @@ export const createStyles = (theme: any) => {
       borderRadius: 10,
     },
     refreshButton: {
-      padding: 8,
+      marginLeft: 8,
+      width: 40,
+      height: 40,
+      borderRadius: 8,
+      borderWidth: 1,
+      borderColor: theme.border,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: theme.card,
+    },
+    refreshButtonDisabled: {
+      opacity: 0.5,
     },
     dateHeaderText: {
       fontSize: 16,

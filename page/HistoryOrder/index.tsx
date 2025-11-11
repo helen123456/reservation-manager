@@ -18,7 +18,6 @@ import {
     ActivityIndicator,
     FlatList,
     Text,
-    TouchableOpacity,
     View
 } from "react-native";
 import { createStyles } from "./styles";
@@ -172,18 +171,6 @@ const HistoryOrder = ({ onBack }: { onBack: any }) => {
             {formatDateHeader(item.date, t)}
           </Text>
           <View style={{ flexDirection: "row", gap: 8, alignItems: "center" }}>
-            <TouchableOpacity
-              onPress={refreshData}
-              disabled={isLoading}
-              style={styles.refreshButton}
-              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-            >
-              <Feather
-                name="refresh-cw"
-                size={16}
-                color={theme.mutedForeground}
-              />
-            </TouchableOpacity>
             <View style={styles.countBadgePlain}>
               <Feather
                 name="clipboard"
@@ -227,6 +214,8 @@ const HistoryOrder = ({ onBack }: { onBack: any }) => {
         onSearchChange={setSearchQuery}
         selectedDate={selectedDate}
         onDateChange={onDateChange}
+        onRefresh={refreshData}
+        isRefreshing={isLoading}
       />
 
       <FilterBar

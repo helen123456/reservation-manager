@@ -104,6 +104,11 @@ export const createStyles = (theme: any) => {
     notificationsList: {
       gap: 12,
     },
+    loadingState: {
+      paddingVertical: 32,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
     notificationCard: {
       backgroundColor: theme.card,
       borderRadius: 12,

@@ -8,11 +8,13 @@ import storage from "@/utils/storage";
 export async function login(data: { password: string; email: string }) {
   try {
     const response: any = await request.post("/auth/login", data);
-    const { token, user, restaurantId } = response.data || {};
+    const { token, user, restaurantId, notReadMessageCount } =
+      response.data || {};
     storage.setItem("token", token);
+    storage.setItem("notReadMessageCount", notReadMessageCount);
     storage.setItem("user", JSON.stringify(user));
-    storage.setItem("uid", String(user?.id || ''));
-    storage.setItem("restaurantId", String(restaurantId || ''));
+    storage.setItem("uid", String(user?.id || ""));
+    storage.setItem("restaurantId", String(restaurantId || ""));
     return response;
   } catch (error) {
     return Promise.reject(error);
@@ -27,6 +29,7 @@ export async function logout(): Promise<void> {
     storage.removeItem("token");
     storage.removeItem("user");
     storage.removeItem("uid");
+    storage.removeItem("notReadMessageCount");
     storage.removeItem("restaurantId");
   }
 }
@@ -48,7 +51,7 @@ export async function verifyResetPwdCode(data: {
     const res: any = await request.post("/user/verifyResetPwdCode", data);
     return res;
   } catch (error) {
-   return Promise.reject(error);
+    return Promise.reject(error);
   }
 }
 export async function resetPwd(data: {

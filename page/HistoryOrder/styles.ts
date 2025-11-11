@@ -57,8 +57,5 @@ export const createStyles = (theme: any) => {
       fontSize: 16,
       color: theme.mutedForeground,
     },
-    refreshButton: {
-      padding: 8,
-    },
   });
 };

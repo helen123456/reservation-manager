@@ -1,6 +1,12 @@
+export type NotificationType =
+  | "system"
+  | "reservation"
+  | "reservation_cancel"
+  | "message";
+
 export interface Notification {
-  id: string;
-  type: "reservation" | "cancellation" | "confirmation" | "system";
+  id: string | number;
+  type: NotificationType;
   title: string;
   content: string;
   createTime: string;

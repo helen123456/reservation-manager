@@ -1,10 +1,15 @@
 import { Input } from "@/components";
-import { useTheme } from '@/contexts/ThemeContext';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTheme } from "@/contexts/ThemeContext";
+import { useTranslation } from "@/hooks/useTranslation";
 import { Feather } from "@expo/vector-icons";
 import dayjs from "dayjs";
 import React, { useMemo, useState } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import {
+  ActivityIndicator,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import Popover from "react-native-popover-view";
 import DateTimePicker, { useDefaultStyles } from "react-native-ui-datepicker";
 import { createStyles } from "./styles";
@@ -14,6 +19,8 @@ interface SearchBarProps {
   onSearchChange: (query: string) => void;
   selectedDate?: Date;
   onDateChange?: (date?: Date) => void;
+  onRefresh?: () => void;
+  isRefreshing?: boolean;
 }
 
 export const SearchBar: React.FC<SearchBarProps> = ({
@@ -21,8 +28,10 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   onSearchChange,
   selectedDate,
   onDateChange,
+  onRefresh,
+  isRefreshing,
 }) => {
-  const {theme} = useTheme();
+  const { theme } = useTheme();
   const { t } = useTranslation();
   const styles = useMemo(() => createStyles(theme), [theme]);
 
@@ -30,10 +39,9 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   const [dateOpen, setDateOpen] = useState(false);
 
   const handleDateChange = (params: any) => {
-    console.log(params)
+    console.log(params);
     setDateOpen(false);
     onDateChange?.(params.date);
-  
   };
 
   const clearDate = () => {
@@ -43,19 +51,18 @@ export const SearchBar: React.FC<SearchBarProps> = ({
 
   return (
     <View style={styles.searchContainer}>
-     
-        <Input
-          containerStyle={{marginBottom:0,flex:1}}
-          inputContainerStyle={{ height: 40 }}
-          inputStyle={{height:60}}
-          iconSize={16}
-          leftIcon="search"
-          placeholder={t("searchReservations")}
-          placeholderTextColor={theme.mutedForeground}
-          value={searchQuery}
-          onChangeText={onSearchChange}
-        />
-    
+      <Input
+        containerStyle={{ marginBottom: 0, flex: 1 }}
+        inputContainerStyle={{ height: 40 }}
+        inputStyle={{ height: 60 }}
+        iconSize={16}
+        leftIcon="search"
+        placeholder={t("searchReservations")}
+        placeholderTextColor={theme.mutedForeground}
+        value={searchQuery}
+        onChangeText={onSearchChange}
+      />
+
       {/* Date Filter Button with Popover */}
       <Popover
         arrowSize={{ width: 0, height: 0 }}
@@ -97,6 +104,27 @@ export const SearchBar: React.FC<SearchBarProps> = ({
           />
         </View>
       </Popover>
+      {onRefresh && (
+        <TouchableOpacity
+          onPress={onRefresh}
+          disabled={isRefreshing}
+          style={[
+            styles.refreshButton,
+            isRefreshing && styles.refreshButtonDisabled,
+          ]}
+          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+        >
+          {isRefreshing ? (
+            <ActivityIndicator size="small" color={theme.primary} />
+          ) : (
+            <Feather
+              name="refresh-cw"
+              size={16}
+              color={theme.mutedForeground}
+            />
+          )}
+        </TouchableOpacity>
+      )}
     </View>
   );
 };

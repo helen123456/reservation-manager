@@ -3,8 +3,8 @@ import { useTheme } from "@/contexts/ThemeContext";
 import { useTranslation } from "@/hooks/useTranslation";
 import { logout } from "@/services/api/authService";
 import { Ionicons } from "@expo/vector-icons";
-import { router } from "expo-router";
-import React, { useState } from "react";
+import { router, useFocusEffect } from "expo-router";
+import React, { useCallback, useState } from "react";
 import {
   Dimensions,
   Modal,
@@ -13,6 +13,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import storage from "@/utils/storage";
 
 interface HeaderProps {
   notificationCount?: number;
@@ -24,6 +25,7 @@ const { width } = Dimensions.get("window");
 export function Header({ notificationCount = 3, menuCount = 1 }: HeaderProps) {
   const { t } = useTranslation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [hasUnreadMessages, setHasUnreadMessages] = useState(false);
   const { theme } = useTheme();
   const styles = createStyles(theme);
   const {onLogout} = useAuth();
@@ -91,6 +93,21 @@ export function Header({ notificationCount = 3, menuCount = 1 }: HeaderProps) {
     }
   };
 
+  const refreshUnreadState = useCallback(async () => {
+    try {
+      const count = await storage.getItem("notReadMessageCount");
+      setHasUnreadMessages(Number(count || 0) > 0);
+    } catch (error) {
+      setHasUnreadMessages(false);
+    }
+  }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      refreshUnreadState();
+    }, [refreshUnreadState])
+  );
+
   return (
     <>
       {/* Header */}
@@ -109,13 +126,7 @@ export function Header({ notificationCount = 3, menuCount = 1 }: HeaderProps) {
               onPress={onNotificationsClick}
             >
               <Ionicons name="notifications-outline" size={20} color={"#fff"} />
-              {notificationCount > 0 && (
-                <View style={styles.badge}>
-                  <Text style={styles.badgeText}>
-                    {notificationCount > 9 ? "9+" : notificationCount}
-                  </Text>
-                </View>
-              )}
+              {hasUnreadMessages && <View style={styles.notificationDot} />}
             </TouchableOpacity>
 
             {/* Menu Toggle */}
