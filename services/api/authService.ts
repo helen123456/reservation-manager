@@ -2,7 +2,7 @@
  * 认证相关API服务
  */
 
-import request from "@/services/request";
+import request, { resetUnauthorizedState } from "@/services/request";
 import storage from "@/utils/storage";
 
 export async function login(data: { password: string; email: string }) {
@@ -15,6 +15,7 @@ export async function login(data: { password: string; email: string }) {
     storage.setItem("user", JSON.stringify(user));
     storage.setItem("uid", String(user?.id || ""));
     storage.setItem("restaurantId", String(restaurantId || ""));
+    resetUnauthorizedState();
     return response;
   } catch (error) {
     return Promise.reject(error);
@@ -31,6 +32,7 @@ export async function logout(): Promise<void> {
     storage.removeItem("uid");
     storage.removeItem("notReadMessageCount");
     storage.removeItem("restaurantId");
+    resetUnauthorizedState();
   }
 }
 export async function sendResetPwdEmail(data: {

@@ -9,6 +9,43 @@ const baseURL = getBaseURL();
 // 基础配置
 const BASE_URL = baseURL || "http://localhost:2025/api";
 const TIMEOUT = 10000;
+const AUTH_STORAGE_KEYS = [
+  "token",
+  "user",
+  "uid",
+  "restaurantId",
+  "notReadMessageCount",
+  "deviceId",
+];
+let isHandlingUnauthorized = false;
+
+const clearAuthStorage = async () => {
+  await Promise.all(
+    AUTH_STORAGE_KEYS.map(async (key) => {
+      try {
+        await storage.removeItem(key);
+      } catch {
+        // 忽略单个存储清理失败
+      }
+    })
+  );
+};
+
+const handleUnauthorized = async () => {
+  if (isHandlingUnauthorized) {
+    return;
+  }
+
+  isHandlingUnauthorized = true;
+  Toast.fail("登录状态已失效，请重新登录");
+
+  await clearAuthStorage();
+  router.replace("/login");
+};
+
+export const resetUnauthorizedState = () => {
+  isHandlingUnauthorized = false;
+};
 
 // 创建axios实例
 const request = axios.create({
@@ -48,10 +85,7 @@ request.interceptors.response.use(
   async (error: any) => {
     // 统一错误处理
     if (error.response?.status === 401) {
-      // token过期，清除本地存储
-      await storage.removeItem("token");
-      // 可以在这里跳转到登录页
-      router.push("/login");
+      await handleUnauthorized();
     }
 
     return Promise.reject(error.response?.data || error.message);
