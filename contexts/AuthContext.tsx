@@ -1,4 +1,5 @@
 // contexts/AuthContext.tsx
+import { pushNotificationService } from '@/services/pushNotificationService';
 import storage from '@/utils/storage';
 import React, { ReactNode, createContext, useCallback, useContext, useEffect, useState } from 'react';
 
@@ -57,6 +58,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, []);
   
   const onLogout = useCallback(async () => {
+     // Unregister this device's push token so the user does not keep receiving
+     // notifications after sign-out (also frees the (userId, deviceId) row).
+     try {
+       await pushNotificationService.unregister();
+     } catch (error) {
+       console.warn('unregister push token on logout failed:', error);
+     }
      setIsLogged(false);
   }, []);
   

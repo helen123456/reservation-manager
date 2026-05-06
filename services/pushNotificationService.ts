@@ -12,14 +12,14 @@ import { Platform } from "react-native";
 import {
   PushTokenRegisterRequest,
   registerPushTokenApi,
-  sendTest,
+  unregisterPushTokenApi,
 } from "./api/pushNotificationService";
 
-// 配置通知处理行为（Expo Go SDK 53 在 Android 上移除了远程通知支持，用 try-catch 防止崩溃）
+// Configure foreground presentation. Note: `shouldShowAlert` was deprecated
+// in expo-notifications SDK 49+ in favor of `shouldShowBanner` / `shouldShowList`.
 try {
   Notifications.setNotificationHandler({
     handleNotification: async () => ({
-      shouldShowAlert: true,
       shouldPlaySound: true,
       shouldSetBadge: false,
       shouldShowBanner: true,
@@ -27,7 +27,7 @@ try {
     }),
   });
 } catch (e) {
-  console.warn("setNotificationHandler 失败（可能在 Expo Go 中运行）:", e);
+  console.warn("setNotificationHandler failed (likely Expo Go on Android):", e);
 }
 
 export class PushNotificationService {
@@ -66,6 +66,19 @@ export class PushNotificationService {
           console.warn("推送通知需要在真实设备上运行");
           return;
         }
+        // Android: a notification channel must be registered before any
+        // notification can be displayed (otherwise heads-up is silently dropped).
+        if (Platform.OS === "android") {
+          try {
+            await Notifications.setNotificationChannelAsync("default", {
+              name: "Default",
+              importance: Notifications.AndroidImportance.DEFAULT,
+              sound: "default",
+            });
+          } catch (e) {
+            console.warn("setNotificationChannelAsync failed:", e);
+          }
+        }
       }
 
       // 请求通知权限
@@ -89,7 +102,8 @@ export class PushNotificationService {
       // 注册推送令牌到服务器
       await this.registerPushToken();
 
-      // 设置通知监听器
+      // 设置通知监听器（幂等：先清理再注册）
+      this.cleanup();
       this.setupNotificationListeners();
 
       console.log("推送通知服务初始化成功");
@@ -192,27 +206,25 @@ export class PushNotificationService {
         return;
       }
 
-      // 获取用户ID（从存储中获取）
+      // The backend reads the userId from the Sa-Token session, not from the
+      // request body. We only need a stable per-device identifier.
       const userIdStr = await storage.getItem("uid");
       if (!userIdStr) {
         console.warn("用户未登录，无法注册推送令牌");
         return;
       }
 
-      const userId = userIdStr;
-
-      // 生成设备ID（可以使用设备信息或生成唯一标识）
+      // Persistent deviceId across re-installs of the app on the SAME OS keychain
+      // would require expo-application; use storage as a best-effort fallback.
       let deviceId = await storage.getItem("deviceId");
       if (!deviceId) {
-        deviceId = Device.modelName + "_" + Date.now();
+        deviceId = `${Device.modelName ?? "device"}_${Date.now()}`;
         await storage.setItem("deviceId", deviceId);
       }
 
-      // 获取平台信息
       const platform = Platform.OS;
 
       const registerData: PushTokenRegisterRequest = {
-        userId,
         pushToken: this.pushToken,
         deviceId,
         platform,
@@ -222,6 +234,21 @@ export class PushNotificationService {
       console.log("推送令牌注册成功");
     } catch (error) {
       console.error("推送令牌注册失败:", error);
+    }
+  }
+
+  /**
+   * Unregister the current device's push token (call on logout).
+   */
+  async unregister(): Promise<void> {
+    try {
+      if (!this.pushToken) return;
+      await unregisterPushTokenApi({ pushToken: this.pushToken });
+      this.pushToken = null;
+      this.cleanup();
+      console.log("推送令牌注销成功");
+    } catch (error) {
+      console.error("推送令牌注销失败:", error);
     }
   }
 
@@ -424,15 +451,10 @@ export class PushNotificationService {
     data?: any,
   ): Promise<void> {
     try {
-      await sendTest();
-      // await Notifications.scheduleNotificationAsync({
-      //   content: {
-      //     title,
-      //     body,
-      //     data,
-      //   },
-      //   trigger: null, // 立即发送
-      // });
+      await Notifications.scheduleNotificationAsync({
+        content: { title, body, data },
+        trigger: null,
+      });
     } catch (error) {
       console.error("发送本地通知失败:", error);
     }

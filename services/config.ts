@@ -1,24 +1,37 @@
+import Constants from "expo-constants";
+
 // 环境配置
 export const ENV = {
   DEVELOPMENT: "dev",
   PRODUCTION: "prod",
 };
 
-// 当前环境（可以通过环境变量或构建配置来设置）
+// 当前环境
 export const CURRENT_ENV = __DEV__ ? ENV.DEVELOPMENT : ENV.PRODUCTION;
 
 // API基础配置
 export const API_CONFIG = {
-  // 基础URL配置
   BASE_URL: {
-    // dev: 'https://m1.apifoxmock.com/m1/7045660-6765697-default/api',
-    // dev:  'http://101.35.113.65:2025/neo/api',
     dev: "http://localhost:2025/neo/api",
-    prod: "https://api.yourapp.com/api",
+    // Production base URL is read from app.json `expo.extra.apiBaseUrl`.
+    // Setting an explicit value here as a final fallback prevents shipping a
+    // dangling "yourapp.com" placeholder.
+    prod: "http://localhost:2025/neo/api",
   },
 };
 
-// 获取当前环境的基础URL
-export const getBaseURL = () => {
+/**
+ * Get the API base URL for the current environment.
+ *
+ * Resolution order:
+ *   1. `expo.extra.apiBaseUrl` from app.json / EAS build config
+ *   2. Per-environment default in {@link API_CONFIG.BASE_URL}
+ */
+export const getBaseURL = (): string => {
+  const fromExtra = (Constants.expoConfig?.extra as { apiBaseUrl?: string } | undefined)
+    ?.apiBaseUrl;
+  if (fromExtra) {
+    return fromExtra;
+  }
   return API_CONFIG.BASE_URL[CURRENT_ENV as keyof typeof API_CONFIG.BASE_URL];
 };
