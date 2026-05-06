@@ -1,3 +1,9 @@
+import { NotificationData } from "@/types/notification.types";
+import {
+  handleNotificationNavigation,
+  showNotificationMessage,
+  validateNotificationData,
+} from "@/utils/notificationRoutes";
 import storage from "@/utils/storage";
 import Constants from "expo-constants";
 import * as Device from "expo-device";
@@ -8,23 +14,21 @@ import {
   registerPushTokenApi,
   sendTest,
 } from "./api/pushNotificationService";
-import { NotificationData } from "@/types/notification.types";
-import { 
-  handleNotificationNavigation, 
-  showNotificationMessage, 
-  validateNotificationData 
-} from "@/utils/notificationRoutes";
 
-// 配置通知处理行为
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: false,
-    shouldShowBanner: true,
-    shouldShowList: true,
-  }),
-});
+// 配置通知处理行为（Expo Go SDK 53 在 Android 上移除了远程通知支持，用 try-catch 防止崩溃）
+try {
+  Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: true,
+      shouldSetBadge: false,
+      shouldShowBanner: true,
+      shouldShowList: true,
+    }),
+  });
+} catch (e) {
+  console.warn("setNotificationHandler 失败（可能在 Expo Go 中运行）:", e);
+}
 
 export class PushNotificationService {
   private static instance: PushNotificationService;
@@ -50,6 +54,13 @@ export class PushNotificationService {
       if (Platform.OS === "web") {
         console.log("Web 端推送通知初始化开始");
       } else {
+        // Expo Go SDK 53 在 Android 上已移除远程推送通知支持，直接跳过
+        if (Constants.appOwnership === "expo") {
+          console.warn(
+            "运行在 Expo Go 中，跳过远程推送通知初始化（SDK 53 不再支持）",
+          );
+          return;
+        }
         // 检查设备是否支持推送通知（仅移动端）
         if (!Device.isDevice) {
           console.warn("推送通知需要在真实设备上运行");
@@ -136,9 +147,8 @@ export class PushNotificationService {
       }
 
       // 注册 Service Worker
-      const registration = await navigator.serviceWorker.register(
-        "/push-sw.js"
-      );
+      const registration =
+        await navigator.serviceWorker.register("/push-sw.js");
       console.log("Service Worker 注册成功:", registration);
 
       // 获取 VAPID 公钥
@@ -224,7 +234,7 @@ export class PushNotificationService {
       (notification) => {
         console.log("收到推送通知:", notification);
         this.onNotificationReceived(notification);
-      }
+      },
     );
 
     // 监听用户对通知的响应
@@ -239,22 +249,22 @@ export class PushNotificationService {
    * 处理收到的通知
    */
   private onNotificationReceived(
-    notification: Notifications.Notification
+    notification: Notifications.Notification,
   ): void {
     try {
       const notificationData = notification.request.content.data;
-      
+
       console.log("收到通知:", {
         title: notification.request.content.title,
         body: notification.request.content.body,
-        data: notificationData
+        data: notificationData,
       });
 
       // 验证通知数据格式
       if (validateNotificationData(notificationData)) {
         // 显示应用内通知消息
         showNotificationMessage(notificationData as NotificationData);
-        
+
         // 这里可以添加更多的应用内处理逻辑
         // 比如更新应用内的通知计数、更新UI状态等
         this.handleInAppNotification(notificationData as NotificationData);
@@ -263,7 +273,7 @@ export class PushNotificationService {
         // 对于无效格式的通知，显示默认消息
         console.log("显示默认通知:", {
           title: notification.request.content.title || "新通知",
-          body: notification.request.content.body || "您有新的通知"
+          body: notification.request.content.body || "您有新的通知",
         });
       }
     } catch (error) {
@@ -275,21 +285,23 @@ export class PushNotificationService {
    * 处理用户点击通知的响应
    */
   private onNotificationResponse(
-    response: Notifications.NotificationResponse
+    response: Notifications.NotificationResponse,
   ): void {
     try {
       const notificationData = response.notification.request.content.data;
-      
+
       console.log("用户点击通知:", {
         data: notificationData,
-        actionIdentifier: response.actionIdentifier
+        actionIdentifier: response.actionIdentifier,
       });
 
       // 验证通知数据格式
       if (validateNotificationData(notificationData)) {
         // 使用统一的导航处理器
-        const result = handleNotificationNavigation(notificationData as NotificationData);
-        
+        const result = handleNotificationNavigation(
+          notificationData as NotificationData,
+        );
+
         if (result.success) {
           console.log(`成功导航到: ${result.targetUrl}`);
         } else {
@@ -299,9 +311,9 @@ export class PushNotificationService {
         console.warn("通知数据格式无效，使用默认导航");
         // 对于无效格式的通知，导航到首页
         handleNotificationNavigation({
-          type: 'system',
+          type: "system",
           title: response.notification.request.content.title || "通知",
-          body: response.notification.request.content.body || "您有新的通知"
+          body: response.notification.request.content.body || "您有新的通知",
         });
       }
     } catch (error) {
@@ -309,9 +321,9 @@ export class PushNotificationService {
       // 降级处理：尝试导航到首页
       try {
         handleNotificationNavigation({
-          type: 'system',
+          type: "system",
           title: "通知",
-          body: "处理通知时出现错误"
+          body: "处理通知时出现错误",
         });
       } catch (fallbackError) {
         console.error("降级导航也失败了:", fallbackError);
@@ -328,31 +340,31 @@ export class PushNotificationService {
 
       // 根据通知类型执行相应的应用内处理
       switch (data.type) {
-        case 'reservation':
+        case "reservation":
           // 更新预订相关的UI状态
           this.handleReservationNotification(data);
           break;
-          
-        case 'message':
+
+        case "message":
           // 更新消息相关的UI状态
           this.handleMessageNotification(data);
           break;
-          
-        case 'system':
+
+        case "system":
           // 处理系统通知
           this.handleSystemNotification(data);
           break;
-          
-        case 'promotion':
+
+        case "promotion":
           // 处理促销通知
           this.handlePromotionNotification(data);
           break;
-          
-        case 'reminder':
+
+        case "reminder":
           // 处理提醒通知
           this.handleReminderNotification(data);
           break;
-          
+
         default:
           console.log("未知通知类型，使用默认处理");
       }
@@ -409,7 +421,7 @@ export class PushNotificationService {
   async sendLocalNotification(
     title: string,
     body: string,
-    data?: any
+    data?: any,
   ): Promise<void> {
     try {
       await sendTest();

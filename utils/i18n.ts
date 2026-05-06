@@ -1,5 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Platform } from "react-native";
+import enTranslations from "../i18n/en.json";
+import frTranslations from "../i18n/fr.json";
 
 // Cross-platform storage utility
 const storage = {
@@ -75,37 +77,17 @@ interface Translations {
   [key: string]: string;
 }
 
-// Dynamic translation loader
+const translationResources: Record<string, Translations> = {
+  en: enTranslations,
+  fr: frTranslations,
+};
+
 const loadTranslations = async (language: string): Promise<Translations> => {
-  try {
-    // Import translations dynamically based on language
-    let translationModule;
-    
-    switch (language) {
-      case 'en':
-        translationModule = await import('../i18n/en.json');
-        break;
-      case 'fr':
-        translationModule = await import('../i18n/fr.json');
-        break;
-      default:
-        // Fallback to English if language not supported
-        translationModule = await import('../i18n/en.json');
-        break;
-    }
-    
-    return translationModule.default;
-  } catch (error) {
-    console.error(`Failed to load translations for language: ${language}`, error);
-    // Fallback to English translations
-    try {
-      const fallbackModule = await import('../i18n/en.json');
-      return fallbackModule.default;
-    } catch (fallbackError) {
-      console.error('Failed to load fallback translations:', fallbackError);
-      return {};
-    }
+  if (translationResources[language]) {
+    return translationResources[language];
   }
+
+  return translationResources.en;
 };
 
 // Cache for loaded translations
@@ -148,7 +130,7 @@ export class I18nService {
   }
 
   private isSupportedLanguage(language: string): boolean {
-    return languages.some(lang => lang.code === language);
+    return languages.some((lang) => lang.code === language);
   }
 
   private async getTranslations(language: string): Promise<Translations> {
@@ -185,10 +167,10 @@ export class I18nService {
       if (!translations) {
         console.warn(`Translation not found for language: ${this.currentLanguage}`);
         // Try to get fallback translation
-        const fallbackTranslations = translationsCache['en'];
+        const fallbackTranslations = translationsCache["en"];
         return fallbackTranslations?.[key] || key;
       }
-      return translations[key] || translationsCache['en']?.[key] || key;
+      return translations[key] || translationsCache["en"]?.[key] || key;
     } catch (error) {
       console.error("Translation error:", error, "for key:", key);
       return key;

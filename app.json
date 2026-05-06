@@ -9,14 +9,18 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.neo.reservation.admin",
+      "buildNumber": "1"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/logo/Neo-logo-white.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.neo.reservation.admin",
+      "versionCode": 1
     },
     "web": {
       "bundler": "metro",
@@ -31,9 +35,7 @@
     },
     "notification": {
       "icon": "./assets/images/icon.png",
-      "color": "#000000",
-      "vapidPublicKey": "BJRCUJU1li8g_jU0huebXFzlIuf60pZQlIVs9V7PdJ_wXP7rlRtjxaiEaBP1Ku1QRuomBBLimPqrrQb38s84n30",
-      "serviceWorkerPath": "./push-sw.js"
+      "color": "#000000"
     },
     "plugins": [
       "expo-router",
@@ -46,7 +48,8 @@
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
-      ]
+      ],
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true
@@ -57,6 +60,10 @@
       },
       "router": {}
     },
-    "owner": "lijunp"
+    "owner": "lijunp",
+    "runtimeVersion": "1.0.0",
+    "updates": {
+      "url": "https://u.expo.dev/1fb21636-8e4c-4501-a7d8-7021380daaab"
+    }
   }
 }
