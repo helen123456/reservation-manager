@@ -23,4 +23,10 @@ export interface NotificationsPageProps {
   onBack: () => void;
 }
 
-export type NotificationActionType = 'markAsRead' | 'markAllAsRead' | 'clearAll';
+export type NotificationActionType =
+  | "markAsRead"
+  | "markAllAsRead"
+  | "clearAll";
+
+/** Top filter tabs available in the notifications screen. */
+export type NotificationFilter = "all" | "unread" | NotificationType;

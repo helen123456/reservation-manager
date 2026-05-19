@@ -1,8 +1,8 @@
 import { NotificationData } from "@/types/notification.types";
 import {
-  handleNotificationNavigation,
-  showNotificationMessage,
-  validateNotificationData,
+    handleNotificationNavigation,
+    showNotificationMessage,
+    validateNotificationData,
 } from "@/utils/notificationRoutes";
 import storage from "@/utils/storage";
 import Constants from "expo-constants";
@@ -10,9 +10,9 @@ import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import { Platform } from "react-native";
 import {
-  PushTokenRegisterRequest,
-  registerPushTokenApi,
-  unregisterPushTokenApi,
+    PushTokenRegisterRequest,
+    registerPushTokenApi,
+    unregisterPushTokenApi,
 } from "./api/pushNotificationService";
 
 // Configure foreground presentation. Note: `shouldShowAlert` was deprecated

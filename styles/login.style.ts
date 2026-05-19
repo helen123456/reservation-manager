@@ -1,5 +1,4 @@
-
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from "react-native";
 
 // 创建动态样式函数
 const createStyles = (theme: any) => {
@@ -13,7 +12,7 @@ const createStyles = (theme: any) => {
       padding: 16,
       backgroundColor: theme.background,
     },
-    
+
     header: {
       alignItems: "center",
       marginBottom: 24,
@@ -60,9 +59,9 @@ const createStyles = (theme: any) => {
     input: {
       paddingVertical: 0,
       height: 60,
-      lineHeight:30,
+      lineHeight: 30,
       flex: 1,
-      paddingTop:6,
+      paddingTop: 6,
       paddingLeft: 44,
       paddingRight: 12,
       fontSize: 16,
@@ -84,6 +83,35 @@ const createStyles = (theme: any) => {
     forgotPasswordText: {
       fontSize: 14,
       color: theme.mutedForeground,
+    },
+    rememberRow: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      marginBottom: 16,
+    },
+    rememberLeft: {
+      flexDirection: "row",
+      alignItems: "center",
+    },
+    checkboxBox: {
+      width: 20,
+      height: 20,
+      borderRadius: 4,
+      borderWidth: 1.5,
+      borderColor: theme.border,
+      alignItems: "center",
+      justifyContent: "center",
+      marginRight: 8,
+      backgroundColor: theme.inputBackground,
+    },
+    checkboxBoxChecked: {
+      borderColor: theme.primary,
+      backgroundColor: theme.primary,
+    },
+    rememberLabel: {
+      fontSize: 14,
+      color: theme.text,
     },
     signInButton: {
       backgroundColor: theme.primary,

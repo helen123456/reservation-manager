@@ -27,6 +27,7 @@ export const getRegisterSchema = (t: (key: TranslationKey) => string) => {
       .regex(/[a-zA-Z]/, t("passwordMustContainLetter"))
       .regex(/[0-9]/, t("passwordMustContainNumber"))
       .regex(/[!@#$%^&*(),.?":{}|<>]/, t("passwordMustContainSpecialChar")),
+    rememberMe: z.boolean().optional().default(false),
   });
 };
 
@@ -46,20 +47,22 @@ export const getForgotPasswordSchema = (t: (key: TranslationKey) => string) => {
 // 重置密码表单验证规则
 export const getResetPasswordSchema = (t: (key: TranslationKey) => string) => {
   const passwordMismatchMessage = t("passwordMismatch");
-  return z.object({
-    email: z.string().email(t("emailRequired")),
-    newPassword: z
-      .string()
-      .min(6, t("passwordMinLength"))
-      .max(20, t("passwordMaxLength"))
-      .regex(/[a-zA-Z]/, t("passwordMustContainLetter"))
-      .regex(/[0-9]/, t("passwordMustContainNumber"))
-      .regex(/[!@#$%^&*(),.?":{}|<>]/, t("passwordMustContainSpecialChar")),
-    confirmPassword: z.string(),
-  }).refine((data) => data.newPassword === data.confirmPassword, {
-    message: passwordMismatchMessage,
-    path: ["confirmPassword"],
-  });
+  return z
+    .object({
+      email: z.string().email(t("emailRequired")),
+      newPassword: z
+        .string()
+        .min(6, t("passwordMinLength"))
+        .max(20, t("passwordMaxLength"))
+        .regex(/[a-zA-Z]/, t("passwordMustContainLetter"))
+        .regex(/[0-9]/, t("passwordMustContainNumber"))
+        .regex(/[!@#$%^&*(),.?":{}|<>]/, t("passwordMustContainSpecialChar")),
+      confirmPassword: z.string(),
+    })
+    .refine((data) => data.newPassword === data.confirmPassword, {
+      message: passwordMismatchMessage,
+      path: ["confirmPassword"],
+    });
 };
 
 // 注意：现在需要传入翻译函数参数
@@ -76,7 +79,7 @@ export interface ResetPasswordForm {
 }
 
 export interface ForgotPasswordState {
-  step: 'email' | 'verification' | 'reset';
+  step: "email" | "verification" | "reset";
   email: string;
   isLoading: boolean;
   countdown: number;

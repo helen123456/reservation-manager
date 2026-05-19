@@ -12,11 +12,12 @@ export const CURRENT_ENV = __DEV__ ? ENV.DEVELOPMENT : ENV.PRODUCTION;
 // API基础配置
 export const API_CONFIG = {
   BASE_URL: {
-    dev: "http://localhost:2025/neo/api",
+    // dev: "http://localhost:2025/neo/api",
+    dev: "http://101.35.113.65:2025/neo/api",
     // Production base URL is read from app.json `expo.extra.apiBaseUrl`.
     // Setting an explicit value here as a final fallback prevents shipping a
     // dangling "yourapp.com" placeholder.
-    prod: "http://localhost:2025/neo/api",
+    prod: "http://101.35.113.65:2025/neo/api",
   },
 };
 
@@ -28,8 +29,9 @@ export const API_CONFIG = {
  *   2. Per-environment default in {@link API_CONFIG.BASE_URL}
  */
 export const getBaseURL = (): string => {
-  const fromExtra = (Constants.expoConfig?.extra as { apiBaseUrl?: string } | undefined)
-    ?.apiBaseUrl;
+  const fromExtra = (
+    Constants.expoConfig?.extra as { apiBaseUrl?: string } | undefined
+  )?.apiBaseUrl;
   if (fromExtra) {
     return fromExtra;
   }

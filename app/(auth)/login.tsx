@@ -3,26 +3,27 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useAsyncDebounce } from "@/hooks/useDebounce";
 import { useTranslation } from "@/hooks/useTranslation";
-import { login } from "@/services/api/authService";
+import { getRememberedEmail, login } from "@/services/api/authService";
 import createStyles from "@/styles/login.style";
 import { getRegisterSchema } from "@/types/login.type";
+import { Ionicons } from "@expo/vector-icons";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { router } from "expo-router";
-import React, { useMemo } from "react";
-import { FormProvider, useForm } from "react-hook-form";
+import React, { useEffect, useMemo } from "react";
+import { Controller, FormProvider, useForm } from "react-hook-form";
 import {
-  ActivityIndicator,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
+    ActivityIndicator,
+    KeyboardAvoidingView,
+    Platform,
+    ScrollView,
+    Text,
+    TouchableOpacity,
+    View,
 } from "react-native";
 import { z } from "zod";
 
 export default function Login() {
-   const { onLogin } = useAuth();
+  const { onLogin } = useAuth();
   const { t } = useTranslation();
   const { theme } = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
@@ -30,23 +31,48 @@ export default function Login() {
   const registerSchema = useMemo(() => getRegisterSchema(t), [t]);
   type RegisterFormData = z.infer<typeof registerSchema>;
 
-  const methods = useForm({
+  const methods = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
-      email: "fefe@11.com",
-      password: "123456a.",
+      email: "",
+      password: "",
+      rememberMe: false,
     },
     mode: "onChange", // 实时验证
   });
 
   const {
     handleSubmit,
+    control,
+    reset,
     formState: { isValid, isSubmitting },
   } = methods;
 
+  // 进入登录页时回填上次记住的邮箱（密码不会被保存）
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const email = await getRememberedEmail();
+      if (!cancelled && email) {
+        reset({
+          email,
+          password: "",
+          rememberMe: true,
+        });
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [reset]);
+
   // 带防抖的登录提交函数
   const onSubmit = useAsyncDebounce(async (data: RegisterFormData) => {
-    await login(data).then(async () => {
+    await login({
+      email: data.email,
+      password: data.password,
+      rememberMe: !!data.rememberMe,
+    }).then(async () => {
       await onLogin();
       router.push("/reservation");
     });
@@ -96,8 +122,39 @@ export default function Login() {
                 required
               />
 
-              {/* Forgot Password */}
-              <View style={styles.forgotPasswordContainer}>
+              {/* 记住密码 + 忘记密码 */}
+              <View style={styles.rememberRow}>
+                <Controller
+                  control={control}
+                  name="rememberMe"
+                  render={({ field: { value, onChange } }) => (
+                    <TouchableOpacity
+                      style={styles.rememberLeft}
+                      onPress={() => onChange(!value)}
+                      accessibilityRole="checkbox"
+                      accessibilityState={{ checked: !!value }}
+                    >
+                      <View
+                        style={[
+                          styles.checkboxBox,
+                          value && styles.checkboxBoxChecked,
+                        ]}
+                      >
+                        {value ? (
+                          <Ionicons
+                            name="checkmark"
+                            size={14}
+                            color={theme.primaryForeground}
+                          />
+                        ) : null}
+                      </View>
+                      <Text style={styles.rememberLabel}>
+                        {t("rememberMe")}
+                      </Text>
+                    </TouchableOpacity>
+                  )}
+                />
+
                 <TouchableOpacity onPress={handleForgotPassword}>
                   <Text style={styles.forgotPasswordText}>
                     {t("forgotPassword")}

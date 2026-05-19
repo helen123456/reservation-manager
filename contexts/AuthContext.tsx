@@ -1,16 +1,23 @@
 // contexts/AuthContext.tsx
-import { pushNotificationService } from '@/services/pushNotificationService';
-import storage from '@/utils/storage';
-import React, { ReactNode, createContext, useCallback, useContext, useEffect, useState } from 'react';
+import { migrateInsecureAuthStorage } from "@/services/api/authService";
+import { pushNotificationService } from "@/services/pushNotificationService";
+import secureStorage from "@/utils/secureStorage";
+import React, {
+    ReactNode,
+    createContext,
+    useCallback,
+    useContext,
+    useEffect,
+    useState,
+} from "react";
 
 // 定义 Context 中值的类型
 interface AuthContextType {
-  isLogged: boolean | null; 
-  isLoading: boolean; 
+  isLogged: boolean | null;
+  isLoading: boolean;
   onLogin: () => Promise<void>;
   onLogout: () => Promise<void>;
 }
-
 
 const AuthContext = createContext<AuthContextType>({
   isLogged: null,
@@ -19,23 +26,24 @@ const AuthContext = createContext<AuthContextType>({
   onLogout: async () => {},
 });
 
-
 export const useAuth = () => useContext(AuthContext);
 interface AuthProviderProps {
   children: ReactNode;
 }
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isLogged, setIsLogged] = useState<boolean | null>(null);
-  const [isLoading, setIsLoading] = useState(true); 
+  const [isLoading, setIsLoading] = useState(true);
 
   // 检查登录状态的函数
   const checkLoginStatus = useCallback(async () => {
     setIsLoading(true);
     try {
-      const token = await storage.getItem('token');
-      setIsLogged(!!token); 
+      // 启动时先迁移旧版本可能落盘的明文凭据，再读取 token。
+      await migrateInsecureAuthStorage();
+      const token = await secureStorage.getItem("token");
+      setIsLogged(!!token);
     } catch (error) {
-      setIsLogged(false); 
+      setIsLogged(false);
     } finally {
       setIsLoading(false);
     }
@@ -44,10 +52,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   useEffect(() => {
     checkLoginStatus();
   }, [checkLoginStatus]);
-  
+
   const onLogin = useCallback(async () => {
     setIsLogged(true);
-    
+
     // 登录成功后重新注册推送令牌
     // try {
     //   await pushNotificationService.reregisterPushToken();
@@ -56,18 +64,18 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     //   console.error('登录后推送令牌重新注册失败:', error);
     // }
   }, []);
-  
+
   const onLogout = useCallback(async () => {
-     // Unregister this device's push token so the user does not keep receiving
-     // notifications after sign-out (also frees the (userId, deviceId) row).
-     try {
-       await pushNotificationService.unregister();
-     } catch (error) {
-       console.warn('unregister push token on logout failed:', error);
-     }
-     setIsLogged(false);
+    // Unregister this device's push token so the user does not keep receiving
+    // notifications after sign-out (also frees the (userId, deviceId) row).
+    try {
+      await pushNotificationService.unregister();
+    } catch (error) {
+      console.warn("unregister push token on logout failed:", error);
+    }
+    setIsLogged(false);
   }, []);
-  
+
   const value = {
     isLogged,
     isLoading,

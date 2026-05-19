@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from "react-native";
 
 export const createStyles = (theme: any) => {
   return StyleSheet.create({
@@ -18,7 +18,7 @@ export const createStyles = (theme: any) => {
       alignItems: "center",
       marginBottom: 16,
       marginTop: 16,
-      marginRight: 16
+      marginRight: 16,
     },
     headerLeft: {
       flexDirection: "row",
@@ -33,7 +33,7 @@ export const createStyles = (theme: any) => {
     titleContainer: {
       flex: 1,
       flexDirection: "row",
-      justifyContent: "space-between"
+      justifyContent: "space-between",
     },
     titleRow: {
       flexDirection: "row",
@@ -62,11 +62,11 @@ export const createStyles = (theme: any) => {
       color: theme.mutedForeground,
     },
     headerActions: {
-      flexDirection: "row", 
+      flexDirection: "row",
       gap: 8,
       justifyContent: "flex-end",
       marginBottom: 16,
-      marginRight: 16
+      marginRight: 16,
     },
     actionButton: {
       flexDirection: "row",
@@ -75,7 +75,7 @@ export const createStyles = (theme: any) => {
       paddingVertical: 8,
       borderRadius: 8,
       borderWidth: 1,
-      borderColor: theme.border
+      borderColor: theme.border,
     },
     actionButtonText: {
       color: theme.text,
@@ -85,7 +85,7 @@ export const createStyles = (theme: any) => {
     emptyState: {
       borderRadius: 12,
       padding: 32,
-      alignItems: "center"
+      alignItems: "center",
     },
     emptyIcon: {
       marginBottom: 16,
@@ -106,8 +106,8 @@ export const createStyles = (theme: any) => {
     },
     loadingState: {
       paddingVertical: 32,
-      alignItems: 'center',
-      justifyContent: 'center',
+      alignItems: "center",
+      justifyContent: "center",
     },
     notificationCard: {
       backgroundColor: theme.card,
@@ -117,8 +117,9 @@ export const createStyles = (theme: any) => {
       borderColor: theme.border,
     },
     unreadCard: {
-      borderColor: theme.border,
       backgroundColor: theme.muted,
+      borderColor: theme.primary,
+      borderLeftWidth: 3,
     },
     notificationContent: {
       flexDirection: "row",
@@ -139,11 +140,12 @@ export const createStyles = (theme: any) => {
     },
     notificationTitle: {
       fontSize: 16,
-      fontWeight: "600",
+      fontWeight: "700",
       color: theme.text,
       flex: 1,
     },
     readTitle: {
+      fontWeight: "500",
       color: theme.mutedForeground,
     },
     unreadDot: {
@@ -158,6 +160,10 @@ export const createStyles = (theme: any) => {
       color: theme.mutedForeground,
       lineHeight: 20,
       marginBottom: 8,
+    },
+    readMessage: {
+      color: theme.mutedForeground,
+      opacity: 0.75,
     },
     notificationFooter: {
       flexDirection: "row",
@@ -181,6 +187,77 @@ export const createStyles = (theme: any) => {
       height: 1,
       backgroundColor: theme.border,
       marginVertical: 12,
+    },
+    /** Filter chips row */
+    filterRow: {
+      flexDirection: "row",
+      flexWrap: "wrap",
+      gap: 8,
+      paddingHorizontal: 16,
+      marginBottom: 12,
+    },
+    filterChip: {
+      paddingHorizontal: 12,
+      paddingVertical: 6,
+      borderRadius: 16,
+      borderWidth: 1,
+      borderColor: theme.border,
+      backgroundColor: theme.card,
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 6,
+    },
+    filterChipActive: {
+      backgroundColor: theme.primary,
+      borderColor: theme.primary,
+    },
+    filterChipText: {
+      color: theme.text,
+      fontSize: 13,
+      fontWeight: "500",
+    },
+    filterChipTextActive: {
+      color: "#fff",
+    },
+    filterChipBadge: {
+      backgroundColor: theme.destructive,
+      borderRadius: 9,
+      paddingHorizontal: 5,
+      minWidth: 18,
+      alignItems: "center",
+    },
+    filterChipBadgeText: {
+      color: "#fff",
+      fontSize: 10,
+      fontWeight: "600",
+    },
+    /** Section header for time grouping */
+    sectionHeader: {
+      paddingTop: 8,
+      paddingBottom: 6,
+    },
+    sectionHeaderText: {
+      fontSize: 12,
+      fontWeight: "600",
+      color: theme.mutedForeground,
+      textTransform: "uppercase",
+      letterSpacing: 0.5,
+    },
+    /** Swipe action background */
+    swipeAction: {
+      backgroundColor: theme.destructive,
+      justifyContent: "center",
+      alignItems: "flex-end",
+      paddingHorizontal: 24,
+      borderRadius: 12,
+      flex: 1,
+      marginVertical: 0,
+    },
+    swipeActionText: {
+      color: "#fff",
+      fontSize: 14,
+      fontWeight: "600",
+      marginLeft: 6,
     },
   });
 };

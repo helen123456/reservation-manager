@@ -5,6 +5,7 @@ node_modules/
 
 # Expo
 .expo/
+.eas/
 dist/
 web-build/
 expo-env.d.ts
@@ -21,17 +22,31 @@ expo-env.d.ts
 # Metro
 .metro-health-check*
 
+# cache
+.cache/
+.parcel-cache/
+.turbo/
+.eslintcache
+.prettiercache
+coverage/
+
 # debug
+logs/
+*.log
 npm-debug.*
 yarn-debug.*
 yarn-error.*
 
 # macOS
 .DS_Store
+Thumbs.db
 *.pem
 
 # local env files
-.env*.local
+.env
+.env.*
+!.env.example
+.envrc
 
 # typescript
 *.tsbuildinfo
@@ -40,3 +55,20 @@ app-example
 
 android/
 ios/
+android/.gradle/
+android/app/build/
+ios/build/
+DerivedData/
+
+# Build artifacts (EAS / Gradle output) — never commit signed bundles or
+# keystores. The existing build-1763561193129.aab in the working tree is left
+# alone here; rotate the signing key and remove it via `git rm` separately.
+build-*.aab
+build-*.apk
+*.aab
+*.apk
+*.keystore
+local.properties
+credentials.json
+service-account*.json
+firebase-service-account*.json

@@ -1,19 +1,20 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useTranslation } from "@/hooks/useTranslation";
+import { useUnreadCount } from "@/hooks/useUnreadCount";
 import { logout } from "@/services/api/authService";
+import { fetchUnreadCount } from "@/services/api/notificationService";
 import { Ionicons } from "@expo/vector-icons";
 import { router, useFocusEffect } from "expo-router";
 import React, { useCallback, useState } from "react";
 import {
-  Dimensions,
-  Modal,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
+    Dimensions,
+    Modal,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
 } from "react-native";
-import storage from "@/utils/storage";
 
 interface HeaderProps {
   notificationCount?: number;
@@ -25,10 +26,10 @@ const { width } = Dimensions.get("window");
 export function Header({ notificationCount = 3, menuCount = 1 }: HeaderProps) {
   const { t } = useTranslation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [hasUnreadMessages, setHasUnreadMessages] = useState(false);
+  const unreadCount = useUnreadCount();
   const { theme } = useTheme();
   const styles = createStyles(theme);
-  const {onLogout} = useAuth();
+  const { onLogout } = useAuth();
 
   const menuItems = [
     {
@@ -86,7 +87,7 @@ export function Header({ notificationCount = 3, menuCount = 1 }: HeaderProps) {
   const onSignOut = async () => {
     try {
       const res: any = await logout();
-     onLogout()
+      onLogout();
     } catch (error) {
       console.error("Error removing auth status:", error);
       router.replace("/login");
@@ -94,18 +95,15 @@ export function Header({ notificationCount = 3, menuCount = 1 }: HeaderProps) {
   };
 
   const refreshUnreadState = useCallback(async () => {
-    try {
-      const count = await storage.getItem("notReadMessageCount");
-      setHasUnreadMessages(Number(count || 0) > 0);
-    } catch (error) {
-      setHasUnreadMessages(false);
-    }
+    // Pull the latest unread count from the server; the global store will
+    // notify all subscribers (header badge, etc.) automatically.
+    await fetchUnreadCount();
   }, []);
 
   useFocusEffect(
     useCallback(() => {
       refreshUnreadState();
-    }, [refreshUnreadState])
+    }, [refreshUnreadState]),
   );
 
   return (
@@ -124,9 +122,16 @@ export function Header({ notificationCount = 3, menuCount = 1 }: HeaderProps) {
             <TouchableOpacity
               style={styles.actionButton}
               onPress={onNotificationsClick}
+              accessibilityLabel={t("notifications")}
             >
               <Ionicons name="notifications-outline" size={20} color={"#fff"} />
-              {hasUnreadMessages && <View style={styles.notificationDot} />}
+              {unreadCount > 0 && (
+                <View style={styles.badge}>
+                  <Text style={styles.badgeText}>
+                    {unreadCount > 99 ? "99+" : String(unreadCount)}
+                  </Text>
+                </View>
+              )}
             </TouchableOpacity>
 
             {/* Menu Toggle */}
@@ -199,7 +204,6 @@ export function Header({ notificationCount = 3, menuCount = 1 }: HeaderProps) {
                             : theme.text
                         }
                       />
-                     
                     </View>
                     <View style={styles.menuItemContent}>
                       <Text
@@ -263,22 +267,26 @@ const createStyles = (theme: any) =>
     },
     badge: {
       position: "absolute",
-      top: -4,
-      right: -4,
-      width: 20,
-      height: 20,
+      top: 0,
+      right: 0,
+      minWidth: 18,
+      height: 18,
+      paddingHorizontal: 4,
       backgroundColor: theme.destructive,
-      borderRadius: 10,
+      borderRadius: 9,
       alignItems: "center",
       justifyContent: "center",
+      borderWidth: 1,
+      borderColor: "#000",
     },
     primaryBadge: {
       backgroundColor: theme.primary,
     },
     badgeText: {
-      color: theme.primaryForeground,
+      color: "#fff",
       fontSize: 10,
-      fontWeight: "500",
+      fontWeight: "600",
+      lineHeight: 14,
     },
     backdrop: {
       flex: 1,

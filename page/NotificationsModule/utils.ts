@@ -58,11 +58,13 @@ export const getTimeAgo = (createTime: Date, t: any) => {
 };
 
 // 计算通知统计信息
-export const calculateNotificationStats = (notifications: Notification[]): NotificationStats => {
+export const calculateNotificationStats = (
+  notifications: Notification[],
+): NotificationStats => {
   const unreadCount = notifications.filter((n) => !n.isRead).length;
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  
+
   const todayCount = notifications.filter((n) => {
     const notificationDate = new Date(n.createTime);
     notificationDate.setHours(0, 0, 0, 0);
@@ -76,6 +78,23 @@ export const calculateNotificationStats = (notifications: Notification[]): Notif
   };
 };
 
+/** Group label for a notification's createTime, used for sectioned lists. */
+export type TimeGroupKey = "today" | "yesterday" | "earlier";
+
+export const getTimeGroup = (createTime: string): TimeGroupKey => {
+  const created = new Date(createTime);
+  if (Number.isNaN(created.getTime())) return "earlier";
+
+  const startOfToday = new Date();
+  startOfToday.setHours(0, 0, 0, 0);
+  const startOfYesterday = new Date(startOfToday);
+  startOfYesterday.setDate(startOfYesterday.getDate() - 1);
+
+  if (created.getTime() >= startOfToday.getTime()) return "today";
+  if (created.getTime() >= startOfYesterday.getTime()) return "yesterday";
+  return "earlier";
+};
+
 // 生成模拟通知数据
 export const generateMockNotifications = (): Notification[] => {
   return [
@@ -83,17 +102,19 @@ export const generateMockNotifications = (): Notification[] => {
       id: "1",
       type: "reservation",
       title: "新预订",
-      content: "John Smith has requested a table for 4 people at 7:00 PM tonight.",
+      content:
+        "John Smith has requested a table for 4 people at 7:00 PM tonight.",
       createTime: "2025-03-01", // 5 minutes ago
-      isRead: 0
+      isRead: 0,
     },
     {
       id: "2",
       type: "reservation_cancel",
       title: "预订取消",
-      content: "Sarah Johnson has cancelled her reservation for 2 people at 6:30 PM.",
+      content:
+        "Sarah Johnson has cancelled her reservation for 2 people at 6:30 PM.",
       createTime: "2025-03-01", // 2 hours ago
-      isRead: 1
+      isRead: 1,
     },
     {
       id: "3",
@@ -101,15 +122,16 @@ export const generateMockNotifications = (): Notification[] => {
       title: "待处理消息",
       content: "Mike Brown has sent a new message regarding his reservation.",
       createTime: "2025-03-01", // 4 hours ago
-      isRead: 1
+      isRead: 1,
     },
     {
       id: "4",
       type: "system",
       title: "系统更新",
-      content: "New features have been added to improve your reservation management experience.",
+      content:
+        "New features have been added to improve your reservation management experience.",
       createTime: "2025-03-01",
-      isRead:0
+      isRead: 0,
     },
   ];
 };

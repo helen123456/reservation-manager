@@ -1,6 +1,8 @@
 import { Toast } from "@/components";
 import axios from "axios";
 import { router } from "expo-router";
+import { i18n } from "../utils/i18n";
+import secureStorage from "../utils/secureStorage";
 import storage from "../utils/storage";
 import { getBaseURL } from "./config";
 
@@ -9,8 +11,8 @@ const baseURL = getBaseURL();
 // 基础配置
 const BASE_URL = baseURL || "http://localhost:2025/api";
 const TIMEOUT = 10000;
+// 注意：token 走 secureStorage，不在此清单内。
 const AUTH_STORAGE_KEYS = [
-  "token",
   "user",
   "uid",
   "restaurantId",
@@ -27,8 +29,13 @@ const clearAuthStorage = async () => {
       } catch {
         // 忽略单个存储清理失败
       }
-    })
+    }),
   );
+  try {
+    await secureStorage.removeItem("token");
+  } catch {
+    /* ignore */
+  }
 };
 
 const handleUnauthorized = async () => {
@@ -59,16 +66,25 @@ const request = axios.create({
 // 请求拦截器
 request.interceptors.request.use(
   async (config: any) => {
-    // 添加token
-    const token = (await storage.getItem("token")) || "";
+    // 添加token（从 Keychain / Keystore 读取）
+    const token = (await secureStorage.getItem("token")) || "";
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
+    }
+    // 注入当前语言作为 Accept-Language，保证后端 i18n 错误信息返回正确语种
+    try {
+      const lang = i18n.getCurrentLanguage?.();
+      if (lang) {
+        config.headers["Accept-Language"] = lang;
+      }
+    } catch {
+      // 忽略 i18n 未就绪场景
     }
     return config;
   },
   (error: any) => {
     return Promise.reject(error);
-  }
+  },
 );
 
 // 响应拦截器
@@ -89,7 +105,7 @@ request.interceptors.response.use(
     }
 
     return Promise.reject(error.response?.data || error.message);
-  }
+  },
 );
 
 export default request;
