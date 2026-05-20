@@ -27,7 +27,9 @@ export const getRegisterSchema = (t: (key: TranslationKey) => string) => {
       .regex(/[a-zA-Z]/, t("passwordMustContainLetter"))
       .regex(/[0-9]/, t("passwordMustContainNumber"))
       .regex(/[!@#$%^&*(),.?":{}|<>]/, t("passwordMustContainSpecialChar")),
-    rememberMe: z.boolean().optional().default(false),
+    // Use a required boolean (UI always supplies a value via defaultValues)
+    // so the resolver's input/output types stay aligned for react-hook-form.
+    rememberMe: z.boolean(),
   });
 };
 

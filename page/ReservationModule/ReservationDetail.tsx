@@ -1,14 +1,9 @@
 import Modal from "@/components/base/Modal";
-import { useTheme } from '@/contexts/ThemeContext';
+import { useTheme } from "@/contexts/ThemeContext";
 import { updateReservation } from "@/services/api/reservationService";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import React, { useMemo, useState } from "react";
-import {
-    ScrollView,
-    Text,
-    TouchableOpacity,
-    View
-} from "react-native";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { useTranslation } from "../../hooks/useTranslation";
 import { StatusBadge } from "./StatusBadge";
 import { createStyles } from "./styles";
@@ -28,7 +23,7 @@ export const ReservationDetail: React.FC<ReservationDetailProps> = ({
   onReject,
 }) => {
   const { t } = useTranslation();
-  const {theme} = useTheme();
+  const { theme } = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
   const [visible, setVisible] = useState<boolean>(false);
   const [tipsText, setTipsText] = useState<string>("");
@@ -82,12 +77,12 @@ export const ReservationDetail: React.FC<ReservationDetailProps> = ({
 
   return (
     <View style={styles.container}>
-        <View style={styles.backButtonContainer}>
-          <TouchableOpacity onPress={onBack} style={styles.backButton}>
-            <Ionicons name="arrow-back" size={24} color="#007AFF" />
-          </TouchableOpacity>
-          <Text style={styles.detailTitle}>Reservation Details</Text>
-        </View>
+      <View style={styles.backButtonContainer}>
+        <TouchableOpacity onPress={onBack} style={styles.backButton}>
+          <Ionicons name="arrow-back" size={24} color="#007AFF" />
+        </TouchableOpacity>
+        <Text style={styles.detailTitle}>Reservation Details</Text>
+      </View>
 
       <ScrollView style={styles.container}>
         <View style={styles.statusContainer}>
@@ -98,17 +93,15 @@ export const ReservationDetail: React.FC<ReservationDetailProps> = ({
           <View style={styles.customerInfo}>
             <View style={styles.avatar}>
               <Text style={styles.avatarText}>
-                {getInitials(reservation.firstName)}
+                {getInitials(
+                  reservation.firstName ?? reservation.contactName ?? "",
+                )}
               </Text>
             </View>
-            <Text style={styles.contactName}>
-              {reservation.firstName}
-            </Text>
+            <Text style={styles.contactName}>{reservation.firstName}</Text>
             <View style={styles.phoneContainer}>
               <Feather name="phone" size={16} color="#6b7280" />
-              <Text style={styles.phoneText}>
-                {reservation.contactPhone}
-              </Text>
+              <Text style={styles.phoneText}>{reservation.contactPhone}</Text>
             </View>
           </View>
         </View>
@@ -121,9 +114,7 @@ export const ReservationDetail: React.FC<ReservationDetailProps> = ({
                 <Feather name="calendar" size={16} color="#6b7280" />
                 <Text style={styles.detailLabel}>Date</Text>
               </View>
-              <Text style={styles.detailValue}>
-                {getReserveDate()}
-              </Text>
+              <Text style={styles.detailValue}>{getReserveDate()}</Text>
             </View>
 
             <View style={styles.detailItem}>
@@ -131,21 +122,15 @@ export const ReservationDetail: React.FC<ReservationDetailProps> = ({
                 <Feather name="clock" size={16} color="#6b7280" />
                 <Text style={styles.detailLabel}>Time</Text>
               </View>
-              <Text style={styles.detailValue}>
-                {getReserveTime()}
-              </Text>
+              <Text style={styles.detailValue}>{getReserveTime()}</Text>
             </View>
 
             <View style={styles.detailItem}>
               <View style={styles.detailHeader}>
                 <Feather name="users" size={16} color="#6b7280" />
-                <Text style={styles.detailLabel}>
-                  {t("guests")}
-                </Text>
+                <Text style={styles.detailLabel}>{t("guests")}</Text>
               </View>
-              <Text style={styles.detailValue}>
-                {reservation.guests}
-              </Text>
+              <Text style={styles.detailValue}>{reservation.guests}</Text>
             </View>
           </View>
           <View style={styles.specialRequests}>
@@ -169,23 +154,15 @@ export const ReservationDetail: React.FC<ReservationDetailProps> = ({
               onPress={() => handleReject()}
             >
               <Feather name="x" size={20} color={theme.text} />
-              <Text style={styles.actionButtonText}>
-                {t("decline")}
-              </Text>
+              <Text style={styles.actionButtonText}>{t("decline")}</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
               style={[styles.actionButton, styles.confirmButton]}
               onPress={() => handleAccept()}
             >
-              <Feather
-                name="check"
-                size={20}
-                color={theme.primaryForeground}
-              />
-              <Text style={styles.rejectButtonText}>
-                {t("accept")}
-              </Text>
+              <Feather name="check" size={20} color={theme.primaryForeground} />
+              <Text style={styles.rejectButtonText}>{t("accept")}</Text>
             </TouchableOpacity>
           </View>
         )}

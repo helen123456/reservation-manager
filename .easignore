@@ -1,0 +1,58 @@
+# Dependencies
+node_modules/
+
+# VCS and local editor state
+.git/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Expo / EAS / Metro outputs
+.expo/
+.eas/
+dist/
+web-build/
+.metro-health-check*
+
+# Native build outputs and generated caches
+android/.gradle/
+android/build/
+android/app/build/
+ios/Pods/
+ios/build/
+DerivedData/
+.kotlin/
+
+# Build artifacts
+build-*.aab
+build-*.apk
+*.aab
+*.apk
+*.keystore
+*.jks
+
+# Logs, caches, temporary outputs
+.cache/
+.parcel-cache/
+.turbo/
+coverage/
+*.log
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+*.tsbuildinfo
+
+# Local secrets and credentials
+.env
+.env.*
+!.env.example
+.envrc
+*.pem
+*.p8
+*.p12
+*.key
+*.mobileprovision
+credentials.json
+service-account*.json
+firebase-service-account*.json

@@ -8,8 +8,8 @@ import { getBaseURL } from "./config";
 
 const baseURL = getBaseURL();
 
-// 基础配置
-const BASE_URL = baseURL || "http://localhost:2025/api";
+// 基础配置：getBaseURL 保证一定返回 HTTPS 地址，这里的 fallback 仅作防御性兜底。
+const BASE_URL = baseURL || "https://api.neogrowth.fr/neo/api";
 const TIMEOUT = 10000;
 // 注意：token 走 secureStorage，不在此清单内。
 const AUTH_STORAGE_KEYS = [

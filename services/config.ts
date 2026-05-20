@@ -12,12 +12,11 @@ export const CURRENT_ENV = __DEV__ ? ENV.DEVELOPMENT : ENV.PRODUCTION;
 // API基础配置
 export const API_CONFIG = {
   BASE_URL: {
-    // dev: "http://localhost:2025/neo/api",
-    dev: "http://101.35.113.65:2025/neo/api",
-    // Production base URL is read from app.json `expo.extra.apiBaseUrl`.
-    // Setting an explicit value here as a final fallback prevents shipping a
-    // dangling "yourapp.com" placeholder.
-    prod: "http://101.35.113.65:2025/neo/api",
+    // 统一使用线上 HTTPS 网关（由 Nginx 代理到 Spring Boot 的 /neo 上下文）。
+    // 如需指向本地后端，请通过 app.json `expo.extra.apiBaseUrl` 覆盖，
+    // 而不要把明文 HTTP 写回这里——Android 9+ release 包默认禁止 cleartext。
+    dev: "https://api.neogrowth.fr/neo/api",
+    prod: "https://api.neogrowth.fr/neo/api",
   },
 };
 
